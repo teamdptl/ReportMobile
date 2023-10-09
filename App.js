@@ -12,7 +12,7 @@ import NavigationContainerWrapper from './src/navigation/NavigationContainerWrap
 // import UserReport from './src/views/UserReport';
 
 // const Stack = createNativeStackNavigator();
-import Tabs from './src/navigation/tabs';
+import TabScreenUser from './src/navigation/TabScreenUser';
 
 export default function App() {
   return (
@@ -27,8 +27,7 @@ export default function App() {
       </NavigationContainer> */}
 
         {/* <NavigationContainerWrapper /> */}
-        <Tabs/>
-
+      <TabScreenUser />
 
       </SafeAreaView>
       
