@@ -1,20 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import GlobalStyles from './src/components/GlobalStyles';
+
+
+import NavigationContainerWrapper from './src/navigation/NavigationContainerWrapper';
+
+// import Splash from './src/views/Splash';
+// import Login from './src/views/Login';
+// import UserReport from './src/views/UserReport';
+
+// const Stack = createNativeStackNavigator();
+import Tabs from './src/navigation/tabs';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <SafeAreaView style={GlobalStyles.androidSafeArea}>
+        {/* <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown:false}}>
+          <Stack.Screen name='Splash' component={Splash} />
+          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='UserReport' component={UserReport} />
+          
+        </Stack.Navigator>
+      </NavigationContainer> */}
+
+        {/* <NavigationContainerWrapper /> */}
+        <Tabs/>
+
+
+      </SafeAreaView>
+      
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  
 });
