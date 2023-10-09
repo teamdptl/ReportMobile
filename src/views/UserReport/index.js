@@ -1,59 +1,21 @@
 import React, { useRef } from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, Image, Animated, FlatList } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, ScrollView, Animated } from 'react-native';
 import styles from './style';
+import HeaderComponent from '../../components/HeaderComponent'; // Import your new component
 
 const UserReport = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
-  const AnimatedText = Animated.createAnimatedComponent(Text);
-  
   return (
     <View style={styles.container}>
       <StatusBar barStyle='light-content' backgroundColor="#0693F1" />
 
       <View style={styles.upperHeader}>
-      
+        {/* Render anything you want for the upper header here */}
       </View>
 
-      <View style={styles.header}>
-        <View>
-        <AnimatedText
-  style={[
-    styles.text,
-    {
-      transform: [
-        {
-          translateY: animatedValue.interpolate({
-            inputRange: [0, 150], // Điều chỉnh khoảng cách mà bạn muốn văn bản dịch chuyển
-            outputRange: [0, -30], // Khoảng cách dịch chuyển của văn bản (lên trên)
-            extrapolate: 'clamp', // Giữ giá trị trong phạm vi inputRange
-          }),
-          
-        },
-        {
-          translateX: animatedValue.interpolate({
-            inputRange: [0, 150], // Điều chỉnh khoảng cách mà bạn muốn văn bản dịch chuyển
-            outputRange: [0, 130], // Khoảng cách dịch chuyển của văn bản (sang phải)
-            extrapolate: 'clamp', // Giữ giá trị trong phạm vi inputRange
-          }),
-        }
-      ],
-    },
-  ]}
->
-  Xin chào, SGUer
-</AnimatedText>
-          <Text style={styles.text}>
-            Hãy báo cáo các vấn đề{'\n'}
-            kỹ thuật cho chúng tôi
-          </Text>
-        </View>
-
-        <Image
-          source={require('../../assets/images/feedback.png')}
-          style={{ width: '55%', height: 120, marginLeft: 20, resizeMode: 'cover' }}
-        />
-      </View>
+      {/* Use the HeaderComponent component here */}
+      <HeaderComponent animatedValue={animatedValue} />
 
       <ScrollView
         onScroll={(e) => {
