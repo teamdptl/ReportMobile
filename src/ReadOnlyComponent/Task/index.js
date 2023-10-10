@@ -9,9 +9,9 @@ import { CheckBox,ListItem } from '@rneui/themed';
 const Task =(props) =>{
 
     const [isSelected, setSelection] = useState(false);
-   const handlePress =()=>{
-     props.handlePress()
-   }
+    const handlePress =()=>{
+        props.handlePress()
+    }
 
     return (
         <View style={styles.container}>

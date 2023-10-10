@@ -51,7 +51,9 @@ const Body = () => {
                             Trạng thái
                         </Text>
                     </View>
-                </View>):<Filter handleDelete={handleDelete}/>
+                </View>)
+                :
+                <Filter handleDelete={handleDelete}/>
             }
 
            <ScrollView>

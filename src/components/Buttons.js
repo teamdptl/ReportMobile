@@ -5,7 +5,7 @@ import color from '../contains/color'
 
 const Buttons = (props) => {
   return (
-    <TouchableOpacity style={styles.customView}  onPress={props.onPress} >
+    <TouchableOpacity style={[styles.customView, { backgroundColor: props.backgroundColor }]}  onPress={props.onPress} >
       <Text style={styles.text}>
         {props.btnText}
       </Text>
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginHorizontal: 20,
     justifyContent: 'center', 
-    backgroundColor: color.primaryColor, 
-    borderColor: color.primaryColor,
+    // backgroundColor: color.primaryColor, 
+    // borderColor: color.primaryColor,
     // alignItems: 'center',
 
   },

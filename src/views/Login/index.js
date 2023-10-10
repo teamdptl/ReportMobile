@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import { View, Keyboard,Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar, Image } from 'react-native'
 import styles from './style';
 import Buttons from '../../components/Buttons'; 
+import color from '../../contains/color';
 // import * as SecureStore from 'expo-secure-store';
 import * as Device from 'expo-device';
+
+import {  USER_TOKEN_KEY } from '../../contains/config';
+
 
 import { save, getValueFor } from '../../contains/SecureStore';
 
@@ -40,7 +44,7 @@ const Login = ({navigation}) => {
             console.log(data);
 
             if (data.token && data.error === 0) {
-              save('userToken', data.token);
+              save(USER_TOKEN_KEY, data.token);
               
 
               navigation.navigate('UserReport');
@@ -87,7 +91,7 @@ const Login = ({navigation}) => {
                 </View>
             
 
-                <Buttons onPress={handleLogin}  btnText={"Đăng nhập ngay"}/>
+                <Buttons onPress={handleLogin}  btnText={"Đăng nhập ngay"} backgroundColor="color.primaryColor"/>
                 <View style={styles.container_QuenMatKhau}>
                     <Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
                 </View>
