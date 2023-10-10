@@ -17,8 +17,7 @@ export default Buttons
 
 const styles = StyleSheet.create({
   customView: {
-    height: 50, 
-    marginHorizontal: 10,
+    height: 50,
     borderWidth: 1,
     borderRadius: 10, 
     paddingHorizontal: 11,
