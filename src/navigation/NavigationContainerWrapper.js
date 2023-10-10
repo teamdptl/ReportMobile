@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Splash from '../views/Splash';
 import Login from '../views/Login';
 import UserReport from '../views/UserReport';
-import Tabs from './tabs';
+import Tabs from './TabScreenUser';
 
 const Stack = createNativeStackNavigator();
 

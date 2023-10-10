@@ -8,24 +8,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-        text: {
-            color: 'white',
-            paddingTop: 30,
-            paddingRight: 10, // Khoảng cách giữa văn bản và hình ảnh
-            fontWeight: 'bold',
-        },
+        
      
     upperHeader: {
         height: 28,
     },
-    header: {
-        position: 'absolute',
-        width: '100%',
-        height: 150,
-        backgroundColor: color.primaryColor,
-        flexDirection: 'row', 
-        paddingHorizontal: 20,
-    },
+   
     paddingForHeader:{
         height: 122,
         paddingBottom: 50,
