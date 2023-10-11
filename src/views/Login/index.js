@@ -17,7 +17,7 @@ const Login = ({navigation}) => {
     const [mssv, setMssv] = useState('');
     const [password, setPassword] = useState('');
 
-
+      //Tong hop bai boan, tong quan nghien cuu khoa hoc, no nam o dau o linh vuc, viet nam lm gi, the gioi da lam gi, 20-30 trang, fotmat: phong quan ly khoa hoc
     // async function save(key, value) {
     //   await SecureStore.setItemAsync(key, value);
     // }
@@ -91,7 +91,7 @@ const Login = ({navigation}) => {
                 </View>
             
 
-                <Buttons onPress={handleLogin}  btnText={"Đăng nhập ngay"} backgroundColor="color.primaryColor"/>
+                <Buttons onPress={handleLogin}  btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
                 <View style={styles.container_QuenMatKhau}>
                     <Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
                 </View>

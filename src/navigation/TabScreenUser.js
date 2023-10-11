@@ -15,7 +15,7 @@ const TabScreenUser = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions={{
+         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarStyle: {
             position: 'absolute',
@@ -28,8 +28,10 @@ const TabScreenUser = () => {
             height: 60,
             ...styles.shadow,
           },
-        }}
-        tabBarOptions={{ showLabel: false }}>
+          tabBarShowLabel: false, // Hide labels in tabs
+        })}
+      >
+      
         <Tab.Screen
           name="UserReport"
           component={UserReport}

@@ -7,11 +7,11 @@ import GlobalStyles from './src/components/GlobalStyles';
 
 import NavigationContainerWrapper from './src/navigation/NavigationContainerWrapper';
 
-// import Splash from './src/views/Splash';
-// import Login from './src/views/Login';
-// import UserReport from './src/views/UserReport';
+import Splash from './src/views/Splash';
+import Login from './src/views/Login';
+import UserReport from './src/views/UserReport';
 
-// const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 import TabScreenUser from './src/navigation/TabScreenUser';
 
 export default function App() {
