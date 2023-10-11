@@ -11,9 +11,8 @@ import PostReport from '../views/PostReport';
 
 const Tab = createBottomTabNavigator();
 
-const TabScreenUser = () => {
+const TabScreenUser = ({navigation}) => {
   return (
-    <NavigationContainer>
       <Tab.Navigator
          screenOptions={({ route }) => ({
           headerShown: false,
@@ -66,7 +65,6 @@ const TabScreenUser = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

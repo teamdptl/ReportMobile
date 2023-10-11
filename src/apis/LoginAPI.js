@@ -1,19 +1,20 @@
-import * as SecureStore from 'expo-secure-store';
+import { save } from '../contains/SecureStore';
+import { USER_TOKEN_KEY, URL_USER_LOGIN } from '../contains/config';
+
+
 import * as Device from 'expo-device';
 
-export async function save(key, value) {
-  await SecureStore.setItemAsync(key, value);
-}
 
-export async function handleLogin(mssv, password, deviceName, navigation) {
+
+export async function handleLogin(mssv, password, navigation) {
   const userData = {
     mssv: mssv,
     password: password,
-    device_name: deviceName,
+    device_name: Device.deviceName,
   };
 
   try {
-    const response = await fetch('http://sgu.dy.id.vn/api/v1/login', {
+    const response = await fetch(URL_USER_LOGIN, {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -28,8 +29,8 @@ export async function handleLogin(mssv, password, deviceName, navigation) {
     const data = await response.json();
 
     if (data.token && data.error === 0) {
-      await save('userToken', data.token);
-      navigation.replace('UserReport');
+      await save(USER_TOKEN_KEY, data.token); // Đảm bảo bạn đã định nghĩa USER_TOKEN_KEY
+      navigation.replace('TabScreenUser');
     } else {
       alert('Đăng nhập không thành công. Vui lòng thử lại.');
     }

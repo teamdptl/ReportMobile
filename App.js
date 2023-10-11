@@ -26,8 +26,8 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer> */}
 
-        {/* <NavigationContainerWrapper /> */}
-      <TabScreenUser />
+        <NavigationContainerWrapper />
+      {/* <TabScreenUser /> */}
 
       </SafeAreaView>
       

@@ -1,11 +1,11 @@
 import { getValueFor } from '../contains/SecureStore';
-import { USER_TOKEN_KEY } from '../contains/config';
+import { USER_TOKEN_KEY, URL_USER_INFO } from '../contains/config';
 
 export const getUserData = async () => {
   try {
     const token = await getValueFor(USER_TOKEN_KEY);
     if (token) {
-      const response = await fetch("https://sgu.dy.id.vn/api/v1/user-info", {
+      const response = await fetch(URL_USER_INFO, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

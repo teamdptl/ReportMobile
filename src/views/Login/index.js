@@ -2,14 +2,7 @@ import React, {useState} from 'react';
 import { View, Keyboard,Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar, Image } from 'react-native'
 import styles from './style';
 import Buttons from '../../components/Buttons'; 
-import color from '../../contains/color';
-// import * as SecureStore from 'expo-secure-store';
-import * as Device from 'expo-device';
-
-import {  USER_TOKEN_KEY } from '../../contains/config';
-
-
-import { save, getValueFor } from '../../contains/SecureStore';
+import { handleLogin } from '../../apis/LoginAPI';
 
 
 const Login = ({navigation}) => {
@@ -18,47 +11,16 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState('');
 
       //Tong hop bai boan, tong quan nghien cuu khoa hoc, no nam o dau o linh vuc, viet nam lm gi, the gioi da lam gi, 20-30 trang, fotmat: phong quan ly khoa hoc
-    // async function save(key, value) {
-    //   await SecureStore.setItemAsync(key, value);
-    // }
-
-    
-
-    const handleLogin = () => {
-        const userData = {
-          mssv: mssv,
-          password: password,
-          device_name: Device.deviceName,
-        };
-    
-        fetch('http://sgu.dy.id.vn/api/v1/login', {
-          method: 'POST',
-          body: JSON.stringify(userData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-
-            console.log(data);
-
-            if (data.token && data.error === 0) {
-              save(USER_TOKEN_KEY, data.token);
-              
-
-              navigation.navigate('UserReport');
-            } else {
-              alert('Đăng nhập không thành công. Vui lòng thử lại.');
-            }
-          })
-          .catch((error) => {
-            console.error('Lỗi kết nối API: ', error);
-          });
+      const onLogin = async () => {
+        try {
+          await handleLogin(mssv, password, navigation);
+        } catch (error) {
+          console.error(error);
+        }
     
         setMssv('');
         setPassword('');
-  };
+      };
 
     return (
        <View style={{flex: 1, backgroundColor: '#fff', flexDirection: 'column'}}>
@@ -91,7 +53,7 @@ const Login = ({navigation}) => {
                 </View>
             
 
-                <Buttons onPress={handleLogin}  btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
+                <Buttons onPress={onLogin}  btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
                 <View style={styles.container_QuenMatKhau}>
                     <Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
                 </View>
