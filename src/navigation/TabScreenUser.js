@@ -48,7 +48,12 @@ const TabScreenUser = ({navigation}) => {
           name="PostReport"
           component={PostReport}
           options={{
-            tabBarButton: (props) => <CustomTabBarButton {...props} />,
+            // tabBarButton: (props) => <CustomTabBarButton {...props} />,
+            tabBarButton: () => (
+              <CustomTabBarButton
+                onPress={() => navigation.navigate('PostReport')} // Điều hướng đến PostReport
+              />
+            ),
           }}
         />
         <Tab.Screen

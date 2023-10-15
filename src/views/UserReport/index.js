@@ -1,10 +1,46 @@
-import React, { useRef } from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, Animated, FlatList } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, Text, View, StatusBar, ScrollView, Animated, FlatList, Dimensions } from 'react-native';
 import styles from './style';
 import HeaderComponent from '../../components/HeaderComponent'; // Import your new component
+import SmallButton from '../../components/SmallButtons';
+import color from '../../contains/color';
+import Body from '../../components/Body';
+import Task from '../../components/Task';
+const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get('window');
 
 const UserReport = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const [longPress, setLongPress] = useState(false);
+  const [addComponentAsLongPress, setaddComponentAsLongPress] = useState(false);
+
+  const [taskList, setTaskList] = useState([
+    { key: 'Task 1' },
+    { key: 'Task 2' },
+    { key: 'Task 3' },
+    { key: 'Task 4' },
+    { key: 'Task 5' },
+
+    // Thêm các mục khác vào đây
+  ]);
+
+
+  const handleLongPress = () => {
+    // Thiết lập một hẹn giờ để kiểm tra liệu người dùng có giữ trong ít nhất 2 giây không
+    setTimeout(() => {
+        setLongPress(true);
+        setaddComponentAsLongPress(true);
+    }, 1000);
+}
+  
+
+
+  
+
+
+
+  const contentHeight = taskList.length >= 7 ? {} : { height: WINDOW_HEIGHT * 1 };
+
+
 
   return (
     <View style={styles.container}>
@@ -17,7 +53,7 @@ const UserReport = ({ navigation }) => {
       {/* Use the HeaderComponent component here */}
       <HeaderComponent animatedValue={animatedValue} />
 
-      <ScrollView
+      <Animated.ScrollView
         onScroll={(e) => {
           const offSetY = e.nativeEvent.contentOffset.y;
           animatedValue.setValue(offSetY);
@@ -25,38 +61,38 @@ const UserReport = ({ navigation }) => {
         scrollEventThrottle={16}
       >
         <View style={styles.paddingForHeader} />
-        <View style={styles.scrollViewContent}>
+        <View style={[styles.scrollViewContent, contentHeight ]}>
           <View style={styles.containerLine}>
             <View style={styles.line}></View>
           </View>
-          {/* <Text style={{ marginTop: 30 }}>cc</Text> */}
 
-          {/* <FlatList
-            contentContainerStyle={{ paddingBottom: 50 }}
-            // data={}
-            keyExtractor={item => item.id}
-            renderItem={({renderItem}) => {
-              return( <View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text>Text 1</Text>
-                            <Text>Text 2</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text>Text 3</Text>
+          <View style={styles.containerHTZLMid}>
+            <View style={styles.leftContent}>
+              <Text style={{ fontWeight: 'bold' }}>Danh sách phản hồi</Text>
+            </View>
+            {
+             addComponentAsLongPress ?  ( <View style={styles.rightContent}>
+                <SmallButton title="Trở về" buttonColor={color.primaryColor} onPress={() => { setLongPress(false),setaddComponentAsLongPress(false)  }} />
+                <SmallButton title="Xóa" buttonColor={color.red} onPress={() => {  }}  />
+              </View> ) : null
+            }
+          
+          </View>
 
-                            <View>
-                            <Image></Image> 
-                            <Text>Text 4</Text>
+          <View style={{marginTop:10}}>
+               {
+                   taskList.map((item,index)=>{
 
-                            </View>
-                            <Text>Text 5</Text> 
-                        </View>
-                      </View>
-                    )}}
-          /> */}
-
+                       return <Task key={index} index={index} handleLongPress={handleLongPress} longPress={longPress}  />;
+                   })
+               }
+           </View>
+          
+          
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
+
+     
     </View>
   );
 };

@@ -6,6 +6,7 @@ import Splash from '../views/Splash';
 import Login from '../views/Login';
 import UserReport from '../views/UserReport';
 import TabScreenUser from './TabScreenUser';
+import PostReport from '../views/PostReport';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +16,9 @@ const NavigationContainerWrapper = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="UserReport" component={UserReport} />
+        {/* <Stack.Screen name="UserReport" component={UserReport} /> */}
         <Stack.Screen name="TabScreenUser" component={TabScreenUser} />
+        <Stack.Screen name="PostReport" component={PostReport} />
 
       </Stack.Navigator>
     </NavigationContainer>

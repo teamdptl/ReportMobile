@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './style';
 import Buttons from '../../components/Buttons'; 
 import { getUserData } from '../../apis/UserAPI';
+import color from '../../contains/color';
 
 
 const DetailUser = () => {
@@ -59,7 +60,7 @@ const DetailUser = () => {
         />
 
         <View style={styles.buttonCustom}>
-          <Buttons btnText={"Đăng xuất"} backgroundColor="#F33939" />
+          <Buttons btnText={"Đăng xuất"} backgroundColor= {color.red} />
         </View>
       </View>
     </View>

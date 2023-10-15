@@ -7,7 +7,7 @@
     "icon": "",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/SguLogo.png",
+      "image": "./app/assets/image/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './style';
 
 
-const PostReport = () => {
+const PostReport = ({navigation}) => {
   return (
     <View>
               <Text>Phản hồi thông tin</Text>
