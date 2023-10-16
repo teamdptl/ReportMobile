@@ -57,7 +57,7 @@ const Login = ({navigation}) => {
 						/>
 					</View>
 
-					<Buttons onPress={() => testLoginAPI()} btnText={"Đăng nhập ngay"} backgroundColor="#0693F1" />
+					<Buttons onPress={onLogin} btnText={"Đăng nhập ngay"} backgroundColor="#0693F1" />
 					<View style={styles.container_QuenMatKhau}>
 						<Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
 					</View>
