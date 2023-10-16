@@ -17,3 +17,12 @@ export async function getValueFor(key) {
       return null;
     });
 }
+
+export async function deleteKey(key){
+  return SecureStore.deleteItemAsync(key)
+    .then(res => true)
+    .catch(err => {
+      console.error("Lỗi khi xóa giá trị key: " + err);
+      return false;
+  })
+}
