@@ -38,6 +38,5 @@ export async function handleLogin(mssv, password) {
 }
 
 export async function handleLogout() {
-  // TODO: Xóa token hiện tại trong máy 
   return createFetch(URL_USER_LOGOUT, method.POST);
 }
