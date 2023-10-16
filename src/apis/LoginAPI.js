@@ -27,7 +27,7 @@ export async function handleLogin(mssv, password, navigation) {
     }
 
     const data = await response.json();
-
+    console.log(data);
     if (data.token && data.error === 0) {
       await save(USER_TOKEN_KEY, data.token); // Đảm bảo bạn đã định nghĩa USER_TOKEN_KEY
       navigation.replace('TabScreenUser');
