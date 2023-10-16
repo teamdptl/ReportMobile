@@ -1,4 +1,4 @@
-import { USER_TOKEN_KEY, URL_USER_LOGIN } from "../contains/config";
+import { USER_TOKEN_KEY, URL_USER_LOGIN, URL_USER_INFO } from "../contains/config";
 import { save, getValueFor } from "../contains/SecureStore";
 
 const method = {
@@ -11,7 +11,6 @@ const method = {
 
 const getAuthHeader = async () => {
 	const token = await getValueFor(USER_TOKEN_KEY);
-	console.log(token);
 	return token === null
 		? { Authorization: "" }
 		: {
@@ -19,9 +18,9 @@ const getAuthHeader = async () => {
 		  };
 };
 
-const fetchJsonOptions = async (method, headers = {}) => {
+const createJsonFetch = async (url, method, body = null, headers = {}) => {
 	const auth_header = await getAuthHeader();
-	return {
+	const options = {
 		method: method,
 		headers: {
 			"Content-Type": "application/json",
@@ -29,50 +28,24 @@ const fetchJsonOptions = async (method, headers = {}) => {
 			...headers,
 		},
 	};
-};
 
-const fetchOptions = async (method, headers = {}) => {
-	const auth_header = await getAuthHeader();
-	return {
-		method: method,
-		headers: {
-			auth_header,
-			...headers,
-		},
-	};
+	return body === null ? fetch(url, { ...options }) : fetch(url, { ...options, body: body });
 };
 
 const createFetch = async (url, method, body = null, headers = {}) => {
-	return await fetchOptions(method, headers).then((options) => {
-		if (body === null) {
-			return fetch(url, {
-				...options,
-			});
-		} else {
-			return fetch(url, {
-				...options,
-				body: body,
-			});
-		}
-	});
+	const auth_header = await getAuthHeader();
+	const options = {
+		method: method,
+		headers: {
+			...auth_header,
+			...headers,
+		},
+	};
+
+	return body === null ? fetch(url, { ...options }) : fetch(url, { ...options, body: body });
 };
 
-const createJsonFetch = async (url, method, body = null, headers = {}) => {
-	return await fetchJsonOptions(method, headers).then((options) => {
-		if (body === null) {
-			return fetch(url, {
-				...options,
-			});
-		} else {
-			return fetch(url, {
-				...options,
-				body: body,
-			});
-		}
-	});
-};
-
-const testLoginAPI = () => {
+const testLoginAPI = async () => {
 	const userData = {
 		mssv: "312",
 		password: "312",
@@ -80,9 +53,14 @@ const testLoginAPI = () => {
 	};
 
 	const response = createJsonFetch(URL_USER_LOGIN, method.POST, JSON.stringify(userData));
-	response.then(res => res.json())
-		.then(data => { console.log(data); save(USER_TOKEN_KEY, data.token) }
-		).catch(err => console.error(err))
+	response
+		.then((res) => res.json())
+		.then((data) => {
+			console.log(data);
+			save(USER_TOKEN_KEY, data.token);
+		})
+		.catch((err) => console.error(err))
+		.finally(() => console.log("Done!"));
 };
 
 export { method, createFetch, createJsonFetch, testLoginAPI };
