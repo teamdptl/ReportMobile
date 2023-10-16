@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Keyboard,Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar, Image } from 'react-native'
 import styles from './style';
 import Buttons from '../../components/Buttons'; 
 import { handleLogin } from '../../apis/LoginAPI';
+import TestAPI from "../../apis/createAPI";
 
 
 const Login = ({navigation}) => {
@@ -10,6 +11,9 @@ const Login = ({navigation}) => {
     const [mssv, setMssv] = useState('');
     const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    console.log('render'); 
+  });
       //Tong hop bai boan, tong quan nghien cuu khoa hoc, no nam o dau o linh vuc, viet nam lm gi, the gioi da lam gi, 20-30 trang, fotmat: phong quan ly khoa hoc
       const onLogin = async () => {
         try {
@@ -17,7 +21,6 @@ const Login = ({navigation}) => {
         } catch (error) {
           console.error(error);
         }
-    
         setMssv('');
         setPassword('');
       };
@@ -53,7 +56,7 @@ const Login = ({navigation}) => {
                 </View>
             
 
-                <Buttons onPress={onLogin}  btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
+                <Buttons onPress={() => {TestAPI()}}  btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
                 <View style={styles.container_QuenMatKhau}>
                     <Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
                 </View>
