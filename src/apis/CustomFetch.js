@@ -63,4 +63,4 @@ const testLoginAPI = async () => {
 		.finally(() => console.log("Done!"));
 };
 
-export { method, createFetch, createJsonFetch, testLoginAPI };
+export { method, createFetch, createJsonFetch };

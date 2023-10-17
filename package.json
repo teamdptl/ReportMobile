@@ -13,6 +13,8 @@
     "@react-navigation/bottom-tabs": "^6.5.9",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
+    "@rneui/base": "^4.0.0-rc.8",
+    "@rneui/themed": "^4.0.0-rc.8",
     "expo": "^49.0.0",
     "expo-checkbox": "~2.4.0",
     "expo-cli": "^6.3.10",
@@ -33,6 +35,8 @@
     "expo-file-system": "~15.4.4",
     "expo-media-library": "~15.4.1",
     "expo-sharing": "~11.5.0"
+
+
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
