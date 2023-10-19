@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
       },
       paraInput: {
         height: 80
+      },
+      preview: {
+        alignSelf: 'stretch',
+        flex: 1
       }
  
 })    

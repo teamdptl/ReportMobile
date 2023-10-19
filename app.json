@@ -13,12 +13,13 @@
     },
     "plugins": [
       [
-        "expo-media-library",
+        
+        "expo-camera",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
-          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
-          "isAccessMediaLocationEnabled": true
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
+       
+        
       ]
     ],
     "assetBundlePatterns": [
@@ -35,6 +36,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+      
     },
     "web": {
       "favicon": "./assets/favicon.png"

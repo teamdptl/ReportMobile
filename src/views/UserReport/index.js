@@ -13,7 +13,6 @@ import styles from "./style";
 import HeaderComponent from "../../components/HeaderComponent"; // Import your new component
 import SmallButton from "../../components/SmallButtons";
 import color from "../../contains/color";
-import Body from "../../components/Body";
 import Task from "../../components/Task";
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
 
