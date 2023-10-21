@@ -7,19 +7,16 @@
     "icon": "",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./app/assets/image/splash.png",
+      "image": "./src/assets/images/SguLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "plugins": [
       [
-        
         "expo-camera",
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
-       
-        
       ]
     ],
     "assetBundlePatterns": [
@@ -29,18 +26,27 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.huykhaduy.ReportMobile"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/SguLogo.png",
         "backgroundColor": "#ffffff"
-      }
-      
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.huykhaduy.ReportMobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "702e1dcf-e4cf-4a12-be48-ff3456813b8d"
+      }
     }
-    
   }
 }
