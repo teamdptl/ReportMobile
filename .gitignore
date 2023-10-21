@@ -34,3 +34,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+.idea/misc.xml
+.idea/modules.xml
+.idea/ReportMobile.iml
+.idea/vcs.xml
