@@ -2,11 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Splash from '../views/Splash';
-import Login from '../views/Login';
-import UserReport from '../views/UserReport';
+import Splash from '../screens/Splash';
+import Login from '../screens/Login';
+import UserReport from '../screens/UserReport';
 import TabScreenUser from './TabScreenUser';
-import PostReport from '../views/PostReport';
+import PostReport from '../screens/PostReport';
 
 const Stack = createNativeStackNavigator();
 

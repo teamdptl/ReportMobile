@@ -5,9 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import CustomTabBarButton from '../components/CustomTabBarButton';
 import TabIcons from '../components/TabIcons';
 
-import UserReport from '../views/UserReport';
-import DetailUser from '../views/DetailUser';
-import PostReport from '../views/PostReport';
+import UserReport from '../screens/UserReport';
+import DetailUser from '../screens/DetailUser';
+import PostReport from '../screens/PostReport';
 
 const Tab = createBottomTabNavigator();
 
