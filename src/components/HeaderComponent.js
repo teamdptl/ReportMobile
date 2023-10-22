@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, Animated, StyleSheet } from 'react-native';
-// import styles from '../views/UserReport/style'; // Import your styles from style.js
+// import styles from '../views/UserReport/style'; // Import your styles from ReportScreenStyle.js
 import color from '../contains/color';
 
 const HeaderComponent = ({ animatedValue }) => {

@@ -1,0 +1,1 @@
+// Manager dùng để phân công người làm hoặc báo cáo spam

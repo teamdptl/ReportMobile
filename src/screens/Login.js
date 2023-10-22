@@ -38,6 +38,7 @@ const Login = ({navigation}) => {
     };
 
     useEffect(() => {
+        console.log('Change value');
         if (value){
             if (value.error === 0 && value.token){
                 save(USER_TOKEN_KEY, value.token);
@@ -52,6 +53,7 @@ const Login = ({navigation}) => {
     }, [value]);
 
     useEffect(()=>{
+        console.log('Change err');
         if (err)
             console.error("Lỗi kết nối API: ", err);
     }, [err])

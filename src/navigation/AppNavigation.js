@@ -4,11 +4,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Login from '../screens/Login';
 import UserTabScreen from "./tab/UserTabScreen";
-import PostReport from "../screens/User/PostReport";
+import PostReport from "../screens/User/CreateReport";
 import ManagerHome from "../screens/Manager/ManagerHome";
 import WorkerHome from "../screens/Worker/WorkerHome";
 import UserHome from "../screens/User/UserHome";
 import Main from "../screens/Main";
+import CreateReport from "../screens/User/CreateReport";
 
 
 const AppStack = createNativeStackNavigator();
@@ -34,8 +35,7 @@ const UserNavigation = () => {
     return (
         <UserStack.Navigator screenOptions={{headerShown: false}}>
             <UserStack.Screen name="Tab" component={UserTabScreen}/>
-            <UserStack.Screen name="Home" component={UserHome}/>
-            <UserStack.Screen name="PostReport" component={PostReport}/>
+            <UserStack.Screen name="CreateReport" component={CreateReport}/>
         </UserStack.Navigator>
     );
 };

@@ -3,9 +3,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import CustomTabBarButton from '../../components/CustomTabBarButton';
 import TabIcons from '../../components/TabIcons';
 
-import UserReport from '../../screens/User/UserReport';
-import DetailUser from '../../screens/User/DetailUser';
-import PostReport from '../../screens/User/PostReport';
+import UserHome from '../../screens/User/UserHome';
+import UserInfo from '../../screens/User/UserInfo';
+import CreateReport from '../../screens/User/CreateReport';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +30,8 @@ const UserTabScreen = ({navigation}) => {
         >
 
             <Tab.Screen
-                name="UserReport"
-                component={UserReport}
+                name="UserHome"
+                component={UserHome}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <TabIcons
@@ -43,20 +43,20 @@ const UserTabScreen = ({navigation}) => {
                 }}
             />
             <Tab.Screen
-                name="PostReport"
-                component={PostReport}
+                name="CreateReport"
+                component={CreateReport}
                 options={{
                     // tabBarButton: (props) => <CustomTabBarButton {...props} />,
                     tabBarButton: () => (
                         <CustomTabBarButton
-                            onPress={() => navigation.navigate('PostReport')} // Điều hướng đến PostReport
+                            onPress={() => navigation.navigate('CreateReport')} // Điều hướng đến PostReport
                         />
                     ),
                 }}
             />
             <Tab.Screen
-                name="DetailUser"
-                component={DetailUser}
+                name="UserInfo"
+                component={UserInfo}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <TabIcons

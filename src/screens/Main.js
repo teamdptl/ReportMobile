@@ -30,11 +30,13 @@ const Main = ({navigation}) => {
     useEffect(() => {
         // deleteValue(USER_ROLE_KEY);
         // return;
+        console.log("Context: "+role);
         if (role){
             switchScreen(role);
         }
         else {
             getValue(USER_ROLE_KEY).then((data)=>{
+                console.log("Data: "+data);
                 switchScreen(data);
                 setRole(data);
             }).catch(err => {
