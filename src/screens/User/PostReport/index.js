@@ -8,18 +8,22 @@ import {
   Button,
   StatusBar,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native"; // Import SafeAreaView
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./style";
 import { Camera } from "expo-camera";
-import Buttons from "../../components/Buttons";
+import Buttons from "../../../components/Buttons";
 import * as FileSystem from "expo-file-system";
+import { Overlay } from "@rneui/themed";
 
 const PostReport = ({ navigation }) => {
   const cameraRef = useRef();
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [imageURL, setimageURL] = useState(null);
+  const [isCapture, setCaptured] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const onCreateReport = async () => {
     console.log("Tạo report");
@@ -52,52 +56,44 @@ const PostReport = ({ navigation }) => {
 
   const takePicture = async () => {
     if (cameraRef.current) {
-      let options = {
-        quality: 1,
-        base64: true,
-        exif: false,
-        skipProcessing: true,
-      };
-      const photo = await cameraRef.current.takePictureAsync();
-      // console.log(photo);
-
-      // setCapturedImage(photo);
-
-      // Lưu ảnh vào thư mục tạm thời
-      const imageFile = FileSystem.documentDirectory + "cachedImage.jpg";
-      await FileSystem.copyAsync({
-        from: photo.uri,
-        to: imageFile,
-      });
-
-      // Lưu đường dẫn của ảnh vào state
-      setimageURL(imageFile);
-      console.log("Luu vao duong dan: "+imageFile);
+      setLoading(true);
+      await cameraRef.current
+        .takePictureAsync()
+        .then((photo) => {
+          // console.log(photo);
+          setimageURL(photo.uri);
+          setLoading(false);
+          saveFromTemp(photo.uri);
+          closeCamera();
+        })
+        .catch((error) => {
+          console.log("Error : " + error);
+        })
+        .finally(() => {
+          console.log("OK");
+        });
     }
+    
   };
 
-  if (imageURL && isCameraOpen) {
-    let savePhoto = async () => {
-      // if (capturedImage.uri) {
-        const uri = await FileSystem.getInfoAsync(
-          FileSystem.documentDirectory + "cachedImage.jpg"
-        );
-        if (uri.exists) {
-          setimageURL(uri.uri);
-        // }
-        closeCamera();
-      }
-    };
+  const saveFromTemp = (photoUri) => {
+    const timeStamp = Date.now();
+    const imageFile = FileSystem.documentDirectory + `cachedImage_${timeStamp}.jpg`;
+    console.log("Photo uri: " + photoUri);
+    FileSystem.copyAsync({
+      from: photoUri,
+      to: imageFile,
+    }).then((res) => {
+      setimageURL(imageFile);
+      console.log("Storge pernament data: " + imageFile);
+    });
+  };
 
+  if (isCameraOpen && imageURL) {
     return (
       <SafeAreaView style={styles.container}>
-        <Image
-          style={styles.preview}
-          source={{ uri: "data:image/jpg;base64," + capturedImage.base64 }}
-        />
-
-        {1 ? <Button title="Lưu ảnh" onPress={savePhoto} /> : null}
-        <Button title="Chụp lại" onPress={() => setCapturedImage(null)} />
+        <Image style={styles.preview} source={{ uri: imageURL }} />
+        <Button title="Chụp lại" onPress={() => setimageURL(null)} />
       </SafeAreaView>
     );
   }
@@ -105,7 +101,7 @@ const PostReport = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/return.png")}
+        source={require("../../../assets/images/return.png")}
         style={{ width: 50, height: 50 }}
       />
 
@@ -125,14 +121,14 @@ const PostReport = ({ navigation }) => {
         <Text style={styles.textBody}>Thêm ảnh</Text>
         <View>
           <TouchableOpacity onPress={openCamera}>
-            {capturedImage ? (
-              <Image
-                source={{ uri: imageURL }}
-                style={{ width: 80, height: 120 }}
-              />
+            {imageURL ? (
+                <Image
+                  source={{ uri: imageURL }}
+                  style={{ width: 80, height: 120 }}
+                />
             ) : (
               <Image
-                source={require("../../assets/images/plusImg.png")}
+                source={require("../../../assets/images/plusImg.png")}
                 style={{ width: 80, height: 120 }}
               />
             )}
@@ -143,12 +139,17 @@ const PostReport = ({ navigation }) => {
           btnText={"Tạo báo cáo"}
           backgroundColor="#0693F1"
         />
-        <Modal visible={isCameraOpen} animationType="slide">
+        <Modal visible={isCameraOpen}>
+        <Overlay isVisible={isLoading} onBackdropPress={() => {}}>
+          <ActivityIndicator size="large" />
+          <Text>Đang xử lý</Text>
+        </Overlay>
           <Camera style={{ flex: 1 }} ref={cameraRef} />
           <View>
             <Button title="Capture" onPress={takePicture} />
           </View>
         </Modal>
+   
       </View>
     </View>
   );

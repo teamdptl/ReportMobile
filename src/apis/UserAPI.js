@@ -3,10 +3,9 @@ import { URL_USER_INFO } from "../contains/config";
 import { createFetch, method } from "./CustomFetch";
 
 export const getUserData = async () => {
-	const response = createFetch(URL_USER_INFO, method.GET)
+	return createFetch(URL_USER_INFO, method.GET)
 		.then((res) => res.json())
     .catch((err) => console.error("Lỗi khi gọi API: " + err));
-  return response;
 };
 
 //Hàm này chưa hoàn thiện

@@ -1,6 +1,8 @@
 const url = "https://sgu.dy.id.vn/api/v1";
 
 export const USER_TOKEN_KEY = "userToken";
+export const USER_ROLE_KEY = "userRole";
+
 export const URL_USER_INFO = `${url}/user-info`;
 export const URL_USER_LOGIN = `${url}/login`;
 export const URL_USER_LOGOUT = `${url}/logout`;

@@ -5,8 +5,8 @@ const getListReport = () => {
     return createFetch(URL_REPORT_ALL, method.GET);
 }
 
-const getReportDetail = (id) => {
-    return createFetch(`${URL_REPORT_MAIN}/${id}`, method.GET);
+const getReportDetail = (data) => {
+    return createFetch(`${URL_REPORT_MAIN}/${data.id}`, method.GET);
 }
 
 const createReport = (data) => {
@@ -20,8 +20,8 @@ const createReport = (data) => {
     return createJsonFetch(URL_REPORT_MAIN, method.POST, JSON.stringify(data));
 }
 
-const deleteReport = (id) => {
-    return createFetch(`${URL_REPORT_MAIN}/${id}`, method.DELETE);
+const deleteReport = (data) => {
+    return createFetch(`${URL_REPORT_MAIN}/${data.id}`, method.DELETE);
 }
 
 const ignoreReport = (data) => {

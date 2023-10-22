@@ -3,16 +3,13 @@ import React, {createContext, useEffect, useState} from "react";
 export const AuthContext = createContext();
 
 // Khi mới bắt đầu ứng dụng:
-// Nếu authContext thực hiện tìm kiếm và đem lên hook. Nếu có
+// Nếu authContext thực hiện lấy Context từ database lên ứng dụng
 export const AuthProvider = ({children}) => {
-    const [token, setToken] = useState(null);
-    const authValue = {
-        userData, setUserData, token, setToken
-    }
+    const [role, setRole] = useState(null);
 
-    useEffect(() => {
-        console.log('Calling');
-    }, []);
+    const authValue = {
+        role, setRole
+    }
 
     return (
         <AuthContext.Provider value={authValue}>

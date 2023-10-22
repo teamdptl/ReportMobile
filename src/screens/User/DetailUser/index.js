@@ -1,12 +1,12 @@
 import { Text, View, Image, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './style';
-import Buttons from '../../components/Buttons'; 
-import { getUserData } from '../../apis/UserAPI';
-import color from '../../contains/color';
-import { handleLogout } from '../../apis/AuthAPI';
-import { deleteValue } from '../../contains/SecureStore';
-import { USER_TOKEN_KEY } from '../../contains/config';
+import Buttons from '../../../components/Buttons';
+import { getUserData } from '../../../apis/UserAPI';
+import color from '../../../contains/color';
+import { handleLogout } from '../../../apis/AuthAPI';
+import { deleteValue } from '../../../contains/SecureStore';
+import { USER_TOKEN_KEY } from '../../../contains/config';
 
 const DetailUser = ({ navigation }) => {
 	const [userData, setUserData] = useState({
@@ -56,7 +56,7 @@ const DetailUser = ({ navigation }) => {
 		<View style={styles.container}>
 			<View style={styles.topSection}>
 				<View style={styles.userImageContainer}>
-					<Image source={require("../../assets/images/SguLogo.png")} style={styles.userImage} />
+					<Image source={require("../../../assets/images/SguLogo.png")} style={styles.userImage} />
 				</View>
 				<Text style={styles.userName}>{userData.name}</Text>
 			</View>
