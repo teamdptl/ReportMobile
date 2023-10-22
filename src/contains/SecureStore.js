@@ -6,10 +6,10 @@ export async function save(key, value) {
     .catch((error) => {
         console.error("Lỗi khi lưu giá trị vào SecureStore: ", error);
 			  return false;
-		})
+    })
 }
 
-export async function getValueFor(key) {
+export async function getValue(key) {
   return SecureStore.getItemAsync(key)
     .then(res => res)
     .catch(err => {
@@ -18,7 +18,7 @@ export async function getValueFor(key) {
     });
 }
 
-export async function deleteKey(key){
+export async function deleteValue(key){
   return SecureStore.deleteItemAsync(key)
     .then(res => true)
     .catch(err => {

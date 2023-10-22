@@ -1,4 +1,4 @@
-import { getValueFor } from "../contains/SecureStore";
+import { getValue } from "../contains/SecureStore";
 import { URL_USER_INFO } from "../contains/config";
 import { createFetch, method } from "./CustomFetch";
 
@@ -12,7 +12,7 @@ export const getUserData = async () => {
 //Hàm này chưa hoàn thiện
 export const updateUserProfile = async (newData) => {
 	try {
-		const token = await getValueFor(USER_TOKEN_KEY);
+		const token = await getValue(USER_TOKEN_KEY);
 		if (token) {
 			const response = await fetch("https://sgu.dy.id.vn/api/v1/update-user-profile", {
 				method: "POST",

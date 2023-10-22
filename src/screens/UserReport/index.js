@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -30,6 +30,10 @@ const UserReport = ({ navigation }) => {
 
     // Thêm các mục khác vào đây
   ]);
+
+  useEffect(() => {
+    console.log("Calling task...");
+  }, []);
 
   const handleLongPress = () => {
     // Thiết lập một hẹn giờ để kiểm tra liệu người dùng có giữ trong ít nhất 2 giây không

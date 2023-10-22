@@ -1,5 +1,5 @@
 import { USER_TOKEN_KEY, URL_USER_LOGIN, URL_USER_INFO } from "../contains/config";
-import { save, getValueFor } from "../contains/SecureStore";
+import { save, getValue } from "../contains/SecureStore";
 
 const method = {
 	POST: "POST",
@@ -10,7 +10,7 @@ const method = {
 };
 
 const getAuthHeader = async () => {
-	const token = await getValueFor(USER_TOKEN_KEY);
+	const token = await getValue(USER_TOKEN_KEY);
 	return token === null
 		? { Authorization: "" }
 		: {

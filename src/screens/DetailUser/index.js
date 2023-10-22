@@ -5,7 +5,7 @@ import Buttons from '../../components/Buttons';
 import { getUserData } from '../../apis/UserAPI';
 import color from '../../contains/color';
 import { handleLogout } from '../../apis/AuthAPI';
-import { deleteKey } from '../../contains/SecureStore';
+import { deleteValue } from '../../contains/SecureStore';
 import { USER_TOKEN_KEY } from '../../contains/config';
 
 const DetailUser = ({ navigation }) => {
@@ -22,7 +22,7 @@ const DetailUser = ({ navigation }) => {
       .then((data) => {
         // console.log(data);
         if (data && data.error === 0) {
-          deleteKey(USER_TOKEN_KEY);
+          deleteValue(USER_TOKEN_KEY);
           navigation.replace("Login");
         }
         else {
@@ -49,6 +49,7 @@ const DetailUser = ({ navigation }) => {
 		};
 
 		fetchData();
+		console.log("Fetch data");
 	}, []);
 
 	return (
