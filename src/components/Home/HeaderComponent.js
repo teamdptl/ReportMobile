@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, Animated, StyleSheet } from 'react-native';
 // import styles from '../views/UserReport/style'; // Import your styles from ReportScreenStyle.js
-import color from '../contains/color';
+import color from '../../contains/color';
 
 const HeaderComponent = ({ animatedValue }) => {
   return (
@@ -39,7 +39,7 @@ const HeaderComponent = ({ animatedValue }) => {
       </View>
 
       <Image
-        source={require('../assets/images/feedback.png')}
+        source={require('../../assets/images/feedback.png')}
         style={{ width: '55%', height: 120, marginLeft: 20, resizeMode: 'cover' }}
       />
     </View>

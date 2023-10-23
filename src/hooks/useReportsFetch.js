@@ -13,7 +13,7 @@ export default function useReportsFetch(params, dependencies = []) {
     const loadNext = useCallback(async () => {
         if (page < totalPage && nextPage){
             setLoading(true);
-            await createFetch(`${URL_REPORT_ALL}/?page=${data.page}`, method.GET)
+            await createFetch(nextPage, method.GET)
                 .then(res => res.json())
                 .then(json => {
                     if (json.data){
