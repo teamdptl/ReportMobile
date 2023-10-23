@@ -12,11 +12,12 @@ const Stack = createNativeStackNavigator();
 const NavigationContainerWrapper = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="UserReport" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="UserReport" component={UserReport} />
         <Stack.Screen name="TabScreenUser" component={TabScreenUser} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

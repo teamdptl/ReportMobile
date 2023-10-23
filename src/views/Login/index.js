@@ -10,14 +10,13 @@ const Login = ({navigation}) => {
     const [mssv, setMssv] = useState('');
     const [password, setPassword] = useState('');
 
-      //Tong hop bai boan, tong quan nghien cuu khoa hoc, no nam o dau o linh vuc, viet nam lm gi, the gioi da lam gi, 20-30 trang, fotmat: phong quan ly khoa hoc
       const onLogin = async () => {
         try {
           await handleLogin(mssv, password, navigation);
         } catch (error) {
           console.error(error);
         }
-    
+
         setMssv('');
         setPassword('');
       };

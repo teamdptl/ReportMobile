@@ -11,8 +11,7 @@ const Buttons = (props) => {
       </Text>
     </TouchableOpacity>
   ) 
-} 
-
+}
 export default Buttons
 
 const styles = StyleSheet.create({

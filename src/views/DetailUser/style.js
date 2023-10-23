@@ -7,28 +7,67 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topSection: {
-    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.primaryColor, // Màu nền của phần 2/5
   },
+  header:{
+    flexDirection:"row",
+    marginVertical:5,
+    justifyContent:"space-between",
+    alignItems:"center"
+  },
+  headerText:{
+    flexDirection:"row",
+    marginVertical:7,
+    justifyContent:"flex-start",
+    alignItems:"center"
+  },
+  update:{
+    color:"#039BFF",
+  },
+  row:{
+    flexDirection:"row",
+    marginVertical:10,
+    alignItems:"center"
+
+  },
+  icon:{
+    marginRight:6
+  },
+  label:{
+  marginRight:6
+  },
+  text:{
+    fontWeight:"bold",
+
+  },
+  logout:{
+    color:"red",
+  },
   bottomSection: {
     flex: 7,
-    padding: 20,
-    backgroundColor: 'white', // Màu nền của phần 3/5
+    backgroundColor: '#F0F0F0', // Màu nền của phần 3/5
   },
   userImageContainer: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   userImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50, // Để làm tròn hình ảnh thành hình tròn
+    width: 150,
+    height: 150,
+    borderRadius: 20, // Để làm tròn hình ảnh thành hình tròn
+    backgroundColor:"white",
+    marginVertical:10
   },
-  userName: {
-    fontSize: 20,
+  status: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: color.white,
+    color: "#00FF38",
+  },
+  userName:{
+    fontSize: 22,
+    fontWeight: 'bold',
+    color:"white",
   },
   input: {
     height: 40,
@@ -41,10 +80,14 @@ const styles = StyleSheet.create({
   textDetails: {
     marginBottom: 10,
   },
-  buttonCustom: {
-    marginTop: 190,
-    color: 'red',
-  }
+
+  containerInfo:{
+    flex:2,
+    backgroundColor:"white",
+    paddingHorizontal:15,
+    paddingVertical:10,
+    marginTop:15,
+  },
 });
 
 export default styles;
