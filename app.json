@@ -17,6 +17,14 @@
         {
           "cameraPermission": "Cho phép $(PRODUCT_NAME) sử dụng camera."
         }
+       
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+       
       ]
     ],
     "assetBundlePatterns": [
@@ -26,6 +34,9 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
       },
       "bundleIdentifier": "com.huykhaduy.ReportMobile"
     },

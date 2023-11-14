@@ -1,143 +1,484 @@
 import {
-    Text,
-    View,
-    TextInput,
-    Image,
-    TouchableOpacity,
-    Modal,
-    Button,
-    StatusBar,
-    SafeAreaView,
-    ActivityIndicator, StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Modal,
+  StatusBar,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  BackHandler,
 } from "react-native"; // Import SafeAreaView
-import React, {useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Buttons from "../../components/Buttons";
 import * as FileSystem from "expo-file-system";
-import {Overlay} from "@rneui/themed";
+import { Overlay } from "@rneui/themed";
 import color from "../../contains/color";
 import * as ImagePicker from "expo-image-picker";
+import Gallery from "react-native-awesome-gallery";
 
-const CreateReport = ({navigation}) => {
-    const [imageURL, setImageUrl] = useState(null);
+import {
+  Input,
+  InputField,
+  Textarea,
+  TextareaInput,
+  ButtonSpinner,
+  ButtonText,
+  Button,
+  Heading,
+  ButtonGroup,
+  Spinner,
+} from "@gluestack-ui/themed";
+import {
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+  AlertDialogFooter,
+  AlertDialogBody,
+} from "@gluestack-ui/themed";
+import { Icon, ArrowLeftIcon } from "@gluestack-ui/themed";
+// import { CloseIcon } from '@gluestack-ui/icons';
+import * as Location from "expo-location";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import useCreateReport from "../../hooks/useCreateReport";
 
-    const onCreateReport = async () => {
-        console.log("Tạo report");
-    };
+const CreateReport = ({ navigation }) => {
+  // Mảng chứa hình
+  const [capturedImages, setCapturedImages] = useState([]);
+  // Hiển thị hình được chọn
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [isGalleryVisible, setIsGalleryVisible] = useState(false);
+  // Dùng Ktra value, cờ input
+  const [isInvalidAndress, setIsInvalidAddress] = useState(false);
+  const [inputValueAddress, setInputValueAddress] = useState("");
+  const [isInvalidTitle, setIsInvalidTitle] = useState(false);
+  const [inputValueTitle, setInputValueTitle] = useState("");
+  const [isInvalidDes, setIsInvalidDes] = useState(false);
+  const [inputValueDes, setInputValueDes] = useState("");
+  // Alert thông báo
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
+  const [headerAlert, setHeaderAlert] = useState("");
+  const [bodyAlert, setBodyAlert] = useState("");
+  // Xin quyền location, set giá trị cho nó
+  const [location, setLocation] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
 
-    const takePicture = () => {
-        ImagePicker.launchCameraAsync()
-            .then((image) => {
-                if (image.assets) {
-                    setImageUrl(image.assets[0].uri);
-                    saveFromTemp(image.assets[0].uri);
-                }
-            })
-            .catch((err) => console.log("exit"));
-    };
+  const { data, error, loading, call } = useCreateReport();
 
-    const saveFromTemp = (photoUri) => {
-        const timeStamp = Date.now();
-        const imageFile = FileSystem.documentDirectory + `cachedImage_${timeStamp}.jpg`;
-        console.log("Photo uri: " + photoUri);
-        FileSystem.copyAsync({
-            from: photoUri,
-            to: imageFile,
-        }).then((res) => {
-            setImageUrl(imageFile);
-            console.log("Storge pernament data: " + imageFile);
-        });
-    };
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
 
-    return (
-        <View style={styles.container}>
-            <Image
-                source={require("../../assets/images/return.png")}
-                style={{width: 50, height: 50}}
-            />
+      if (location && location.coords) {
+        const latitude = location.coords.latitude;
+        const longitude = location.coords.longitude;
+        setLocation(`${latitude},${longitude}`);
 
-            <View style={styles.textHeader}>
-                <Text style={styles.centeredText}>Phản hồi thông tin</Text>
-            </View>
-            <View style={styles.bodyReport}>
-                <Text style={styles.textBody}>Tiêu đề</Text>
-                <TextInput style={styles.roundedInput}/>
-                <Text style={styles.textBody}>Mô tả báo cáo</Text>
-                <TextInput
-                    style={[styles.roundedInput, styles.paraInput]}
-                    multiline={true}
-                />
-                <Text style={styles.textBody}>Địa điểm</Text>
-                <TextInput style={styles.roundedInput}/>
-                <Text style={styles.textBody}>Thêm ảnh</Text>
-                <View>
-                    <TouchableOpacity onPress={takePicture}>
-                        {imageURL ? (
-                            <Image
-                                source={{uri: imageURL}}
-                                style={{width: 80, height: 120}}
-                            />
-                        ) : (
-                            <Image
-                                source={require("../../assets/images/plusImg.png")}
-                                style={{width: 80, height: 120}}
-                            />
-                        )}
-                    </TouchableOpacity>
-                </View>
-                <Buttons
-                    onPress={onCreateReport}
-                    btnText={"Tạo báo cáo"}
-                    backgroundColor="#0693F1"
-                />
-            </View>
-        </View>
+        console.log("Coordinates: " + location);
+      } else {
+        console.log("Location information not available.");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!isGalleryVisible) return;
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
     );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [isGalleryVisible]);
+
+  const backAction = () => {
+    console.log("out side modal " + isGalleryVisible);
+    if (isGalleryVisible) {
+      closeImageModal();
+      return true;
+    }
+  };
+
+  const openImageModal = (index) => {
+    setSelectedIndex(index);
+    setIsGalleryVisible(true);
+  };
+
+  const closeImageModal = () => {
+    setIsGalleryVisible(false);
+  };
+
+  const handleButtonClick = async () => {
+    const isTitleInvalid = !inputValueTitle || inputValueTitle.trim() === "";
+    const isDescriptionInvalid = !inputValueDes || inputValueDes.trim() === "";
+    const isAddressInvalid =
+      !inputValueAddress || inputValueAddress.trim() === "";
+    const isInvalidImage = capturedImages.length > 0 ? false : true;
+
+    setIsInvalidTitle(isTitleInvalid);
+    setIsInvalidDes(isDescriptionInvalid);
+    setIsInvalidAddress(isAddressInvalid);
+
+    if (
+      isTitleInvalid ||
+      isDescriptionInvalid ||
+      isAddressInvalid ||
+      isInvalidImage
+    ) {
+      setShowAlertDialog(true);
+      setHeaderAlert("Thông tin còn trống");
+      setBodyAlert("Vui lòng nhập đầy đủ thông tin");
+    } else {
+      setShowAlertDialog(false);
+
+      const formData = new FormData();
+      formData.append("title", inputValueTitle);
+      formData.append("description", inputValueDes);
+      formData.append("location_api", location);
+      formData.append("location_text", inputValueAddress);
+
+      if (capturedImages.length > 0) {
+        capturedImages.forEach((image, index) => {
+          const uriParts = image.split(".");
+          const fileType = uriParts[uriParts.length - 1];
+
+          formData.append(`photo[${index}]`, {
+            uri: image,
+            type: `image/${fileType}`,
+            name: `photo_${index}.${fileType}`,
+          });
+        });
+      }
+
+      await call(formData);
+    }
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (!error) return;
+    console.log(error);
+  }, [error]);
+
+  const takePicture = () => {
+    ImagePicker.launchCameraAsync()
+      .then((image) => {
+        if (image.assets) {
+          const photoUri = image.assets[0].uri;
+          const savedFile = saveFromTemp(photoUri);
+          setCapturedImages((prevImages) => [...prevImages, savedFile]);
+        }
+      })
+      .catch((err) => console.log("exit"));
+  };
+
+  const saveFromTemp = (photoUri) => {
+    const timeStamp = Date.now();
+    const imageFile =
+      FileSystem.documentDirectory + `cachedImage_${timeStamp}.jpg`;
+
+    FileSystem.copyAsync({
+      from: photoUri,
+      to: imageFile,
+    });
+    return imageFile;
+  };
+
+  const removeImage = (imageUri) => {
+    const updatedImages = capturedImages.filter((uri) => uri !== imageUri);
+    setCapturedImages(updatedImages);
+  };
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1, marginTop: 5, backgroundColor: "white" }}
+    >
+      <View style={styles.container}>
+        {isGalleryVisible && capturedImages && capturedImages.length > 0 && (
+          <GestureHandlerRootView
+            style={styles.gallery}
+            height={Dimensions.get("window").height}
+          >
+            <Icon
+              as={ArrowLeftIcon}
+              onPress={closeImageModal}
+              m="$2"
+              w="$8"
+              h="$5"
+              style={styles.closeGallery}
+            />
+            <Gallery
+              data={capturedImages}
+              initialIndex={selectedIndex}
+              onIndexChange={(newIndex) => {
+                setSelectedIndex(newIndex);
+              }}
+            />
+          </GestureHandlerRootView>
+        )}
+        <ScrollView>
+          <View style={{}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.replace("Tab");
+              }}
+              style={styles.headerHorizontal}
+            >
+              <View style={styles.return}>
+                <Image
+                  source={require("../../assets/images/return.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+                <Text style={{ fontSize: 11, marginLeft: 7 }}>Trở về</Text>
+              </View>
+            </TouchableOpacity>
+
+            <View style={styles.centeredTextContainer}>
+              <Text style={styles.centeredText}>Tạo phản hồi</Text>
+            </View>
+          </View>
+          <View style={styles.bodyReport}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 10,
+              }}
+            >
+              <TouchableOpacity onPress={takePicture}>
+                <View
+                  style={{
+                    backgroundColor: "#E3EBF8",
+                    height: 70,
+                    width: 70,
+                    borderRadius: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/images/camera.png")}
+                    style={{ width: 45, height: 45, borderRadius: 10 }}
+                  />
+                  <Text
+                    style={{ fontSize: 11, textAlign: "center", marginTop: 1 }}
+                  >
+                    Thêm hình
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <ScrollView horizontal style={{ marginLeft: 10 }}>
+                {capturedImages.map((imageUri, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => openImageModal(index)}
+                  >
+                    <View style={{ margin: 10 }}>
+                      <Image
+                        source={{ uri: imageUri }}
+                        style={{ width: 70, height: 70, borderRadius: 10 }}
+                      />
+                      <TouchableOpacity
+                        onPress={() => removeImage(imageUri)}
+                        style={{
+                          position: "absolute",
+                          top: -5,
+                          right: -5,
+                          backgroundColor: "#F2F2F2",
+                          width: 20,
+                          height: 20,
+                          borderRadius: 15,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "red",
+                            fontSize: 9,
+                          }}
+                        >
+                          X
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+
+            <View style={styles.bodyInput}>
+              <Text style={styles.textBody}>Vấn đề</Text>
+              <Input
+                variant="outline"
+                size="sm"
+                isDisabled={false}
+                isInvalid={isInvalidTitle}
+                isReadOnly={false}
+              >
+                <InputField
+                  placeholder="VD: Máy chiếu bị hỏng"
+                  value={inputValueTitle}
+                  onChangeText={(text) => setInputValueTitle(text)}
+                />
+              </Input>
+              <Text style={styles.textBody}>Mô tả chi tiết</Text>
+              <Textarea
+                size="sm"
+                isReadOnly={false}
+                isDisabled={false}
+                isInvalid={isInvalidDes}
+                w="$100"
+              >
+                <TextareaInput
+                  placeholder="Chi tiết vấn đề bạn đang gặp phải"
+                  role="none"
+                  value={inputValueDes}
+                  onChangeText={(text) => setInputValueDes(text)}
+                />
+              </Textarea>
+
+              <Text style={styles.textBody}>Địa điểm, vị trí</Text>
+              <Input
+                variant="outline"
+                size="sm"
+                isDisabled={false}
+                isInvalid={isInvalidAndress}
+                isReadOnly={false}
+              >
+                <InputField
+                  placeholder="VD: Cơ sở, phòng học"
+                  value={inputValueAddress}
+                  onChangeText={(text) => setInputValueAddress(text)}
+                />
+              </Input>
+            </View>
+            <View style={styles.btnCreateReport}>
+              <Button
+                variant="solid"
+                mt="$10"
+                size="md"
+                bg="#0693F1"
+                onPress={handleButtonClick}
+              >
+                <ButtonText fontSize="$sm" fontWeight="$bold" color="white">
+                  Gửi báo cáo
+                </ButtonText>
+              </Button>
+
+              <AlertDialog isOpen={loading}>
+                <AlertDialogBackdrop />
+                <Spinner size="large" />
+              </AlertDialog>
+              <AlertDialog isOpen={showAlertDialog}>
+                <AlertDialogBackdrop />
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <Heading size="lg">{headerAlert}</Heading>
+                  </AlertDialogHeader>
+                  <AlertDialogBody>
+                    <Text size="sm">{bodyAlert}</Text>
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <ButtonGroup space="lg">
+                      <Button
+                        bg="$error600"
+                        action="negative"
+                        onPress={() => {
+                          setShowAlertDialog(false);
+                        }}
+                      >
+                        <ButtonText>Trở về</ButtonText>
+                      </Button>
+                    </ButtonGroup>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    </KeyboardAvoidingView>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-
-    },
-    textHeader: {
-        alignItems: 'center',      // Center horizontally
-        justifyContent: 'center',  // Center vertically
-    },
-    centeredText: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        marginTop: 20,
-        color: color.primaryColor
-    },
-    bodyReport: {
-        marginTop: 50,
-
-    },
-    textBody: {
-        color: color.primaryColor,
-        fontSize: 15,
-        fontWeight: 'bold',
-        marginVertical: 7
-    },
-
-    roundedInput: {
-        borderWidth: 1,
-        // borderColor: color.primaryColor,
-        borderRadius: 10,
-        padding: 5,
-        marginVertical: 5,
-    },
-    paraInput: {
-        height: 80
-    },
-    preview: {
-        alignSelf: 'stretch',
-        flex: 1
-    }
-
-})
+  container: {
+    // flex: 1,
+    // backgroundColor: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    position: "relative",
+  },
+  gallery: {
+    position: "absolute",
+    top: -10,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    zIndex: 1000,
+  },
+  closeGallery: {
+    top: 20,
+    left: 0,
+    color: "white",
+    zIndex: 1001,
+    position: "absolute",
+  },
+  headerHorizontal: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    height: 50,
+  },
+  return: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  centeredTextContainer: {
+    position: "absolute",
+    top: 8,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  centeredText: {
+    fontSize: 22,
+  },
+  bodyReport: {
+    marginTop: 30,
+  },
+  bodyInput: {
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  textBody: {
+    fontSize: 15,
+    fontWeight: "bold",
+    marginVertical: 20,
+  },
+  btnCreateReport: {
+    alignItems: "center",
+  },
+});
 
 export default CreateReport;
