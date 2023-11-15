@@ -15,22 +15,16 @@ import * as ImagePicker from "expo-image-picker";
 import FakeGallery from "../../components/FakeGallery";
 import SpinerWrapper from "../../components/SpinerWrapper";
 import AlertDialog from "../../components/AlertDialog";
+import CustomInput from "../../components/CustomInput";
+import CustomTextArea from "../../components/CustomTextArea";
 
 import {
-  Input,
-  InputField,
   Textarea,
   TextareaInput,
-  ButtonSpinner,
   ButtonText,
   Button,
-  Heading,
-  ButtonGroup,
-  Spinner,
 } from "@gluestack-ui/themed";
 
-import { Icon, ArrowLeftIcon } from "@gluestack-ui/themed";
-// import { CloseIcon } from '@gluestack-ui/icons';
 import * as Location from "expo-location";
 import useCreateReport from "../../hooks/useCreateReport";
 
@@ -109,8 +103,7 @@ const CreateReport = ({ navigation }) => {
 
   const handleShowAlertVisibility = (isVisible) => {
     setShowAlertDialog(isVisible);
-
-  }
+  };
 
   const handleButtonClick = async () => {
     const isTitleInvalid = !inputValueTitle || inputValueTitle.trim() === "";
@@ -304,49 +297,29 @@ const CreateReport = ({ navigation }) => {
 
             <View style={styles.bodyInput}>
               <Text style={styles.textBody}>Vấn đề</Text>
-              <Input
-                variant="outline"
-                size="sm"
-                isDisabled={false}
+              <CustomInput
                 isInvalid={isInvalidTitle}
-                isReadOnly={false}
-              >
-                <InputField
-                  placeholder="VD: Máy chiếu bị hỏng"
-                  value={inputValueTitle}
-                  onChangeText={(text) => setInputValueTitle(text)}
-                />
-              </Input>
+                placeholder={"VD: Máy chiếu bị hỏng"}
+                value={inputValueTitle}
+                onChangeText={(text) => setInputValueTitle(text)}
+              />
               <Text style={styles.textBody}>Mô tả chi tiết</Text>
-              <Textarea
-                size="sm"
-                isReadOnly={false}
-                isDisabled={false}
-                isInvalid={isInvalidDes}
-                w="$100"
-              >
-                <TextareaInput
-                  placeholder="Chi tiết vấn đề bạn đang gặp phải"
-                  role="none"
-                  value={inputValueDes}
-                  onChangeText={(text) => setInputValueDes(text)}
-                />
-              </Textarea>
+
+              <CustomTextArea
+                isInvalid={isInvalidTitle}
+                placeholder={"Chi tiết vấn đề bạn đang gặp phải"}
+                value={inputValueDes}
+                width={"100"}
+                onChangeText={(text) => setInputValueDes(text)}
+              />
 
               <Text style={styles.textBody}>Địa điểm, vị trí</Text>
-              <Input
-                variant="outline"
-                size="sm"
-                isDisabled={false}
+              <CustomInput
                 isInvalid={isInvalidAndress}
-                isReadOnly={false}
-              >
-                <InputField
-                  placeholder="VD: Cơ sở, phòng học"
-                  value={inputValueAddress}
-                  onChangeText={(text) => setInputValueAddress(text)}
-                />
-              </Input>
+                placeholder={"VD: Cơ sở, phòng học"}
+                value={inputValueAddress}
+                onChangeText={(text) => setInputValueAddress(text)}
+              />
             </View>
             <View style={styles.btnCreateReport}>
               <Button
@@ -360,6 +333,7 @@ const CreateReport = ({ navigation }) => {
                   Gửi báo cáo
                 </ButtonText>
               </Button>
+
               <SpinerWrapper loading={loading} />
 
               <AlertDialog
