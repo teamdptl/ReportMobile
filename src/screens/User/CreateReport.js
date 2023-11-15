@@ -3,22 +3,18 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Modal,
-  StatusBar,
-  ActivityIndicator,
   KeyboardAvoidingView,
   StyleSheet,
   ScrollView,
-  Dimensions,
   BackHandler,
 } from "react-native"; // Import SafeAreaView
 import React, { useState, useEffect, useRef } from "react";
-import Buttons from "../../components/Buttons";
 import * as FileSystem from "expo-file-system";
-import { Overlay } from "@rneui/themed";
 import color from "../../contains/color";
 import * as ImagePicker from "expo-image-picker";
-import Gallery from "react-native-awesome-gallery";
+import FakeGallery from "../../components/FakeGallery";
+import SpinerWrapper from "../../components/SpinerWrapper";
+import AlertDialog from "../../components/AlertDialog";
 
 import {
   Input,
@@ -32,19 +28,10 @@ import {
   ButtonGroup,
   Spinner,
 } from "@gluestack-ui/themed";
-import {
-  AlertDialog,
-  AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogCloseButton,
-  AlertDialogFooter,
-  AlertDialogBody,
-} from "@gluestack-ui/themed";
+
 import { Icon, ArrowLeftIcon } from "@gluestack-ui/themed";
 // import { CloseIcon } from '@gluestack-ui/icons';
 import * as Location from "expo-location";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import useCreateReport from "../../hooks/useCreateReport";
 
 const CreateReport = ({ navigation }) => {
@@ -119,6 +106,11 @@ const CreateReport = ({ navigation }) => {
   const closeImageModal = () => {
     setIsGalleryVisible(false);
   };
+
+  const handleShowAlertVisibility = (isVisible) => {
+    setShowAlertDialog(isVisible);
+
+  }
 
   const handleButtonClick = async () => {
     const isTitleInvalid = !inputValueTitle || inputValueTitle.trim() === "";
@@ -212,26 +204,11 @@ const CreateReport = ({ navigation }) => {
     >
       <View style={styles.container}>
         {isGalleryVisible && capturedImages && capturedImages.length > 0 && (
-          <GestureHandlerRootView
-            style={styles.gallery}
-            height={Dimensions.get("window").height}
-          >
-            <Icon
-              as={ArrowLeftIcon}
-              onPress={closeImageModal}
-              m="$2"
-              w="$8"
-              h="$5"
-              style={styles.closeGallery}
-            />
-            <Gallery
-              data={capturedImages}
-              initialIndex={selectedIndex}
-              onIndexChange={(newIndex) => {
-                setSelectedIndex(newIndex);
-              }}
-            />
-          </GestureHandlerRootView>
+          <FakeGallery
+            listImage={capturedImages}
+            indexImage={selectedIndex}
+            closeImageModal={closeImageModal}
+          />
         )}
         <ScrollView>
           <View style={{}}>
@@ -383,35 +360,14 @@ const CreateReport = ({ navigation }) => {
                   Gửi báo cáo
                 </ButtonText>
               </Button>
+              <SpinerWrapper loading={loading} />
 
-              <AlertDialog isOpen={loading}>
-                <AlertDialogBackdrop />
-                <Spinner size="large" />
-              </AlertDialog>
-              <AlertDialog isOpen={showAlertDialog}>
-                <AlertDialogBackdrop />
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <Heading size="lg">{headerAlert}</Heading>
-                  </AlertDialogHeader>
-                  <AlertDialogBody>
-                    <Text size="sm">{bodyAlert}</Text>
-                  </AlertDialogBody>
-                  <AlertDialogFooter>
-                    <ButtonGroup space="lg">
-                      <Button
-                        bg="$error600"
-                        action="negative"
-                        onPress={() => {
-                          setShowAlertDialog(false);
-                        }}
-                      >
-                        <ButtonText>Trở về</ButtonText>
-                      </Button>
-                    </ButtonGroup>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <AlertDialog
+                showAlertDialog={showAlertDialog}
+                headerAlert={headerAlert}
+                bodyAlert={bodyAlert}
+                onClose={() => setShowAlertDialog(false)}
+              />
             </View>
           </View>
         </ScrollView>
@@ -422,26 +378,9 @@ const CreateReport = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // backgroundColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 10,
     position: "relative",
-  },
-  gallery: {
-    position: "absolute",
-    top: -10,
-    right: 0,
-    left: 0,
-    bottom: 0,
-    zIndex: 1000,
-  },
-  closeGallery: {
-    top: 20,
-    left: 0,
-    color: "white",
-    zIndex: 1001,
-    position: "absolute",
   },
   headerHorizontal: {
     flexDirection: "row",
