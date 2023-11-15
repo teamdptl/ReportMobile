@@ -17,13 +17,9 @@ import SpinerWrapper from "../../components/SpinerWrapper";
 import AlertDialog from "../../components/AlertDialog";
 import CustomInput from "../../components/CustomInput";
 import CustomTextArea from "../../components/CustomTextArea";
+import BackPage from "../../components/BackPage";
 
-import {
-  Textarea,
-  TextareaInput,
-  ButtonText,
-  Button,
-} from "@gluestack-ui/themed";
+import { ButtonText, Button } from "@gluestack-ui/themed";
 
 import * as Location from "expo-location";
 import useCreateReport from "../../hooks/useCreateReport";
@@ -204,21 +200,12 @@ const CreateReport = ({ navigation }) => {
           />
         )}
         <ScrollView>
-          <View style={{}}>
-            <TouchableOpacity
+          <View>
+            <BackPage
               onPress={() => {
                 navigation.replace("Tab");
               }}
-              style={styles.headerHorizontal}
-            >
-              <View style={styles.return}>
-                <Image
-                  source={require("../../assets/images/return.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-                <Text style={{ fontSize: 11, marginLeft: 7 }}>Trở về</Text>
-              </View>
-            </TouchableOpacity>
+            />
 
             <View style={styles.centeredTextContainer}>
               <Text style={styles.centeredText}>Tạo phản hồi</Text>
@@ -355,17 +342,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     position: "relative",
-  },
-  headerHorizontal: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 10,
-    height: 50,
-  },
-  return: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   centeredTextContainer: {
     position: "absolute",
