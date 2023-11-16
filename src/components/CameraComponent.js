@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View,  TouchableOpacity, Image} from "react-native";
+import { Text, View,  TouchableOpacity} from "react-native";
 import React from "react";
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 
 const CameraComponent = (props) => {
   return (
@@ -14,10 +16,7 @@ const CameraComponent = (props) => {
           justifyContent: "center",
         }}
       >
-        <Image
-          source={require("../assets/images/camera.png")}
-          style={{ width: 45, height: 45, borderRadius: 10 }}
-        />
+        <Icon name="camera" size={30} color="#565758"/>
         <Text style={{ fontSize: 11, textAlign: "center", marginTop: 1 }}>
           Thêm hình
         </Text>
@@ -28,4 +27,3 @@ const CameraComponent = (props) => {
 
 export default CameraComponent;
 
-const styles = StyleSheet.create({});
