@@ -18,6 +18,8 @@ import AlertDialog from "../../components/AlertDialog";
 import CustomInput from "../../components/CustomInput";
 import CustomTextArea from "../../components/CustomTextArea";
 import BackPage from "../../components/BackPage";
+import CameraComponent from "../../components/CameraComponent";
+import ListImageHorizontal from "../../components/ListImageHorizontal";
 
 import { ButtonText, Button } from "@gluestack-ui/themed";
 
@@ -95,10 +97,6 @@ const CreateReport = ({ navigation }) => {
 
   const closeImageModal = () => {
     setIsGalleryVisible(false);
-  };
-
-  const handleShowAlertVisibility = (isVisible) => {
-    setShowAlertDialog(isVisible);
   };
 
   const handleButtonClick = async () => {
@@ -220,28 +218,8 @@ const CreateReport = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <TouchableOpacity onPress={takePicture}>
-                <View
-                  style={{
-                    backgroundColor: "#E3EBF8",
-                    height: 70,
-                    width: 70,
-                    borderRadius: 10,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Image
-                    source={require("../../assets/images/camera.png")}
-                    style={{ width: 45, height: 45, borderRadius: 10 }}
-                  />
-                  <Text
-                    style={{ fontSize: 11, textAlign: "center", marginTop: 1 }}
-                  >
-                    Thêm hình
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              <CameraComponent takePicture={takePicture} />
+{/* 
               <ScrollView horizontal style={{ marginLeft: 10 }}>
                 {capturedImages.map((imageUri, index) => (
                   <TouchableOpacity
@@ -279,7 +257,10 @@ const CreateReport = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
                 ))}
-              </ScrollView>
+              </ScrollView> */}
+              
+              <ListImageHorizontal listImageData={capturedImages} openImageModal={(index) => openImageModal(index)} removeImage={(imageUri) => removeImage(imageUri)}/>
+
             </View>
 
             <View style={styles.bodyInput}>
@@ -293,7 +274,7 @@ const CreateReport = ({ navigation }) => {
               <Text style={styles.textBody}>Mô tả chi tiết</Text>
 
               <CustomTextArea
-                isInvalid={isInvalidTitle}
+                isInvalid={isInvalidDes}
                 placeholder={"Chi tiết vấn đề bạn đang gặp phải"}
                 value={inputValueDes}
                 width={"100"}
