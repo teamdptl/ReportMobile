@@ -6,13 +6,15 @@ import {
   Animated,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 // import styles from '../views/UserReport/style'; // Import your styles from ReportScreenStyle.js
 import color from "../../contains/color";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const { width, height } = Dimensions.get("window");
 
-const HeaderComponent = ({ animatedValue }) => {
+const HeaderComponent = ({ animatedValue, linkImg, isImage, iconType }) => {
   return (
     <View style={styles.header}>
       <View>
@@ -46,16 +48,32 @@ const HeaderComponent = ({ animatedValue }) => {
           kỹ thuật cho chúng tôi
         </Text>
       </View>
-
-      <Image
-        source={require("../../assets/images/feedback.png")}
-        style={{
-          width: "55%",
-          height: 120,
-          marginLeft: 20,
-          resizeMode: "cover",
-        }}
-      />
+      {isImage ? (
+        <Image
+          source={linkImg}
+          style={{
+            width: "55%",
+            height: 120,
+            marginLeft: 20,
+            resizeMode: "cover",
+          }}
+        />
+      ) : (
+        <View style={{ marginLeft: 18, justifyContent: "center", alignItems: "center"}}>
+          <Text style={{marginBottom: 20, color: "white", fontWeight: "500", fontSize: 12}}>Thêm báo cáo nháp ở đây</Text>
+          <TouchableOpacity>
+          <Icon
+            name={iconType}
+            size={50}
+            color="white"
+            style={{
+            }}
+          />
+          </TouchableOpacity>
+          
+        </View>
+      )}
+      <View></View>
     </View>
   );
 };
