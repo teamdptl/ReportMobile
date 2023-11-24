@@ -9,9 +9,7 @@ import {
   BackHandler,
 } from "react-native"; // Import SafeAreaView
 import React, { useState, useEffect, useRef, useReducer } from "react";
-import * as FileSystem from "expo-file-system";
 import color from "../../contains/color";
-import * as ImagePicker from "expo-image-picker";
 import FakeGallery from "../../components/FakeGallery";
 import SpinerWrapper from "../../components/SpinerWrapper";
 import AlertDialog from "../../components/AlertDialog";
@@ -20,6 +18,7 @@ import CustomTextArea from "../../components/CustomTextArea";
 import BackPage from "../../components/BackPage";
 import CameraComponent from "../../components/CameraComponent";
 import ListImageHorizontal from "../../components/ListImageHorizontal";
+import { ButtonText, Button } from "@gluestack-ui/themed";
 
 import formReducer, {
   SET_INVALID,
@@ -27,9 +26,12 @@ import formReducer, {
   SET_VALUE,
 } from "../../hooks/useReducer/formReducer";
 
-import { ButtonText, Button } from "@gluestack-ui/themed";
+import { save, getValue, deleteValue } from "../../contains/AsyncStore";
 
+import * as FileSystem from "expo-file-system";
 import * as Location from "expo-location";
+import * as ImagePicker from "expo-image-picker";
+
 import useCreateReport from "../../hooks/useCreateReport";
 
 const CreateReport = ({ navigation }) => {
@@ -145,6 +147,12 @@ const CreateReport = ({ navigation }) => {
     } else {
       setShowAlertDialog(false);
 
+      try {
+        deleteValue("draftData");
+      } catch (error) {
+        console.error("Error removing draft data from AsyncStorage:", error);
+      }
+
       const formData = new FormData();
       formData.append("title", state.title.value);
       formData.append("description", state.description.value);
@@ -176,6 +184,28 @@ const CreateReport = ({ navigation }) => {
   useEffect(() => {
     if (!error) return;
     console.log(error);
+
+    try {
+      const draftData = getValue("draftData");
+      const parsedDraftData = draftData ? JSON.parse(draftData) : [];
+
+      const newData = {
+        title: state.title.value || "",
+        address: state.address.value || "",
+        description: state.description.value || "",
+        image: capturedImages || "",
+      };
+
+      const hasNonEmptyData = Object.values(newData).some(
+        (value) => value !== ""
+      );
+      if (hasNonEmptyData) {
+        const updatedDrafts = [...parsedDraftData, newData];
+        save("draftData", JSON.stringify(updatedDrafts));
+      }
+    } catch (err) {
+      console.error("Error saving draft data to AsyncStorage:", error);
+    }
   }, [error]);
 
   const takePicture = () => {

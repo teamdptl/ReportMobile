@@ -19,6 +19,7 @@ import ReportList from "../../components/Report/ReportList";
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const {reports, err, loadNext, loading} = useReportsFetch({});
+  const linkImg = require("../../assets/images/feedback.png");
 
   // useEffect(() => {
   //   if (reports){
@@ -39,7 +40,7 @@ const UserHome = ({ navigation }) => {
       </View>
 
       {/* Use the HeaderComponent component here */}
-      <HeaderComponent animatedValue={animatedValue} />
+      <HeaderComponent animatedValue={animatedValue} linkImg={linkImg} isImage={true}/>
 
       {/*<Text>Đang tải dữ liệu</Text>*/}
       <ReportList reports={reports} loadNext={loadNext} err={err} animatedValue={animatedValue}></ReportList>
