@@ -8,7 +8,7 @@ import {
   ScrollView,
   BackHandler,
 } from "react-native"; // Import SafeAreaView
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 import * as FileSystem from "expo-file-system";
 import color from "../../contains/color";
 import * as ImagePicker from "expo-image-picker";
@@ -21,6 +21,12 @@ import BackPage from "../../components/BackPage";
 import CameraComponent from "../../components/CameraComponent";
 import ListImageHorizontal from "../../components/ListImageHorizontal";
 
+import formReducer, {
+  SET_INVALID,
+  SET_VALID,
+  SET_VALUE,
+} from "../../hooks/useReducer/formReducer";
+
 import { ButtonText, Button } from "@gluestack-ui/themed";
 
 import * as Location from "expo-location";
@@ -32,13 +38,6 @@ const CreateReport = ({ navigation }) => {
   // Hiển thị hình được chọn
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
-  // Dùng Ktra value, cờ input
-  const [isInvalidAndress, setIsInvalidAddress] = useState(false);
-  const [inputValueAddress, setInputValueAddress] = useState("");
-  const [isInvalidTitle, setIsInvalidTitle] = useState(false);
-  const [inputValueTitle, setInputValueTitle] = useState("");
-  const [isInvalidDes, setIsInvalidDes] = useState(false);
-  const [inputValueDes, setInputValueDes] = useState("");
   // Alert thông báo
   const [showAlertDialog, setShowAlertDialog] = useState(false);
   const [headerAlert, setHeaderAlert] = useState("");
@@ -48,6 +47,42 @@ const CreateReport = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   const { data, error, loading, call } = useCreateReport();
+
+  const initialState = {
+    title: { isInvalid: false, value: "" },
+    address: { isInvalid: false, value: "" },
+    description: { isInvalid: false, value: "" },
+  };
+
+  const [state, dispatch] = useReducer(formReducer, initialState);
+
+  const handleInputChange = (field, value) => {
+    dispatch({ type: SET_VALUE, field, value });
+  };
+
+  const validateInput = () => {
+    const isTitleInvalid =
+      !state.title.value || state.title.value.trim() === "";
+    const isDescriptionInvalid =
+      !state.description.value || state.description.value.trim() === "";
+    const isAddressInvalid =
+      !state.address.value || state.address.value.trim() === "";
+
+    dispatch({
+      type: isTitleInvalid ? SET_INVALID : SET_VALID,
+      field: "title",
+    });
+    dispatch({
+      type: isDescriptionInvalid ? SET_INVALID : SET_VALID,
+      field: "description",
+    });
+    dispatch({
+      type: isAddressInvalid ? SET_INVALID : SET_VALID,
+      field: "address",
+    });
+
+    return !(isTitleInvalid || isDescriptionInvalid || isAddressInvalid);
+  };
 
   useEffect(() => {
     (async () => {
@@ -100,22 +135,10 @@ const CreateReport = ({ navigation }) => {
   };
 
   const handleButtonClick = async () => {
-    const isTitleInvalid = !inputValueTitle || inputValueTitle.trim() === "";
-    const isDescriptionInvalid = !inputValueDes || inputValueDes.trim() === "";
-    const isAddressInvalid =
-      !inputValueAddress || inputValueAddress.trim() === "";
     const isInvalidImage = capturedImages.length > 0 ? false : true;
+    const isValid = validateInput();
 
-    setIsInvalidTitle(isTitleInvalid);
-    setIsInvalidDes(isDescriptionInvalid);
-    setIsInvalidAddress(isAddressInvalid);
-
-    if (
-      isTitleInvalid ||
-      isDescriptionInvalid ||
-      isAddressInvalid ||
-      isInvalidImage
-    ) {
+    if (!isValid || isInvalidImage) {
       setShowAlertDialog(true);
       setHeaderAlert("Thông tin còn trống");
       setBodyAlert("Vui lòng nhập đầy đủ thông tin");
@@ -123,10 +146,10 @@ const CreateReport = ({ navigation }) => {
       setShowAlertDialog(false);
 
       const formData = new FormData();
-      formData.append("title", inputValueTitle);
-      formData.append("description", inputValueDes);
+      formData.append("title", state.title.value);
+      formData.append("description", state.description.value);
       formData.append("location_api", location);
-      formData.append("location_text", inputValueAddress);
+      formData.append("location_text", state.address.value);
 
       if (capturedImages.length > 0) {
         capturedImages.forEach((image, index) => {
@@ -218,35 +241,38 @@ const CreateReport = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <CameraComponent takePicture={takePicture} />              
-              <ListImageHorizontal listImageData={capturedImages} openImageModal={(index) => openImageModal(index)} removeImage={(imageUri) => removeImage(imageUri)}/>
-
+              <CameraComponent takePicture={takePicture} />
+              <ListImageHorizontal
+                listImageData={capturedImages}
+                openImageModal={(index) => openImageModal(index)}
+                removeImage={(imageUri) => removeImage(imageUri)}
+              />
             </View>
 
             <View style={styles.bodyInput}>
               <Text style={styles.textBody}>Vấn đề</Text>
               <CustomInput
-                isInvalid={isInvalidTitle}
-                placeholder={"VD: Máy chiếu bị hỏng"}
-                value={inputValueTitle}
-                onChangeText={(text) => setInputValueTitle(text)}
+                isInvalid={state.title.isInvalid}
+                placeholder={"VD: Cơ sở, phòng học"}
+                value={state.title.value}
+                onChangeText={(text) => handleInputChange("title", text)}
               />
               <Text style={styles.textBody}>Mô tả chi tiết</Text>
 
               <CustomTextArea
-                isInvalid={isInvalidDes}
+                isInvalid={state.description.isInvalid}
                 placeholder={"Chi tiết vấn đề bạn đang gặp phải"}
-                value={inputValueDes}
+                value={state.description.value}
                 width={"100"}
-                onChangeText={(text) => setInputValueDes(text)}
+                onChangeText={(text) => handleInputChange("description", text)}
               />
 
               <Text style={styles.textBody}>Địa điểm, vị trí</Text>
               <CustomInput
-                isInvalid={isInvalidAndress}
+                isInvalid={state.address.isInvalid}
                 placeholder={"VD: Cơ sở, phòng học"}
-                value={inputValueAddress}
-                onChangeText={(text) => setInputValueAddress(text)}
+                value={state.address.value}
+                onChangeText={(text) => handleInputChange("address", text)}
               />
             </View>
             <View style={styles.btnCreateReport}>
