@@ -9,6 +9,12 @@ import ReportDetail from "./src/screens/User/ReportDetail"; // Optional if you w
 
 export default function App() {
   return (
-        <ReportDetail/>
+      <GluestackUIProvider config={config}>
+        <AuthProvider>
+          <SafeAreaView style={GlobalStyles.androidSafeArea}>
+            <AppNavigation></AppNavigation>
+          </SafeAreaView>
+        </AuthProvider>
+      </GluestackUIProvider>
   );
 }

@@ -1,6 +1,5 @@
 import {Text, View, Image, TextInput, ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
-import styles from './style';
 import { Feather } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
@@ -8,7 +7,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import {Divider} from "@rneui/themed";
 import { StyleSheet } from 'react-native';
-import color from '../../contains/color';
+
+
+
 
 const DetailUser = () => {
     const [userData, setUserData] = useState({
@@ -18,8 +19,6 @@ const DetailUser = () => {
         email: "trangialma91b@gmail.com",
         status:"Online",
     });
-
-
     // useEffect(() => {
     //   const fetchData = async () => {
     //     const result = await getUserData(); // Gọi hàm getUserData từ UserApi.js
@@ -36,16 +35,14 @@ const DetailUser = () => {
     //
     //   fetchData();
     // }, []);
-
     return (
         <View style={styles.container}>
             <View style={styles.topSection}>
                 <Text style={styles.status}>{userData.status}</Text>
                 <View style={styles.userImageContainer}>
                     <Image
-                        source={require('../../assets/images/SguLogo.png')}
+                        source={require('../assets/image/SguLogo.png')}
                         style={styles.userImage}
-
                     />
                 </View>
                 <Text style={styles.userName}>{userData.name}</Text>
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
     topSection: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color.primaryColor, // Màu nền của phần 2/5
+        backgroundColor: "#039BFF", // Màu nền của phần 2/5
     },
     header:{
         flexDirection:"row",
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
     userImage: {
         width: 150,
         height: 150,
-        borderRadius: 20, // Để làm tròn hình ảnh thành hình tròn
+        borderRadius: 20,
         backgroundColor:"white",
         marginVertical:10
     },
@@ -217,6 +214,5 @@ const styles = StyleSheet.create({
         marginTop:15,
     },
 });
-
 
 export default DetailUser;
