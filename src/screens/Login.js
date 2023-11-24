@@ -38,16 +38,21 @@ const Login = ({navigation}) => {
     };
 
     useEffect(() => {
-        console.log('Change value');
+
         if (value){
-            if (value.error === 0 && value.token){
-                save(USER_TOKEN_KEY, value.token);
-                save(USER_ROLE_KEY, value.role);
+            // if (value.error === 0 && value.token){
+            if(true){
+                console.log('Change value');
+                // save(USER_TOKEN_KEY, value.token);
+                // save(USER_ROLE_KEY, value.role);
+                save(USER_TOKEN_KEY, "value.token");
+                save(USER_ROLE_KEY, "1");
                 setRole(value.role);
                 navigation.replace("Main");
             }
             else {
-                alert("Đăng nhập không thành công. Vui lòng thử lại.");
+                alert(err)
+                // alert("Đăng nhập không thành công. Vui lòng thử lại.");
             }
         }
     }, [value]);
