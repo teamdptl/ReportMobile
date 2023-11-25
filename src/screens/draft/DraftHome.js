@@ -2,12 +2,29 @@ import { StyleSheet, Text, View, StatusBar, Animated } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import HeaderComponent from "../../components/Home/HeaderComponent";
 import ReportList from "../../components/Report/ReportList";
+import NetInfo from "@react-native-community/netinfo";
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const linkImg = require("../../assets/images/plusDraft.png");
+  const [isConnected, setIsConnected] = useState(false);
 
   const reports = [];
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isConnected) {
+      navigation.replace("UserNavigation");
+    }
+  }, [isConnected, navigation]);
 
   return (
     <View style={styles.container}>
