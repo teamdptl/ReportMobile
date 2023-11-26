@@ -37,7 +37,7 @@ const ReportListItem = ({item, deleteIds, setDeleteIds}) => {
             <View style={styles.container}>
                 <View>
                     <Image style={styles.image}
-                           source={{ uri: 'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg'}} width={100} height={100}/>
+                           source={{ uri: item.images[0].src }} width={100} height={100}/>
                 </View>
                 <View style={styles.textWrapper}>
                     <View style={styles.headerTitle}>

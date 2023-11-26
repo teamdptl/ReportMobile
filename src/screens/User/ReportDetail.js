@@ -110,7 +110,7 @@ const DetailTask = ()=>{
                 <View style={styles.trackerContainer}>
                     <Text style={{fontSize:16}}>Trạng thái phản hồi</Text>
                     <Text  style={{fontSize:12,marginVertical:10}}>Đang được xử lý</Text>
-                    <Image  source={require('../assets/image/troubleshoot.png')} style={styles.troubleShootImage}>
+                    <Image  source={require('../../assets/images/troubleshoot.png')} style={styles.troubleShootImage}>
                     </Image>
                     <View style={styles.line}>
                         <View style={[styles.circle,{right:0,backgroundColor:"#D9D9D9"}]}></View>
