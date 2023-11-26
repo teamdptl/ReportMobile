@@ -1,0 +1,1 @@
+// Thông tin gửi đi của report

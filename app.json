@@ -7,10 +7,26 @@
     "icon": "",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/SguLogo.png",
+      "image": "./src/assets/images/SguLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Cho phép $(PRODUCT_NAME) sử dụng camera."
+        }
+       
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+       
+      ]
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -18,16 +34,30 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
+      },
+      "bundleIdentifier": "com.huykhaduy.ReportMobile"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/SguLogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.huykhaduy.ReportMobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "702e1dcf-e4cf-4a12-be48-ff3456813b8d"
+      }
     }
   }
 }

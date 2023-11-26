@@ -9,8 +9,8 @@ const Splash = ({navigation}) => {
 
     setTimeout(()=>{
         // navigation.navigate('Login')
-        navigation.replace('Login')
-    },1)
+        navigation.replace('TabScreenUser')
+    },1000)
 
 
     return (
