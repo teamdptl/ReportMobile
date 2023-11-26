@@ -15,11 +15,15 @@ import color from "../../contains/color";
 import ReportItem from "../../components/Report/ReportItem";
 import useReportsFetch from "../../hooks/useReportsFetch";
 import ReportList from "../../components/Report/ReportList";
+import { getValue } from "../../contains/SecureStore";
+import { DRAFT_DATA } from "../../contains/config";
 
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const {reports, err, loadNext, loading} = useReportsFetch({});
+  // const {reports, err, loadNext, loading} = useReportsFetch({});
   const linkImg = require("../../assets/images/feedback.png");
+
+  const reports = getValue(DRAFT_DATA);
 
   // useEffect(() => {
   //   if (reports){
@@ -40,10 +44,10 @@ const UserHome = ({ navigation }) => {
       </View>
 
       {/* Use the HeaderComponent component here */}
-      <HeaderComponent animatedValue={animatedValue} linkImg={linkImg} isImage={true}/>
+      <HeaderComponent animatedValue={animatedValue} linkImg={linkImg} isImage={true} navigation={navigation}/>
 
       {/*<Text>Đang tải dữ liệu</Text>*/}
-      <ReportList reports={reports} loadNext={loadNext} err={err} animatedValue={animatedValue}></ReportList>
+      <ReportList reports={reports} animatedValue={animatedValue}></ReportList>
     </View>
   );
 };

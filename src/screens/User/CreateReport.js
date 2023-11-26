@@ -26,6 +26,7 @@ import formReducer, {
   SET_VALUE,
 } from "../../hooks/useReducer/formReducer";
 
+import { USER_IS_INTERNET, DRAFT_DATA } from "../../contains/config";
 import { save, getValue, deleteValue } from "../../contains/AsyncStore";
 
 import * as FileSystem from "expo-file-system";
@@ -147,46 +148,44 @@ const CreateReport = ({ navigation }) => {
     } else {
       setShowAlertDialog(false);
 
-      try {
-        deleteValue("draftData");
-      } catch (error) {
-        console.error("Error removing draft data from AsyncStorage:", error);
-      }
+      // try {
+      //   deleteValue("draftData");
+      // } catch (error) {
+      //   console.error("Error removing draft data from AsyncStorage:", error);
+      // }
 
-      const formData = new FormData();
-      formData.append("title", state.title.value);
-      formData.append("description", state.description.value);
-      formData.append("location_api", location);
-      formData.append("location_text", state.address.value);
+      const checkInternet = getValue(USER_IS_INTERNET);
 
-      if (capturedImages.length > 0) {
-        capturedImages.forEach((image, index) => {
-          const uriParts = image.split(".");
-          const fileType = uriParts[uriParts.length - 1];
+      if (checkInternet) {
+        const formData = new FormData();
+        formData.append("title", state.title.value);
+        formData.append("description", state.description.value);
+        formData.append("location_api", location);
+        formData.append("location_text", state.address.value);
 
-          formData.append(`photo[${index}]`, {
-            uri: image,
-            type: `image/${fileType}`,
-            name: `photo_${index}.${fileType}`,
+        if (capturedImages.length > 0) {
+          capturedImages.forEach((image, index) => {
+            const uriParts = image.split(".");
+            const fileType = uriParts[uriParts.length - 1];
+
+            formData.append(`photo[${index}]`, {
+              uri: image,
+              type: `image/${fileType}`,
+              name: `photo_${index}.${fileType}`,
+            });
           });
-        });
-      }
+        }
 
-      await call(formData);
+        await call(formData);
+      } else {
+        saveDraftData();
+      }
     }
   };
 
-  useEffect(() => {
-    if (!data) return;
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (!error) return;
-    console.log(error);
-
+  const saveDraftData = () => {
     try {
-      const draftData = getValue("draftData");
+      const draftData = getValue(DRAFT_DATA);
       const parsedDraftData = draftData ? JSON.parse(draftData) : [];
 
       const newData = {
@@ -199,13 +198,25 @@ const CreateReport = ({ navigation }) => {
       const hasNonEmptyData = Object.values(newData).some(
         (value) => value !== ""
       );
+
       if (hasNonEmptyData) {
         const updatedDrafts = [...parsedDraftData, newData];
-        save("draftData", JSON.stringify(updatedDrafts));
+        save(DRAFT_DATA, JSON.stringify(updatedDrafts));
       }
     } catch (err) {
-      console.error("Error saving draft data to AsyncStorage:", error);
+      console.error("Error saving draft data to AsyncStorage:", err);
     }
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (!error) return;
+    console.log(error);
+    saveDraftData();
   }, [error]);
 
   const takePicture = () => {

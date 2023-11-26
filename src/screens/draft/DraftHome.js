@@ -3,6 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import HeaderComponent from "../../components/Home/HeaderComponent";
 import ReportList from "../../components/Report/ReportList";
 import NetInfo from "@react-native-community/netinfo";
+import { save, getValue, deleteValue } from "../../contains/AsyncStore";
+import { USER_IS_INTERNET } from "../../contains/config";
+
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -22,6 +25,7 @@ const DraftHome = ({ navigation }) => {
 
   useEffect(() => {
     if (isConnected) {
+      save(USER_IS_INTERNET, isConnected);
       navigation.replace("UserNavigation");
     }
   }, [isConnected, navigation]);

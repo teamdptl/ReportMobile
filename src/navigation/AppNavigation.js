@@ -41,6 +41,7 @@ const DraftUser = () => {
     <DraftUserStack.Navigator screenOptions={{ headerShown: false }}>
       {/* <DraftUserStack.Screen name="TabDraft" component={CreateDraft}/> */}
       <DraftUserStack.Screen name="DraftHome" component={DraftHome} />
+      <UserStack.Screen name="CreateReport" component={CreateReport} />
     </DraftUserStack.Navigator>
   );
 };
