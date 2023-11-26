@@ -1,16 +1,17 @@
-import { StyleSheet, Text, View, StatusBar, Animated } from "react-native";
+import { StyleSheet, Text, View, StatusBar, Animated, Button } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import HeaderComponent from "../../components/Home/HeaderComponent";
 import ReportList from "../../components/Report/ReportList";
 import NetInfo from "@react-native-community/netinfo";
 import { save, getValue, deleteValue } from "../../contains/AsyncStore";
-import { USER_IS_INTERNET } from "../../contains/config";
+import { USER_IS_INTERNET,DRAFT_DATA  } from "../../contains/config";
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isConnected, setIsConnected] = useState(false);
 
-  const reports = [];
+  const linkImg = require("../../assets/images/noInternet.png");
+  const reports = getValue(DRAFT_DATA);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -24,7 +25,7 @@ const DraftHome = ({ navigation }) => {
 
   useEffect(() => {
     if (isConnected) {
-      save(USER_IS_INTERNET, isConnected);
+      save(USER_IS_INTERNET, isConnected.toString());
       navigation.replace("UserNavigation");
     }
   }, [isConnected, navigation]);
@@ -43,8 +44,10 @@ const DraftHome = ({ navigation }) => {
         isImage={false}
         iconType={"pluscircle"}
         navigation={navigation}
-        
+        linkImg={linkImg}
       />
+
+      {/* <Button title="hu"  onPress={() => navigation.navigate('CreateReport')}/> */}
 
       <ReportList reports={reports} animatedValue={animatedValue}></ReportList>
     </View>
