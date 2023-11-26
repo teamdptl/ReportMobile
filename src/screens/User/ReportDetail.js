@@ -1,61 +1,41 @@
 import React, {useState} from "react"
 import {StyleSheet, Image, Text, View, TextInput, Dimensions, ImageBackground, ScrollView} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-
 import { FontAwesome5 } from '@expo/vector-icons';
+import { SliderBox } from "react-native-image-slider-box";
 import {
-    AddIcon,
-    Button,
-    ButtonIcon,
-    ButtonText,
     Center,
     Divider,
     MenuItem,
     MenuItemLabel,
     VStack
 } from "@gluestack-ui/themed";
-import MyCarousel from "./Carousel";
-import Carousel from "react-native-snap-carousel";
 import { Menu } from "@gluestack-ui/themed"
-const ReportDetail = ()=>{
+const DetailTask = ()=>{
     const images = [
-        { uri: 'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' },
-        { uri: 'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' },
-        { uri: 'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' },
+        'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' ,
+        'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' ,
+        'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' ,
     ];
-
     const [windowSize, setWindowSize] = useState(Dimensions.get('window'));
-    // const windowSize = Dimensions.get("window");
-    const _renderItem = ({ item, index }) => {
-        return (
-            <View style={styles.slide}>
-                <Image source={{ uri: item.uri }} style={[styles.image]} />
-            </View>
-        );
-    };
 
     const role ="admin"
     return(
         <View style={styles.container}>
-
-            <View style={{ flex: 0.4, resizeMode: 'cover',zIndex:1,backgroundColor:"black"}}>
-                <Carousel
-                    layout={'stack'}
-                    data={images}
-                    snapToInterval={windowSize.width/3}
-                    // ref={ref => this.carousel = ref}
-                    renderItem={_renderItem}
-                    sliderWidth={windowSize.width}
-                    itemWidth={windowSize.width}
-                    snapToAlignment="start"
+            <View style={{ flex: 0.4, resizeMode: '"cover"',zIndex:1,backgroundColor:"black"}}>
+                <SliderBox
+                    images={images}
+                    sliderBoxHeight={"100%"}
+                    parentWidth={windowSize.width}
+                    onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
+                    dotColor="#FFEE58"
+                    inactiveDotColor="#90A4AE"
                 />
                 <View style={styles.locate}>
                     <Ionicons name="arrow-back" size={28} color="black" />
                 </View>
             </View>
-            {/*<ImageBackground  source={require('../assets/image/image.jpg')}*/}
-            {/*                  style={{ flex: 0.4, resizeMode: 'cover',zIndex:1}}>*/}
-            {/*</ImageBackground>*/}
+
             <ScrollView style={styles.contentContainer}>
                 <View style={styles.content}>
                     <Menu
@@ -68,20 +48,11 @@ const ReportDetail = ()=>{
                                 </Text>
                             )
                         }}>
-                        <MenuItem key="Community" textValue="Community">
-                            <MenuItemLabel size="sm">Community</MenuItemLabel>
+                        <MenuItem key="remove" textValue="remove">
+                            <MenuItemLabel size="sm">Xóa phản hồi</MenuItemLabel>
                         </MenuItem>
-                        <MenuItem key="Plugins" textValue="Plugins">
-                            <MenuItemLabel size="sm">Plugins</MenuItemLabel>
-                        </MenuItem>
-                        <MenuItem key="Theme" textValue="Theme">
-                            <MenuItemLabel size="sm">Theme</MenuItemLabel>
-                        </MenuItem>
-                        <MenuItem key="Settings" textValue="Settings">
-                            <MenuItemLabel size="sm">Settings</MenuItemLabel>
-                        </MenuItem>
-                        <MenuItem key="Add account" textValue="Add account">
-                            <MenuItemLabel size="sm">Add account</MenuItemLabel>
+                        <MenuItem key="spam" textValue="spam">
+                            <MenuItemLabel size="sm">Đánh dấu phản hồi</MenuItemLabel>
                         </MenuItem>
                     </Menu>
                     <View style={styles.headerContainer}>
@@ -254,5 +225,6 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center"
     },
+
 })
-export  default  ReportDetail;
+export  default  DetailTask;
