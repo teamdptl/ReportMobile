@@ -44,7 +44,7 @@ const UserHome = ({ navigation }) => {
       </View>
 
       {/* Use the HeaderComponent component here */}
-      <HeaderComponent animatedValue={animatedValue} linkImg={linkImg} isImage={true} navigation={navigation}/>
+      <HeaderComponent animatedValue={animatedValue} linkImg={linkImg} isImage={true} />
 
       {/*<Text>Đang tải dữ liệu</Text>*/}
       <ReportList reports={reports} animatedValue={animatedValue}></ReportList>

@@ -14,7 +14,13 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 const { width, height } = Dimensions.get("window");
 
-const HeaderComponent = ({ animatedValue, linkImg, isImage, iconType, navigation }) => {
+const HeaderComponent = ({
+  animatedValue,
+  linkImg,
+  isImage,
+  iconType,
+  navigation,
+}) => {
   return (
     <View style={styles.header}>
       <View>
@@ -59,18 +65,28 @@ const HeaderComponent = ({ animatedValue, linkImg, isImage, iconType, navigation
           }}
         />
       ) : (
-        <View style={{ marginLeft: 18, justifyContent: "center", alignItems: "center"}}>
-          <Text style={{marginBottom: 20, color: "white", fontWeight: "500", fontSize: 12}}>Thêm báo cáo nháp ở đây</Text>
-          <TouchableOpacity onPress={()=> {navigation.navigate('CreateReport')}}>
-          <Icon
-            name={iconType}
-            size={50}
-            color="white"
+        <View
+          style={{
+            marginLeft: 18,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
             style={{
+              marginBottom: 20,
+              color: "white",
+              fontWeight: "500",
+              fontSize: 12,
             }}
-          />
+          >
+            Thêm báo cáo nháp ở đây
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CreateReport')} 
+          >
+            <Icon name={iconType} size={50} color="white" style={{}} />
           </TouchableOpacity>
-          
         </View>
       )}
       <View></View>

@@ -6,7 +6,6 @@ import NetInfo from "@react-native-community/netinfo";
 import { save, getValue, deleteValue } from "../../contains/AsyncStore";
 import { USER_IS_INTERNET } from "../../contains/config";
 
-
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isConnected, setIsConnected] = useState(false);
@@ -43,6 +42,8 @@ const DraftHome = ({ navigation }) => {
         animatedValue={animatedValue}
         isImage={false}
         iconType={"pluscircle"}
+        navigation={navigation}
+        
       />
 
       <ReportList reports={reports} animatedValue={animatedValue}></ReportList>
