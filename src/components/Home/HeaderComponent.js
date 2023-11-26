@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Button
 } from "react-native";
 // import styles from '../views/UserReport/style'; // Import your styles from ReportScreenStyle.js
 import color from "../../contains/color";
@@ -21,6 +22,9 @@ const HeaderComponent = ({
   iconType,
   navigation,
 }) => {
+
+
+
   return (
     <View style={styles.header}>
       <View>
@@ -82,10 +86,11 @@ const HeaderComponent = ({
           >
             Thêm báo cáo nháp ở đây
           </Text>
+          <Button title="bam"  onPress={() => console.log("hhah")} />
           <TouchableOpacity
-            onPress={() => navigation.navigate('CreateReport')} 
+            onPress={() => console.log("hhah")} 
           >
-            <Icon name={iconType} size={50} color="white" style={{}} />
+            <Icon onPress={()=>console.log('hihi')} name={iconType} size={50} color="white"  />
           </TouchableOpacity>
         </View>
       )}

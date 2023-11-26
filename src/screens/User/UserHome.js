@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -20,10 +20,9 @@ import { DRAFT_DATA } from "../../contains/config";
 
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  // const {reports, err, loadNext, loading} = useReportsFetch({});
+  const {reports, err, loadNext, loading} = useReportsFetch({});
   const linkImg = require("../../assets/images/feedback.png");
 
-  const reports = getValue(DRAFT_DATA);
 
   // useEffect(() => {
   //   if (reports){
@@ -44,22 +43,31 @@ const UserHome = ({ navigation }) => {
       </View>
 
       {/* Use the HeaderComponent component here */}
-      <HeaderComponent animatedValue={animatedValue} linkImg={linkImg} isImage={true} />
+      <HeaderComponent
+        animatedValue={animatedValue}
+        linkImg={linkImg}
+        isImage={true}
+      />
 
       {/*<Text>Đang tải dữ liệu</Text>*/}
-      <ReportList reports={reports} animatedValue={animatedValue}></ReportList>
+      <ReportList
+        reports={reports}
+        loadNext={loadNext}
+        err={err}
+        animatedValue={animatedValue}
+      ></ReportList>
     </View>
   );
 };
 
-const styles= StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   upperHeader: {
     height: 28,
   },
-})
+});
 
 export default UserHome;
