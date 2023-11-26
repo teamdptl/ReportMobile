@@ -109,7 +109,9 @@ const CreateReport = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (!isGalleryVisible) return;
+    if (!isGalleryVisible) {
+      return;
+    }
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
@@ -365,7 +367,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   centeredText: {
-    fontSize: 22,
+    fontSize: 18,
+    fontWeight: '500'
   },
   bodyReport: {
     marginTop: 30,

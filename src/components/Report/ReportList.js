@@ -10,6 +10,7 @@ import SmallButton from "../SmallButtons";
 import color from "../../contains/color";
 import ReportItem from "./ReportItem";
 import React, { useState } from "react";
+import ReportListItem from "./ReportListItem";
 
 
 const ReportList = ({ reports, loadNext, animatedValue }) => {
@@ -78,10 +79,8 @@ const ReportList = ({ reports, loadNext, animatedValue }) => {
              scrollEnabled={false} 
               data={reports}
               renderItem={({ item }) => (
-                <ReportItem
+                <ReportListItem
                   item={item}
-                  handleLongPress={handleLongPress}
-                  longPress={longPress}
                 />
               )}
               keyExtractor={(item) => item.id}
@@ -114,14 +113,14 @@ const styles = StyleSheet.create({
   line: {
     width: "40%",
     height: 2,
-    backgroundColor: "black",
+    backgroundColor: "#858C90",
   },
   containerHTZLMid: {
     flexDirection: "row", // Xếp các phần tử theo hàng ngang
     alignItems: "center", // Căn chỉnh các phần tử theo chiều dọc
     justifyContent: "space-between", // Các phần tử bên trái và bên phải cách xa nhau
     marginHorizontal: 10, // Khoảng cách ngang bên ngoài container
-    marginTop: 45, // Khoảng cách từ top
+    marginTop: 20, // Khoảng cách từ top
   },
   leftContent: {
     flex: 1.5, // Phần trái chiếm 1 phần
