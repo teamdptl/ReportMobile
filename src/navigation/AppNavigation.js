@@ -11,6 +11,7 @@ import UserHome from "../screens/User/UserHome";
 import Main from "../screens/Main";
 import CreateReport from "../screens/User/CreateReport";
 import DraftHome from "../screens/draft/DraftHome";
+import ReportDetail from "../screens/User/ReportDetail";
 
 const AppStack = createNativeStackNavigator();
 const UserStack = createNativeStackNavigator();
@@ -50,8 +51,9 @@ const DraftUser = () => {
 const UserNavigation = () => {
   return (
     <UserStack.Navigator screenOptions={{ headerShown: false }}>
-      <UserStack.Screen name="Tab" component={UserTabScreen} />
-      <UserStack.Screen name="CreateReport" component={CreateReport} />
+        <UserStack.Screen name="Tab" component={UserTabScreen} />
+        <UserStack.Screen name="CreateReport" component={CreateReport} />
+        <UserStack.Screen name="ReportDetail" component={ReportDetail}/>
     </UserStack.Navigator>
   );
 };

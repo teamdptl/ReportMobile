@@ -13,9 +13,10 @@ import React, { useState } from "react";
 import ReportListItem from "./ReportListItem";
 
 
-const ReportList = ({ reports, loadNext, animatedValue }) => {
+const ReportList = ({ reports, loadNext, animatedValue, navigation }) => {
   const [longPress, setLongPress] = useState(false);
   const [addComponentAsLongPress, setAddComponentAsLongPress] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const handleLongPress = () => {
     // Thiết lập một hẹn giờ để kiểm tra liệu người dùng có giữ trong ít nhất 2 giây không
     setTimeout(() => {
@@ -80,7 +81,7 @@ const ReportList = ({ reports, loadNext, animatedValue }) => {
               data={reports}
               renderItem={({ item }) => (
                 <ReportListItem
-                  item={item}
+                  item={item} handleNavigate={() => navigation.navigate('ReportDetail', {...item})}
                 />
               )}
               keyExtractor={(item) => item.id}

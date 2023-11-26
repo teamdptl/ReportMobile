@@ -27,7 +27,7 @@ export default function useReportsFetch(params, dependencies = []) {
         }
     }, dependencies)
 
-    const callbackMemoized = useCallback(async () => {
+    const callback = useCallback(async () => {
         setLoading(true)
         await getListReport()
             .then(res => res.json())
@@ -43,9 +43,6 @@ export default function useReportsFetch(params, dependencies = []) {
             .finally(() => setLoading(false))
     }, dependencies)
 
-    useEffect(() => {
-        callbackMemoized()
-    }, [callbackMemoized])
 
-    return { reports, error, loadNext, loading }
+    return { reports, error, loadNext, loading, callback }
 }

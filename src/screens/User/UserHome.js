@@ -20,10 +20,14 @@ import { DRAFT_DATA } from "../../contains/config";
 
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const {reports, err, loadNext, loading} = useReportsFetch({});
+  const {reports, err, loadNext, loading, callback} = useReportsFetch({});
   const linkImg = require("../../assets/images/feedback.png");
 
   // const reports = getValue(DRAFT_DATA);
+
+  useEffect(() => {
+    callback();
+  }, []);
 
   useEffect(() => {
     if (reports){
@@ -56,6 +60,7 @@ const UserHome = ({ navigation }) => {
         loadNext={loadNext}
         err={err}
         animatedValue={animatedValue}
+        navigation = {navigation}
       ></ReportList>
     </View>
   );

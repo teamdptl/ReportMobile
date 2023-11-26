@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {Text, View, Image, StyleSheet, TouchableOpacity} from "react-native"
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const timeToText = (time) => {
+export const timeToText = (time) => {
     const dateObject = new Date(time);
     const formattedTime = dateObject.toLocaleTimeString('vi-VN', {
         hour: 'numeric',
@@ -16,7 +16,7 @@ const timeToText = (time) => {
     return `${formattedTime} ${formattedDate}`;
 }
 
-const convertStatus = (status) => {
+export const convertStatus = (status) => {
     let output = {text: '', color: 'black'};
     switch (status){
         case 'sent':
@@ -29,11 +29,9 @@ const convertStatus = (status) => {
     return output;
 }
 
-const ReportListItem = ({item, deleteIds, setDeleteIds}) => {
+const ReportListItem = ({item, handleNavigate, deleteIds, setDeleteIds}) => {
     return <>
-        <TouchableOpacity onPress={() => {
-            // Chuyển sang trang chi tiết
-        }}>
+        <TouchableOpacity onPress={handleNavigate}>
             <View style={styles.container}>
                 <View>
                     <Image style={styles.image}
