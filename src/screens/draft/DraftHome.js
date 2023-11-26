@@ -4,12 +4,13 @@ import HeaderComponent from "../../components/Home/HeaderComponent";
 import ReportList from "../../components/Report/ReportList";
 import NetInfo from "@react-native-community/netinfo";
 import { save, getValue, deleteValue } from "../../contains/AsyncStore";
-import { USER_IS_INTERNET } from "../../contains/config";
+import { USER_IS_INTERNET,DRAFT_DATA  } from "../../contains/config";
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isConnected, setIsConnected] = useState(false);
 
+  const linkImg = require("../../assets/images/noInternet.png");
   const reports = getValue(DRAFT_DATA);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const DraftHome = ({ navigation }) => {
         isImage={false}
         iconType={"pluscircle"}
         navigation={navigation}
-        
+        linkImg={linkImg}
       />
 
       {/* <Button title="hu"  onPress={() => navigation.navigate('CreateReport')}/> */}
