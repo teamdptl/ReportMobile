@@ -154,9 +154,11 @@ const CreateReport = ({ navigation }) => {
       //   console.error("Error removing draft data from AsyncStorage:", error);
       // }
 
-      const checkInternet = getValue(USER_IS_INTERNET);
+      const checkInternet =  getValue(USER_IS_INTERNET);
 
-      if (checkInternet) {
+      if (!checkInternet) {
+        console.log("dang o create usehome");
+
         const formData = new FormData();
         formData.append("title", state.title.value);
         formData.append("description", state.description.value);
@@ -178,21 +180,23 @@ const CreateReport = ({ navigation }) => {
 
         await call(formData);
       } else {
+        console.log("dang o create draft");
         saveDraftData();
       }
     }
   };
 
-  const saveDraftData = () => {
+  const saveDraftData =  () => {
     try {
       const draftData = getValue(DRAFT_DATA);
-      const parsedDraftData = draftData ? JSON.parse(draftData) : [];
+      const parsedDraftData = typeof draftData === 'string' ? JSON.parse(draftData) : [];
 
       const newData = {
-        title: state.title.value || "",
-        address: state.address.value || "",
-        description: state.description.value || "",
-        image: capturedImages || "",
+        title: state.title.value,
+        address: state.address.value ,
+        description: state.description.value ,
+        image: capturedImages ,
+        location: location
       };
 
       const hasNonEmptyData = Object.values(newData).some(
@@ -201,8 +205,10 @@ const CreateReport = ({ navigation }) => {
 
       if (hasNonEmptyData) {
         const updatedDrafts = [...parsedDraftData, newData];
+        console.log("data", JSON.stringify(updatedDrafts));
         save(DRAFT_DATA, JSON.stringify(updatedDrafts));
       }
+      console.log("data draft", getValue(DRAFT_DATA) );
     } catch (err) {
       console.error("Error saving draft data to AsyncStorage:", err);
     }

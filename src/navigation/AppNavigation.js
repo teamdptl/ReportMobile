@@ -40,7 +40,8 @@ const DraftUser = () => {
   return (
     <DraftUserStack.Navigator screenOptions={{ headerShown: false }}>
       {/* <DraftUserStack.Screen name="TabDraft" component={CreateDraft}/> */}
-      <DraftUserStack.Screen name="DraftHome" component={DraftHome} />
+      {/* <DraftUserStack.Screen name="DraftHome" component={DraftHome} /> */}
+      <UserStack.Screen name="Tab" component={UserTabScreen} />
       <UserStack.Screen name="CreateReport" component={CreateReport} />
     </DraftUserStack.Navigator>
   );

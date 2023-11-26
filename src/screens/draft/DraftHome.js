@@ -8,27 +8,9 @@ import { USER_IS_INTERNET,DRAFT_DATA  } from "../../contains/config";
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const [isConnected, setIsConnected] = useState(false);
 
   const linkImg = require("../../assets/images/noInternet.png");
   const reports = getValue(DRAFT_DATA);
-
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isConnected) {
-      save(USER_IS_INTERNET, isConnected.toString());
-      navigation.replace("UserNavigation");
-    }
-  }, [isConnected, navigation]);
 
   return (
     <View style={styles.container}>
