@@ -6,9 +6,9 @@ const BackPage = (props) => {
       <View style={styles.return}>
         <Image
           source={require("../assets/images/return.png")}
-          style={{ width: 20, height: 20 }}
+          style={{ width: 25, height: 25 }}
         />
-        <Text style={{ fontSize: 11, marginLeft: 7 }}>Trở về</Text>
+        <Text style={{ fontSize: 14, marginLeft: 7, fontWeight: '500' }}>Trở về</Text>
       </View>
     </TouchableOpacity>
   );

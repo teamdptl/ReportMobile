@@ -23,16 +23,17 @@ const UserHome = ({ navigation }) => {
   const {reports, err, loadNext, loading} = useReportsFetch({});
   const linkImg = require("../../assets/images/feedback.png");
 
+  // const reports = getValue(DRAFT_DATA);
 
-  // useEffect(() => {
-  //   if (reports){
-  //     console.log(reports);
-  //   }
-  //
-  //   if (err){
-  //     console.log(err);
-  //   }
-  // }, [reports, err]);
+  useEffect(() => {
+    if (reports){
+      console.log(reports);
+    }
+
+    if (err){
+      console.log(err);
+    }
+  }, [reports, err]);
 
   return (
     <View style={styles.container}>
