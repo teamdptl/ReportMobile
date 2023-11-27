@@ -11,9 +11,11 @@ import color from "../../contains/color";
 import ReportItem from "./ReportItem";
 import React, { useState } from "react";
 import ReportListItem from "./ReportListItem";
+import {Facebook} from "react-content-loader/native";
+import CustomLoader from "./CustomLoader";
 
 
-const ReportList = ({ reports, loadNext, animatedValue, navigation }) => {
+const ReportList = ({ reports, loadNext, animatedValue, navigation, loading }) => {
   const [longPress, setLongPress] = useState(false);
   const [addComponentAsLongPress, setAddComponentAsLongPress] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -76,6 +78,11 @@ const ReportList = ({ reports, loadNext, animatedValue, navigation }) => {
                 />
               );
             })} */}
+            {loading &&
+                <View style={{marginTop: 10, marginHorizontal: 20}}>
+                  <CustomLoader/>
+                </View>
+            }
             <FlatList
              scrollEnabled={false} 
               data={reports}
