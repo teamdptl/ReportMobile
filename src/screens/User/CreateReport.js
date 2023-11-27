@@ -188,29 +188,29 @@ const CreateReport = ({ navigation }) => {
     }
   };
 
-  const saveDraftData =  () => {
+  const saveDraftData = async () => {
     try {
-      const draftData = getValue(DRAFT_DATA);
-      const parsedDraftData = typeof draftData === 'string' ? JSON.parse(draftData) : [];
-
+      const draftData = await getValue(DRAFT_DATA);
+  
       const newData = {
         title: state.title.value,
-        address: state.address.value ,
-        description: state.description.value ,
-        image: capturedImages ,
-        location: location
+        address: state.address.value,
+        description: state.description.value,
+        image: capturedImages,
+        location: location,
       };
-
+  
       const hasNonEmptyData = Object.values(newData).some(
         (value) => value !== ""
       );
-
+  
       if (hasNonEmptyData) {
-        const updatedDrafts = [...parsedDraftData, newData];
+        const updatedDrafts = draftData ? [...JSON.parse(draftData), newData] : [newData];
         console.log("data", JSON.stringify(updatedDrafts));
-        save(DRAFT_DATA, JSON.stringify(updatedDrafts));
+        await save(DRAFT_DATA, JSON.stringify(updatedDrafts));
       }
-      console.log("data draft", getValue(DRAFT_DATA) );
+  
+      console.log("data draft", await getValue(DRAFT_DATA));
     } catch (err) {
       console.error("Error saving draft data to AsyncStorage:", err);
     }
