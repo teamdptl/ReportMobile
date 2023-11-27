@@ -150,12 +150,7 @@ const CreateReport = ({ navigation }) => {
     } else {
       setShowAlertDialog(false);
 
-      // try {
-      //   deleteValue("draftData");
-      // } catch (error) {
-      //   console.error("Error removing draft data from AsyncStorage:", error);
-      // }
-
+  
       const checkInternet =  getValue(USER_IS_INTERNET);
 
       if (!checkInternet) {
@@ -166,6 +161,7 @@ const CreateReport = ({ navigation }) => {
         formData.append("description", state.description.value);
         formData.append("location_api", location);
         formData.append("location_text", state.address.value);
+        // console.log("location_api", location);
 
         if (capturedImages.length > 0) {
           capturedImages.forEach((image, index) => {
@@ -190,14 +186,17 @@ const CreateReport = ({ navigation }) => {
 
   const saveDraftData = async () => {
     try {
+
+      // deleteValue(DRAFT_DATA);
+
       const draftData = await getValue(DRAFT_DATA);
   
       const newData = {
         title: state.title.value,
-        address: state.address.value,
         description: state.description.value,
+        location_api: location,
+        location_text: state.address.value,
         image: capturedImages,
-        location: location,
       };
   
       const hasNonEmptyData = Object.values(newData).some(
