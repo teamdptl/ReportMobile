@@ -109,7 +109,9 @@ const CreateReport = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (!isGalleryVisible) return;
+    if (!isGalleryVisible) {
+      return;
+    }
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
@@ -148,20 +150,19 @@ const CreateReport = ({ navigation }) => {
     } else {
       setShowAlertDialog(false);
 
-      // try {
-      //   deleteValue("draftData");
-      // } catch (error) {
-      //   console.error("Error removing draft data from AsyncStorage:", error);
-      // }
+  
+      const checkInternet =  await getValue(USER_IS_INTERNET);
+      console.log(checkInternet);
 
-      const checkInternet = getValue(USER_IS_INTERNET);
+      if (checkInternet == "online") {
+        console.log("dang o create usehome");
 
-      if (checkInternet) {
         const formData = new FormData();
         formData.append("title", state.title.value);
         formData.append("description", state.description.value);
         formData.append("location_api", location);
         formData.append("location_text", state.address.value);
+        // console.log("location_api", location);
 
         if (capturedImages.length > 0) {
           capturedImages.forEach((image, index) => {
@@ -177,32 +178,53 @@ const CreateReport = ({ navigation }) => {
         }
 
         await call(formData);
-      } else {
+      } else if(checkInternet == "offline"){
+        console.log("dang o create draft");
         saveDraftData();
+      } else{
+        console.log("Khong vo duoc");
       }
     }
   };
+  
 
-  const saveDraftData = () => {
+  const saveDraftData = async () => {
     try {
-      const draftData = getValue(DRAFT_DATA);
-      const parsedDraftData = draftData ? JSON.parse(draftData) : [];
+
+      deleteValue(DRAFT_DATA);
+
+      const draftData = await getValue(DRAFT_DATA);
+  
+      const newImageArray = capturedImages.map((image, index) => {
+        const uriParts = image.split(".");
+        const fileType = uriParts[uriParts.length - 1];
+        return {
+          src: image, 
+          type: `image/${fileType}`,
+          name: `photo_${index}.${fileType}`,
+        };
+      });
 
       const newData = {
-        title: state.title.value || "",
-        address: state.address.value || "",
-        description: state.description.value || "",
-        image: capturedImages || "",
+        id: new Date().getTime(),
+        title: state.title.value,
+        description: state.description.value,
+        location_api: location,
+        location_text: state.address.value,
+        image: newImageArray ,
       };
-
+  
       const hasNonEmptyData = Object.values(newData).some(
         (value) => value !== ""
       );
-
+  
       if (hasNonEmptyData) {
-        const updatedDrafts = [...parsedDraftData, newData];
-        save(DRAFT_DATA, JSON.stringify(updatedDrafts));
+        const updatedDrafts = draftData ? [...JSON.parse(draftData), newData] : [newData];
+        // console.log("data", JSON.stringify(updatedDrafts));
+        await save(DRAFT_DATA, JSON.stringify(updatedDrafts));
       }
+  
+      console.log("data draft", await getValue(DRAFT_DATA));
     } catch (err) {
       console.error("Error saving draft data to AsyncStorage:", err);
     }
@@ -359,7 +381,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   centeredText: {
-    fontSize: 22,
+    fontSize: 18,
+    fontWeight: '500'
   },
   bodyReport: {
     marginTop: 30,

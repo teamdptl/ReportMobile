@@ -9,8 +9,8 @@ export const getReportAtPage = (data) => {
   return createFetch(`${URL_REPORT_ALL}/?page=${data.page}`, method.GET);
 };
 
-export const getReportDetail = (data) => {
-  return createFetch(`${URL_REPORT_MAIN}/${data.id}`, method.GET);
+export const getReportDetail = (id) => {
+  return createFetch(`${URL_REPORT_MAIN}/${id}`, method.GET);
 };
 
 export const createReport = (data) => {

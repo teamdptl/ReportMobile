@@ -17,22 +17,28 @@ import useReportsFetch from "../../hooks/useReportsFetch";
 import ReportList from "../../components/Report/ReportList";
 import { getValue } from "../../contains/SecureStore";
 import { DRAFT_DATA } from "../../contains/config";
+import {Facebook} from "react-content-loader/native";
 
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const {reports, err, loadNext, loading} = useReportsFetch({});
+  const {reports, err, loadNext, loading, callback} = useReportsFetch({});
   const linkImg = require("../../assets/images/feedback.png");
 
+  // const reports = getValue(DRAFT_DATA);
 
-  // useEffect(() => {
-  //   if (reports){
-  //     console.log(reports);
-  //   }
-  //
-  //   if (err){
-  //     console.log(err);
-  //   }
-  // }, [reports, err]);
+  useEffect(() => {
+    callback();
+  }, []);
+
+  useEffect(() => {
+    if (reports){
+      console.log(reports);
+    }
+
+    if (err){
+      console.log(err);
+    }
+  }, [reports, err]);
 
   return (
     <View style={styles.container}>
@@ -53,8 +59,10 @@ const UserHome = ({ navigation }) => {
       <ReportList
         reports={reports}
         loadNext={loadNext}
+        loading={loading}
         err={err}
         animatedValue={animatedValue}
+        navigation = {navigation}
       ></ReportList>
     </View>
   );

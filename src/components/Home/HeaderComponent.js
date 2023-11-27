@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Button
+  Button,
+  Pressable 
 } from "react-native";
 // import styles from '../views/UserReport/style'; // Import your styles from ReportScreenStyle.js
 import color from "../../contains/color";
@@ -20,11 +21,8 @@ const HeaderComponent = ({
   linkImg,
   isImage,
   iconType,
-  navigation,
+  handleTransferCreateReport,
 }) => {
-
-
-
   return (
     <View style={styles.header}>
       <View>
@@ -53,12 +51,21 @@ const HeaderComponent = ({
         >
           Xin chào, SGUer
         </Animated.Text>
-        <Text style={styles.text}>
-          Hãy báo cáo các vấn đề{"\n"}
-          kỹ thuật cho chúng tôi
-        </Text>
+        {isImage ? (
+           <Text style={styles.text}>
+           Hãy báo cáo các vấn đề{"\n"}
+           kỹ thuật cho chúng tôi
+         </Text>
+        ):
+        ( <Text style={styles.text}>
+          Bạn đang bị mất kết nối{"\n"}
+          Hãy tạo bản ghi tạm nhé 
+        </Text>)
+        }
+       
       </View>
       {isImage ? (
+      
         <Image
           source={linkImg}
           style={{
@@ -69,30 +76,40 @@ const HeaderComponent = ({
           }}
         />
       ) : (
-        <View
+        // <View
+        //   style={{
+        //     marginLeft: 18,
+        //     justifyContent: "center",
+        //     alignItems: "center",
+        //   }}
+        // >
+        //   <Text
+        //     style={{
+        //       marginBottom: 20,
+        //       color: "white",
+        //       fontWeight: "500",
+        //       fontSize: 12,
+        //     }}
+        //   >
+        //     Thêm báo cáo nháp ở đây
+        //   </Text>
+
+        //     <Icon
+        //       name={iconType}
+        //       size={50}
+        //       color="white"
+        //     />
+        // </View>
+        <Image
+          source={linkImg}
           style={{
-            marginLeft: 18,
-            justifyContent: "center",
-            alignItems: "center",
+            marginTop: 10,
+            width: "45%",
+            height: 135,
+            marginLeft: 0,
+            resizeMode: "cover",
           }}
-        >
-          <Text
-            style={{
-              marginBottom: 20,
-              color: "white",
-              fontWeight: "500",
-              fontSize: 12,
-            }}
-          >
-            Thêm báo cáo nháp ở đây
-          </Text>
-          <Button title="bam"  onPress={() => console.log("hhah")} />
-          <TouchableOpacity
-            onPress={() => console.log("hhah")} 
-          >
-            <Icon onPress={()=>console.log('hihi')} name={iconType} size={50} color="white"  />
-          </TouchableOpacity>
-        </View>
+        />
       )}
       <View></View>
     </View>

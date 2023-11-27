@@ -10,11 +10,15 @@ import SmallButton from "../SmallButtons";
 import color from "../../contains/color";
 import ReportItem from "./ReportItem";
 import React, { useState } from "react";
+import ReportListItem from "./ReportListItem";
+import {Facebook} from "react-content-loader/native";
+import CustomLoader from "./CustomLoader";
 
 
-const ReportList = ({ reports, loadNext, animatedValue }) => {
+const ReportList = ({ reports, loadNext, animatedValue, navigation, loading }) => {
   const [longPress, setLongPress] = useState(false);
   const [addComponentAsLongPress, setAddComponentAsLongPress] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const handleLongPress = () => {
     // Thiết lập một hẹn giờ để kiểm tra liệu người dùng có giữ trong ít nhất 2 giây không
     setTimeout(() => {
@@ -74,14 +78,17 @@ const ReportList = ({ reports, loadNext, animatedValue }) => {
                 />
               );
             })} */}
+            {loading &&
+                <View style={{marginTop: 10, marginHorizontal: 20}}>
+                  <CustomLoader/>
+                </View>
+            }
             <FlatList
              scrollEnabled={false} 
               data={reports}
               renderItem={({ item }) => (
-                <ReportItem
-                  item={item}
-                  handleLongPress={handleLongPress}
-                  longPress={longPress}
+                <ReportListItem
+                  item={item} handleNavigate={() => navigation.navigate('ReportDetail', {...item})}
                 />
               )}
               keyExtractor={(item) => item.id}
@@ -114,14 +121,14 @@ const styles = StyleSheet.create({
   line: {
     width: "40%",
     height: 2,
-    backgroundColor: "black",
+    backgroundColor: "#858C90",
   },
   containerHTZLMid: {
     flexDirection: "row", // Xếp các phần tử theo hàng ngang
     alignItems: "center", // Căn chỉnh các phần tử theo chiều dọc
     justifyContent: "space-between", // Các phần tử bên trái và bên phải cách xa nhau
     marginHorizontal: 10, // Khoảng cách ngang bên ngoài container
-    marginTop: 45, // Khoảng cách từ top
+    marginTop: 20, // Khoảng cách từ top
   },
   leftContent: {
     flex: 1.5, // Phần trái chiếm 1 phần

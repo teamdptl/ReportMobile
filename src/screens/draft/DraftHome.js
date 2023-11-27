@@ -4,30 +4,29 @@ import HeaderComponent from "../../components/Home/HeaderComponent";
 import ReportList from "../../components/Report/ReportList";
 import NetInfo from "@react-native-community/netinfo";
 import { save, getValue, deleteValue } from "../../contains/AsyncStore";
-import { USER_IS_INTERNET } from "../../contains/config";
+import { USER_IS_INTERNET,DRAFT_DATA  } from "../../contains/config";
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const [isConnected, setIsConnected] = useState(false);
+  const [reports, setReports] = useState([]);
 
-  const reports = getValue(DRAFT_DATA);
+  const linkImg = require("../../assets/images/noInternet.png");
+  
+  // const reports =  getValue(DRAFT_DATA);
 
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
+  const getValueDraftData = async () => {
+      const draftData = await getValue(DRAFT_DATA);
+      console.log(draftData);
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isConnected) {
-      save(USER_IS_INTERNET, isConnected.toString());
-      navigation.replace("UserNavigation");
-    }
-  }, [isConnected, navigation]);
+        const parsedDraftData = JSON.parse(draftData);
+        setReports(parsedDraftData);
+        console.log(reports);
+      
+  };
+  
+useEffect(() => {
+    getValueDraftData();
+}, []);
 
   return (
     <View style={styles.container}>
@@ -43,12 +42,12 @@ const DraftHome = ({ navigation }) => {
         isImage={false}
         iconType={"pluscircle"}
         navigation={navigation}
-        
+        linkImg={linkImg}
       />
 
       {/* <Button title="hu"  onPress={() => navigation.navigate('CreateReport')}/> */}
 
-      <ReportList reports={reports} animatedValue={animatedValue}></ReportList>
+      <ReportList reports={reports} animatedValue={animatedValue} navigation={navigation}></ReportList>
     </View>
   );
 };
