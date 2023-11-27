@@ -15,6 +15,7 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 import useReportFetch from "../../hooks/useReportFetch";
 import {timeToText} from "../../components/Report/ReportListItem";
 import MapView from "react-native-maps";
+import ManagerAction from "../../components/ReportDetail/ManagerAction";
 const ReportDetail = ({navigation, route})=>{
     const data = route.params;
     const {report, errorMsg, loading, callback} = useReportFetch({data});
@@ -42,7 +43,7 @@ const ReportDetail = ({navigation, route})=>{
             <Appbar.Header>
                 <Appbar.BackAction onPress={() => {navigation.goBack()}} />
                 <Appbar.Content title="Chi tiết báo cáo" titleStyle={{fontSize: 16}} />
-                <Appbar.Action icon="menu" onPress={() => {}} />
+                <Appbar.Action icon="dots-vertical" onPress={() => {}} />
             </Appbar.Header>
             <GestureHandlerRootView style={styles.container}>
                 <ScrollView style={styles.contentContainer}>
@@ -133,6 +134,7 @@ const ReportDetail = ({navigation, route})=>{
                             <View style={[styles.circle,{left:0}]}></View>
                         </View>
                     </View>
+                    <ManagerAction/>
                     {/*{*/}
                     {/*    role=="admin" ?*/}
                     {/*        <Button*/}

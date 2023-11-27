@@ -6,6 +6,7 @@ import TabIcons from '../../components/TabIcons';
 import UserReport from '../../screens/User/UserHome';
 import DetailUser from '../../screens/User/UserInfo';
 import PostReport from '../../screens/User/CreateReport';
+import ManagerWorker from "../../screens/Manager/ManagerWorker";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,13 +44,14 @@ const WorkerTabScreen = ({navigation}) => {
                 }}
             />
             <Tab.Screen
-                name="PostReport"
-                component={PostReport}
+                name="ManagerWorker"
+                component={ManagerWorker}
                 options={{
-                    // tabBarButton: (props) => <CustomTabBarButton {...props} />,
-                    tabBarButton: () => (
-                        <CustomTabBarButton
-                            onPress={() => navigation.navigate('PostReport')} // Điều hướng đến PostReport
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcons
+                            focused={focused}
+                            icon={require('../../assets/images/book.png')} // TODO: đổi hình khác
+                            label="Nhân viên"
                         />
                     ),
                 }}
