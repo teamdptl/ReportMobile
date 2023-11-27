@@ -17,6 +17,7 @@ import useReportsFetch from "../../hooks/useReportsFetch";
 import ReportList from "../../components/Report/ReportList";
 import { getValue } from "../../contains/SecureStore";
 import { DRAFT_DATA } from "../../contains/config";
+import {Facebook} from "react-content-loader/native";
 
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -58,6 +59,7 @@ const UserHome = ({ navigation }) => {
       <ReportList
         reports={reports}
         loadNext={loadNext}
+        loading={loading}
         err={err}
         animatedValue={animatedValue}
         navigation = {navigation}
