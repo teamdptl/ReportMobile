@@ -186,6 +186,7 @@ const CreateReport = ({ navigation }) => {
       }
     }
   };
+  
 
   const saveDraftData = async () => {
     try {
@@ -194,12 +195,23 @@ const CreateReport = ({ navigation }) => {
 
       const draftData = await getValue(DRAFT_DATA);
   
+      const newImageArray = capturedImages.map((image, index) => {
+        const uriParts = image.split(".");
+        const fileType = uriParts[uriParts.length - 1];
+        return {
+          src: image, 
+          type: `image/${fileType}`,
+          name: `photo_${index}.${fileType}`,
+        };
+      });
+
       const newData = {
+        id: new Date().getTime(),
         title: state.title.value,
         description: state.description.value,
         location_api: location,
         location_text: state.address.value,
-        image: capturedImages,
+        image: newImageArray ,
       };
   
       const hasNonEmptyData = Object.values(newData).some(
@@ -208,7 +220,7 @@ const CreateReport = ({ navigation }) => {
   
       if (hasNonEmptyData) {
         const updatedDrafts = draftData ? [...JSON.parse(draftData), newData] : [newData];
-        console.log("data", JSON.stringify(updatedDrafts));
+        // console.log("data", JSON.stringify(updatedDrafts));
         await save(DRAFT_DATA, JSON.stringify(updatedDrafts));
       }
   

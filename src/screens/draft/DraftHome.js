@@ -8,9 +8,25 @@ import { USER_IS_INTERNET,DRAFT_DATA  } from "../../contains/config";
 
 const DraftHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const [reports, setReports] = useState([]);
 
   const linkImg = require("../../assets/images/noInternet.png");
-  const reports = getValue(DRAFT_DATA);
+  
+  // const reports =  getValue(DRAFT_DATA);
+
+  const getValueDraftData = async () => {
+      const draftData = await getValue(DRAFT_DATA);
+      console.log(draftData);
+
+        const parsedDraftData = JSON.parse(draftData);
+        setReports(parsedDraftData);
+        console.log(reports);
+      
+  };
+  
+useEffect(() => {
+    getValueDraftData();
+}, []);
 
   return (
     <View style={styles.container}>
@@ -31,7 +47,7 @@ const DraftHome = ({ navigation }) => {
 
       {/* <Button title="hu"  onPress={() => navigation.navigate('CreateReport')}/> */}
 
-      <ReportList reports={reports} animatedValue={animatedValue}></ReportList>
+      <ReportList reports={reports} animatedValue={animatedValue} navigation={navigation}></ReportList>
     </View>
   );
 };
