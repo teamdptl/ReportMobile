@@ -15,11 +15,12 @@ import { USER_IS_INTERNET } from "../../contains/config";
 const Tab = createBottomTabNavigator();
 
 const UserTabScreen = ({ navigation }) => {
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(null);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       setIsConnected(state.isConnected);
+      console.log(state.isConnected);
     });
 
     return () => {
@@ -29,8 +30,12 @@ const UserTabScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isConnected) {
-      const checkInternet = JSON.stringify(isConnected);
-      save(USER_IS_INTERNET, checkInternet);
+      const checkInternet = "online";
+       save(USER_IS_INTERNET, checkInternet);
+    }else{
+      const checkInternet2 = "offline";
+       save(USER_IS_INTERNET, checkInternet2);
+
     }
   }, [isConnected]);
   //
