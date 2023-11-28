@@ -1,10 +1,28 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, FlatList } from "react-native";
 import React from "react";
 import { Appbar } from "react-native-paper";
 import color from "../../contains/color";
 import { Image } from "@gluestack-ui/themed";
+import {
+  Select,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  Icon,
+  ChevronDownIcon,
+  SelectPortal,
+  SelectContent,
+  SelectBackdrop,
+  SelectDragIndicatorWrapper,
+  SelectDragIndicator,
+  SelectItem,
+} from "@gluestack-ui/themed";
+import ReportListItem from "../../components/Report/ReportListItem";
+import CustomLoader from "../../components/Report/ReportListItem";
 
-const ManagerWorkerDetails = () => {
+const ManagerWorkerDetails = ({ navigation }) => {
+//   const reports = [];
+
   return (
     <View style={{ flex: 1 }}>
       <Appbar.Header>
@@ -43,23 +61,107 @@ const ManagerWorkerDetails = () => {
               <Text style={styles.textInfoCareer}>Nhân viên sửa chữa</Text>
             </View>
           </View>
-          <View style={{ paddingHorizontal: 20, top: -30, }}>
+          <View style={{ paddingHorizontal: 20, top: -30 }}>
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>
               Thông tin cá nhân
             </Text>
-            <View style={{flexDirection: "row",}}>
+            <View style={{ flexDirection: "row" }}>
               <View style={{ marginLeft: 12, marginVertical: 10 }}>
                 <Text style={styles.textInfoPersonal}>Email:</Text>
                 <Text style={styles.textInfoPersonal}>Mã số:</Text>
                 <Text style={styles.textInfoPersonal}>Username:</Text>
               </View>
               <View style={{ marginLeft: 30, marginVertical: 10 }}>
-                <Text style={styles.textInfoPersonal}>trangthanhphuc@gmail.com</Text>
+                <Text style={styles.textInfoPersonal}>
+                  trangthanhphuc@gmail.com
+                </Text>
                 <Text style={styles.textInfoPersonal}>2831</Text>
                 <Text style={styles.textInfoPersonal}>Không phải là Phúc</Text>
               </View>
             </View>
+            <Text style={{ fontWeight: "bold", fontSize: 15, marginTop: 10 }}>
+              Các công việc thực hiện
+            </Text>
           </View>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: 20,
+              position: "relative",
+              top: -15,
+            }}
+          >
+            <View style={{ width: 170, flex: 5, marginRight: 10 }}>
+              <Select>
+                <SelectTrigger variant="outline" size="md">
+                  <SelectInput placeholder="Thời gian" />
+                  <SelectIcon mr="$3">
+                    <Icon as={ChevronDownIcon} />
+                  </SelectIcon>
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    <SelectItem label="UX Research" value="ux" />
+                    <SelectItem label="Web Development" value="web" />
+                    <SelectItem
+                      label="UI Designing"
+                      value="ui"
+                      isDisabled={true}
+                    />
+                    <SelectItem label="Backend Development" value="backend" />
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </View>
+            <View style={{ width: 120, flex: 3, marginLeft: 0 }}>
+              <Select>
+                <SelectTrigger variant="outline" size="md">
+                  <SelectInput placeholder="Trạng thái" />
+                  <SelectIcon mr="$3">
+                    <Icon as={ChevronDownIcon} />
+                  </SelectIcon>
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    <SelectItem label="UX Research" value="ux" />
+                    <SelectItem label="Web Development" value="web" />
+                    <SelectItem
+                      label="UI Designing"
+                      value="ui"
+                      isDisabled={true}
+                    />
+                    <SelectItem label="Backend Development" value="backend" />
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </View>
+          </View>
+          {/* {loading && (
+            <View style={{ marginTop: 10, marginHorizontal: 20 }}>
+              <CustomLoader />
+            </View>
+          )}
+          <FlatList
+            scrollEnabled={false}
+            data={reports}
+            renderItem={({ item }) => (
+              <ReportListItem
+                item={item}
+                handleNavigate={() =>
+                  navigation.navigate("ReportDetail", { ...item })
+                }
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          /> */}
         </View>
       </ScrollView>
     </View>
