@@ -108,6 +108,10 @@ const CreateReport = ({ navigation }) => {
     })();
   }, []);
 
+  useEffect(()=>{
+    console.log(location);
+  }, [location])
+
   useEffect(() => {
     if (!isGalleryVisible) {
       return;
@@ -241,29 +245,6 @@ const CreateReport = ({ navigation }) => {
     saveDraftData();
   }, [error]);
 
-  const takePicture = () => {
-    ImagePicker.launchCameraAsync()
-      .then((image) => {
-        if (image.assets) {
-          const photoUri = image.assets[0].uri;
-          const savedFile = saveFromTemp(photoUri);
-          setCapturedImages((prevImages) => [...prevImages, savedFile]);
-        }
-      })
-      .catch((err) => console.log("exit"));
-  };
-
-  const saveFromTemp = (photoUri) => {
-    const timeStamp = Date.now();
-    const imageFile =
-      FileSystem.documentDirectory + `cachedImage_${timeStamp}.jpg`;
-
-    FileSystem.copyAsync({
-      from: photoUri,
-      to: imageFile,
-    });
-    return imageFile;
-  };
 
   const removeImage = (imageUri) => {
     const updatedImages = capturedImages.filter((uri) => uri !== imageUri);
@@ -304,7 +285,7 @@ const CreateReport = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <CameraComponent takePicture={takePicture} />
+              <CameraComponent   setCapturedImages={setCapturedImages} />
               <ListImageHorizontal
                 listImageData={capturedImages}
                 openImageModal={(index) => openImageModal(index)}

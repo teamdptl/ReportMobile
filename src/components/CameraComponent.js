@@ -1,11 +1,38 @@
 import { Text, View,  TouchableOpacity} from "react-native";
 import React from "react";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
 
 
 const CameraComponent = (props) => {
+
+  const takePicture = () => {
+    ImagePicker.launchCameraAsync()
+      .then((image) => {
+        if (image.assets) {
+          const photoUri = image.assets[0].uri;
+          const savedFile = saveFromTemp(photoUri);
+          props.setCapturedImages((prevImages) => [...prevImages, savedFile]);
+        }
+      })
+      .catch((err) => console.log("exit"));
+  };
+
+  const saveFromTemp = (photoUri) => {
+    const timeStamp = Date.now();
+    const imageFile =
+      FileSystem.documentDirectory + `cachedImage_${timeStamp}.jpg`;
+
+    FileSystem.copyAsync({
+      from: photoUri,
+      to: imageFile,
+    });
+    return imageFile;
+  };
+
   return (
-    <TouchableOpacity onPress={props.takePicture}>
+    <TouchableOpacity onPress={takePicture}>
       <View
         style={{
           backgroundColor: "#E3EBF8",
