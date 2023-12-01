@@ -43,10 +43,8 @@ const Login = ({navigation}) => {
             // if (value.error === 0 && value.token){
             if(true){
                 console.log('Change value');
-                // save(USER_TOKEN_KEY, value.token);
-                // save(USER_ROLE_KEY, value.role);
-                save(USER_TOKEN_KEY, "value.token");
-                save(USER_ROLE_KEY, "1");
+                save(USER_TOKEN_KEY, value.token);
+                save(USER_ROLE_KEY, value.role);
                 setRole(value.role);
                 navigation.replace("Main");
             }
