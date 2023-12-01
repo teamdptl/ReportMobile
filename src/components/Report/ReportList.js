@@ -8,14 +8,14 @@ import {
 } from "react-native";
 import SmallButton from "../SmallButtons";
 import color from "../../contains/color";
-import ReportItem from "./ReportItem";
 import React, { useState } from "react";
 import ReportListItem from "./ReportListItem";
-import {Facebook} from "react-content-loader/native";
 import CustomLoader from "./CustomLoader";
+import ReportFilter from "./ReportFilter";
 
 
-const ReportList = ({ reports, loadNext, animatedValue, navigation, loading }) => {
+
+const ReportList = ({reports, loadNext, animatedValue, navigation, loading }) => {
   const [longPress, setLongPress] = useState(false);
   const [addComponentAsLongPress, setAddComponentAsLongPress] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -27,7 +27,7 @@ const ReportList = ({ reports, loadNext, animatedValue, navigation, loading }) =
     }, 1000);
   };
 
-  const contentHeight = reports.length >= 7 ? {} : { height: WINDOW_HEIGHT };
+  // const contentHeight = reports.length >= 7 ? {} : { height: WINDOW_HEIGHT };
 
   return (
     <>
@@ -36,62 +36,33 @@ const ReportList = ({ reports, loadNext, animatedValue, navigation, loading }) =
           const offSetY = e.nativeEvent.contentOffset.y;
           animatedValue.setValue(offSetY);
         }}
-        scrollEventThrottle={16}
-      >
+        scrollEventThrottle={16}>
         <View style={styles.paddingForHeader} />
-        <View style={[styles.scrollViewContent, contentHeight]}>
+        <View style={[styles.scrollViewContent]}>
           <View style={styles.containerLine}>
             <View style={styles.line}></View>
           </View>
 
-          <View style={styles.containerHTZLMid}>
-            <View style={styles.leftContent}>
-              <Text style={{ fontWeight: "bold" }}>Danh sách phản hồi</Text>
-            </View>
-            {addComponentAsLongPress ? (
-              <View style={styles.rightContent}>
-                <SmallButton
-                  title="Trở về"
-                  buttonColor={color.primaryColor}
-                  onPress={() => {
-                    setLongPress(false), setAddComponentAsLongPress(false);
-                  }}
-                />
-                <SmallButton
-                  title="Xóa"
-                  buttonColor={color.red}
-                  onPress={() => {}}
-                />
-              </View>
-            ) : null}
+          <View style={styles.titleFilterContainer}>
+            <Text style={{ fontWeight: "bold" }}>Danh sách phản hồi</Text>
+            <ReportFilter/>
           </View>
 
-          <View style={{ marginTop: 10 }}>
-            {/* {reports.map((item, index) => {
-              return (
-                <ReportItem
-                  key={item.id}
-                  index={index}
-                  item={item}
-                  handleLongPress={handleLongPress}
-                  longPress={longPress}
-                />
-              );
-            })} */}
+          <View style={{ marginTop: 10, marginBottom: 80}}>
             {loading &&
-                <View style={{marginTop: 10, marginHorizontal: 20}}>
+                <View style={{marginHorizontal: 20}}>
                   <CustomLoader/>
                 </View>
             }
             <FlatList
-             scrollEnabled={false} 
-              data={reports}
-              renderItem={({ item }) => (
-                <ReportListItem
-                  item={item} handleNavigate={() => navigation.navigate('ReportDetail', {...item})}
-                />
-              )}
-              keyExtractor={(item) => item.id}
+                scrollEnabled={false}
+                data={reports}
+                renderItem={({ item }) => (
+                    <ReportListItem
+                        item={item} handleNavigate={() => navigation.navigate('ReportDetail', {...item})}
+                    />
+                )}
+                keyExtractor={(item) => item.id}
             />
           </View>
         </View>
@@ -109,7 +80,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     // height: WINDOW_HEIGHT * 1.2,
     backgroundColor: "white",
-    paddingBottom: 100,
+    // paddingBottom: 100,
   },
   containerLine: {
     // flex: 1,
@@ -123,21 +94,11 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: "#858C90",
   },
-  containerHTZLMid: {
-    flexDirection: "row", // Xếp các phần tử theo hàng ngang
-    alignItems: "center", // Căn chỉnh các phần tử theo chiều dọc
-    justifyContent: "space-between", // Các phần tử bên trái và bên phải cách xa nhau
-    marginHorizontal: 10, // Khoảng cách ngang bên ngoài container
-    marginTop: 20, // Khoảng cách từ top
-  },
-  leftContent: {
-    flex: 1.5, // Phần trái chiếm 1 phần
-  },
-  rightContent: {
-    flex: 1.6, // Phần phải chiếm 2 phần
-    flexDirection: "row", // Xếp các phần tử trong phần phải theo hàng ngang
-    justifyContent: "space-between", // Các phần tử trong phần phải nằm ở phía bên phải
-  },
+
+  titleFilterContainer: {
+    marginHorizontal: 10,
+    marginTop: 20
+  }
 });
 
 export default ReportList;

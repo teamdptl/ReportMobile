@@ -8,7 +8,9 @@ const useReportFetch = (data) => {
 
     const callback = useCallback((reportId) => {
         setLoading(true);
-        getReportDetail(reportId).then(res => res.json())
+        getReportDetail(reportId).then(res => {
+            return res.json()
+        })
             .then(setReport)
             .catch(err => {
                 console.error(err);

@@ -14,10 +14,12 @@ export default function useCreateReport(dependencies = []) {
         if (!json.error) {
           setData(json);
         } else {
+          console.error(json.message);
           setErrorMsg(json.message);
         }
       })
       .catch((e) => {
+        console.error(e);
         setErrorMsg(e);
       })
       .finally(() => setLoading(false));

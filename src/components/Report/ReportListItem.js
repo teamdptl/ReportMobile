@@ -23,8 +23,17 @@ export const convertStatus = (status) => {
             output.text = 'Đã gửi';
             output.color = '#F5E024'
             break;
+        case 'process':
+            output.text = 'Thực hiện';
+            output.color = '#0693F1';
+            break;
+        case 'complete':
+            output.text = 'Hoàn thành';
+            output.color = '#61ab73';
+            break;
         default:
             output.text = 'Không xác định';
+            output.color = 'black'
     }
     return output;
 }

@@ -14,6 +14,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import color from "../../contains/color.js"
 import {Checkbox} from "expo-checkbox";
+import ManagerWorkerList from "../../components/ManagerWorker/ManagerWorkerList";
 
 const ManagerWorker = () => {
     return <>
@@ -28,7 +29,7 @@ const ManagerWorker = () => {
                     <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
                         <Input
                             style={{flex: 1, borderWidth: 1, borderColor: 'white', backgroundColor: 'white'}}
-                            size="md"
+                            size="sm"
                             isDisabled={false}
                             isInvalid={false}
                             isReadOnly={false}>
@@ -41,42 +42,7 @@ const ManagerWorker = () => {
                 </View>
                 <View style={{margin: 30, marginTop: 20}}>
                     <Text style={{fontSize: 14, fontWeight: '500', marginBottom: 20}}>Các nhân viên</Text>
-                    <View style={{gap: 15}}>
-                        <View>
-                            <View style={{flexDirection: 'row', alignItems: 'center',
-                                backgroundColor: '#FCFCFC', borderWidth: 1, borderColor: '#F6F5F5', padding: 10, borderRadius: 8, gap: 20
-                            }}>
-                                <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'}} width={40} height={40}/>
-                                <View>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, fontSize: 14, color: '#404040', fontWeight: '500'}}>Huỳnh Khánh Duy</Text>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 12, color: '#959595'}}>Mã số: 3120410088</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View>
-                            <View style={{flexDirection: 'row', alignItems: 'center',
-                                backgroundColor: '#FCFCFC', borderWidth: 1, borderColor: '#F6F5F5', padding: 10, borderRadius: 8, gap: 20
-                            }}>
-                                <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'}} width={40} height={40}/>
-                                <View>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, fontSize: 14, color: '#404040', fontWeight: '500'}}>Huỳnh Khánh Duy</Text>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 12, color: '#959595'}}>Mã số: 3120410088</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View>
-                            <View style={{flexDirection: 'row', alignItems: 'center',
-                                backgroundColor: '#FCFCFC', borderWidth: 1, borderColor: '#F6F5F5', padding: 10, borderRadius: 8, gap: 20
-                            }}>
-                                <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'}} width={40} height={40}/>
-                                <View>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, fontSize: 14, color: '#404040', fontWeight: '500'}}>Huỳnh Khánh Duy</Text>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 12, color: '#959595'}}>Mã số: 3120410088</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-
+                    <ManagerWorkerList/>
                 </View>
             </ScrollView>
         </View>

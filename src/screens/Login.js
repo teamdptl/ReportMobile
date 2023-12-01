@@ -38,19 +38,18 @@ const Login = ({navigation}) => {
     };
 
     useEffect(() => {
-
         if (value){
-            // if (value.error === 0 && value.token){
-            if(true){
-                console.log('Change value');
+            console.log(value);
+            if (value.error === 0 && value.token){
                 save(USER_TOKEN_KEY, value.token);
                 save(USER_ROLE_KEY, value.role);
+                // save(USER_TOKEN_KEY, "value.token");
+                // save(USER_ROLE_KEY, "1");
                 setRole(value.role);
                 navigation.replace("Main");
             }
             else {
-                alert(err)
-                // alert("Đăng nhập không thành công. Vui lòng thử lại.");
+                alert("Đăng nhập không thành công. Vui lòng thử lại.");
             }
         }
     }, [value]);

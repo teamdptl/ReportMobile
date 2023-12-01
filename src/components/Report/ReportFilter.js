@@ -1,0 +1,166 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
+import React, {useEffect, useState} from "react";
+import {
+    Button,
+    ButtonText,
+    CloseIcon,
+    Heading, Icon,
+    ModalBackdrop,
+    ModalCloseButton,
+    ModalHeader,
+    Modal, ModalContent, ModalBody, ModalFooter, InputField, SearchIcon, InputIcon, InputSlot, Input
+} from "@gluestack-ui/themed";
+import {Text, View} from "react-native";
+import RNPickerSelect from 'react-native-picker-select'
+
+const ReportFilter = ({onChange}) => {
+    const currentDate = new Date();
+    const previousMonth = new Date();
+    previousMonth.setMonth(previousMonth.getMonth()-1);
+
+    const [dateStart, setDateStart] = useState(previousMonth);
+    const [dateEnd, setDateEnd] = useState(currentDate);
+    const [showStart, setShowStart] = useState(false);
+    const [showEnd, setShowEnd] = useState(false);
+    const [showStatus, setShowStatus] = useState(false);
+
+    useEffect(() =>{
+        console.log(showEnd)
+    }, [showEnd])
+
+    useEffect(() => {
+        console.log('useEffect')
+        console.log(dateStart);
+        console.log(dateEnd);
+    }, [dateStart, dateEnd]);
+
+    const onChangeStart = (event, value) => {
+        setShowStart(false);
+        if (event.type === 'set')
+            setDateStart(value);
+    }
+
+
+    const onChangeEnd = (event, value) => {
+        setShowEnd(false);
+        if (event.type === 'set')
+            setDateEnd(value);
+    }
+
+    const getDateStr = (date) => {
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        return `${day}/${month}/${year}`
+    }
+
+    return (
+        <>
+            <View style={{marginVertical: 10, flex: 1}}>
+                <View style={{flexDirection: 'row', marginBottom: 15, gap: 10, justifyContent: 'center'}}>
+                    <Input style={{flex: 1}}  size="sm">
+                        <InputSlot pl="$3">
+                            <InputIcon as={SearchIcon} />
+                        </InputSlot>
+                        <InputField placeholder="Search..." />
+                    </Input>
+                    <Button
+                        size="sm"
+                        variant="solid"
+                        action="primary">
+                        <ButtonText>Tìm kiếm</ButtonText>
+                    </Button>
+                </View>
+                <View style={{flexDirection: 'row', justifyContent:'space-between', gap: 10}}>
+                    <View style={{flexDirection: 'row', gap: 10}}>
+                        <Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowStart(true)}>
+                            <ButtonText>Từ: {getDateStr(dateStart)}</ButtonText>
+                        </Button>
+                        <Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowEnd(true)}>
+                            <ButtonText>Đến: {getDateStr(dateEnd)}</ButtonText>
+                        </Button>
+                    </View>
+                    <Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowStatus(true)}>
+                        <ButtonText>Trạng thái</ButtonText>
+                    </Button>
+                </View>
+            </View>
+            <Modal
+                isOpen={showStatus}
+                onClose={() => {
+                    setShowStatus(false)
+                }}>
+                <ModalBackdrop />
+                <ModalContent>
+                    <ModalHeader>
+                        <Heading size="lg">Trạng thái</Heading>
+                        <ModalCloseButton>
+                            <Icon as={CloseIcon} />
+                        </ModalCloseButton>
+                    </ModalHeader>
+                    <ModalBody>
+                        <View style={{gap: 10}}>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                action="secondary">
+                                <ButtonText>Tất cả</ButtonText>
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                borderColor="$yellow400">
+                                <ButtonText color="$yellow400">Đã gửi</ButtonText>
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                borderColor="$blue400">
+                                <ButtonText color="$blue400">Đang xử lý</ButtonText>
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                borderColor="$green600">
+                                <ButtonText color="$green600">Đã hoàn thành</ButtonText>
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                action="negative">
+                                <ButtonText>Bị hủy</ButtonText>
+                            </Button>
+                        </View>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+            {   showStart && (
+                <>
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        mode={"date"}
+                        value={dateStart}
+                        maximumDate={currentDate}
+                        onChange={onChangeStart}
+                    />
+                </>
+            )}
+
+            {
+                showEnd && (
+                    <DateTimePicker
+                        testID="dateTimePicker2"
+                        mode={"date"}
+                        value={dateEnd}
+                        minimumDate={dateStart}
+                        maximumDate={currentDate}
+                        onChange={onChangeEnd}
+                    />
+                )
+            }
+        </>
+    );
+}
+
+
+export default ReportFilter;
