@@ -12,15 +12,15 @@ const Main = ({ navigation }) => {
     switch (userRole) {
       case "user":
         console.log("user navigation");
-        navigation.replace("UserNavigation");
+        navigation.replace("User");
         break;
       case "manager":
         console.log("manager navigation");
-        navigation.replace("ManagerNavigation");
+        navigation.replace("Manager");
         break;
       case "worker":
         console.log("worker navigation");
-        navigation.replace("WorkerNavigation");
+        navigation.replace("Worker");
         break;
       default:
         console.log("login navigation");
@@ -42,7 +42,7 @@ const Main = ({ navigation }) => {
         getValue(USER_ROLE_KEY)
           .then((data) => {
             console.log("Data: " + data);
-
+            setRole(data);
             if (state.isConnected) {
               
               switchScreen(data);

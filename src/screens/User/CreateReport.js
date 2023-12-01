@@ -240,7 +240,7 @@ const CreateReport = ({ navigation }) => {
           <View>
             <BackPage
               onPress={() => {
-                navigation.replace("Tab");
+                navigation.goBack();
               }}
             />
 

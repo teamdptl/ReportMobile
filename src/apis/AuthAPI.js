@@ -7,7 +7,6 @@ export async function handleLogin(data) {
     ...data,
     device_name: Device.deviceName,
   };
-  
   return createJsonFetch(URL_USER_LOGIN, method.POST, JSON.stringify(userData));
 }
 

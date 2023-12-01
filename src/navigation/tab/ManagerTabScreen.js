@@ -6,6 +6,8 @@ import TabIcons from '../../components/TabIcons';
 import UserReport from '../../screens/User/UserHome';
 import DetailUser from '../../screens/User/UserInfo';
 import PostReport from '../../screens/User/CreateReport';
+import ManagerWorker from "../../screens/Manager/ManagerWorker";
+import UserHome from "../../screens/User/UserHome";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,8 +28,8 @@ const ManagerTabScreen = ({navigation}) => {
     >
 
         <Tab.Screen
-            name="UserReport"
-            component={UserReport}
+            name="UserHome"
+            component={UserHome}
             options={{
                 tabBarIcon: ({focused}) => (<TabIcons
                     focused={focused}
@@ -37,12 +39,13 @@ const ManagerTabScreen = ({navigation}) => {
             }}
         />
         <Tab.Screen
-            name="PostReport"
-            component={PostReport}
+            name="ManagerWorker"
+            component={ManagerWorker}
             options={{
-                // tabBarButton: (props) => <CustomTabBarButton {...props} />,
-                tabBarButton: () => (<CustomTabBarButton
-                    onPress={() => navigation.navigate('PostReport')} // Điều hướng đến PostReport
+                tabBarIcon: ({focused}) => (<TabIcons
+                    focused={focused}
+                    icon={require('../../assets/images/book.png')}
+                    label="Nhân viên"
                 />),
             }}
         />
@@ -68,4 +71,4 @@ const styles = {
     },
 };
 
-export default UserTabScreen;
+export default ManagerTabScreen;

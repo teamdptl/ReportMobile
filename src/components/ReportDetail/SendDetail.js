@@ -3,12 +3,22 @@ import Carousel from "react-native-reanimated-carousel/src/Carousel";
 import {Dimensions, Image, StyleSheet, Text, View} from "react-native";
 import {timeToText} from "../Report/ReportListItem";
 import Icon from "react-native-vector-icons/FontAwesome";
-import MapView from "react-native-maps";
-import React, {useState} from "react";
+import MapView, {Marker} from "react-native-maps";
+import React, {useEffect, useState} from "react";
 import {Divider} from "@gluestack-ui/themed";
 
 const SendDetail = ({report}) => {
     const [windowSize, setWindowSize] = useState(Dimensions.get('window'));
+    const [reportCoords, setReportCoords] = useState({});
+    useEffect(() => {
+        if (!report.coordinate)
+            return;
+        const arr = report.coordinate.split(',')
+        if (arr.length === 2)
+            setReportCoords({latitude: parseFloat(arr[0]), longitude: parseFloat(arr[1])})
+        console.log(arr);
+    }, [report]);
+
     return <>
         <View style={{backgroundColor:'white'}}>
             <Carousel
@@ -50,14 +60,20 @@ const SendDetail = ({report}) => {
                 <Text style={styles.text}>
                     {report.description}
                 </Text>
-                <View style={{height: 150, width: "100%", marginTop: 10}}>
-                    <MapView initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }} style={styles.map} />
-                </View>
+                { reportCoords.latitude && reportCoords.longitude &&
+                    <View style={{height: 200, width: "100%", marginTop: 10}}>
+                        <MapView initialRegion={{
+                            latitude: reportCoords.latitude,
+                            longitude: reportCoords.longitude,
+                            latitudeDelta: 0.0007,
+                            longitudeDelta: 0.0007,
+                        }}
+                                 scrollEnabled={false}
+                                 style={styles.map}>
+                            <Marker coordinate={{latitude: reportCoords.latitude, longitude: reportCoords.longitude}}/>
+                        </MapView>
+                    </View>
+                }
             </View>
             <View style={styles.itemContainer}>
                 <View style={{flexDirection:"row", alignItems: 'center'}}>

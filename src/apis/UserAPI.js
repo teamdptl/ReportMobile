@@ -1,5 +1,5 @@
 import { getValue } from "../contains/SecureStore";
-import { URL_USER_INFO } from "../contains/config";
+import {URL_USER_INFO, URL_USER_SEARCH, USER_TOKEN_KEY} from "../contains/config";
 import { createFetch, method } from "./CustomFetch";
 
 export const getUserData = async () => {
@@ -7,6 +7,14 @@ export const getUserData = async () => {
 		.then((res) => res.json())
     .catch((err) => console.error("Lỗi khi gọi API: " + err));
 };
+
+export const getWokrers = async (search) => {
+	return createFetch(`${URL_USER_SEARCH}?search=${search}`, method.GET)
+}
+
+// export const selectWorker = async (workerId, reportId) => {
+// 	return createFetch()
+// }
 
 //Hàm này chưa hoàn thiện
 export const updateUserProfile = async (newData) => {

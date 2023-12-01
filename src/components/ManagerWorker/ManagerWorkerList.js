@@ -2,15 +2,9 @@ import {Image, Text, View} from "react-native";
 import React from "react";
 import ManagerWorkerItem from "./ManagerWorkerItem";
 
-const ManagerWorkerList = () => {
+const ManagerWorkerList = ({selectId, setSelectId}) => {
     return <>
-        <View style={{gap: 15}}>
-            <ManagerWorkerItem/>
-            <ManagerWorkerItem/>
-            <ManagerWorkerItem/>
-            <ManagerWorkerItem/>
-            <ManagerWorkerItem/>
-        </View>
+
     </>
 }
 

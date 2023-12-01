@@ -4,11 +4,29 @@ import {
     Button,
     ButtonText,
     CloseIcon,
-    Heading, Icon,
+    Heading,
+    Icon,
     ModalBackdrop,
     ModalCloseButton,
     ModalHeader,
-    Modal, ModalContent, ModalBody, ModalFooter, InputField, SearchIcon, InputIcon, InputSlot, Input
+    Modal,
+    ModalContent,
+    ModalBody,
+    ModalFooter,
+    InputField,
+    SearchIcon,
+    InputIcon,
+    InputSlot,
+    Input,
+    SelectTrigger,
+    SelectInput,
+    SelectIcon,
+    ChevronDownIcon,
+    SelectPortal,
+    SelectBackdrop,
+    SelectContent,
+    SelectDragIndicatorWrapper,
+    SelectDragIndicator, SelectItem, Select
 } from "@gluestack-ui/themed";
 import {Text, View} from "react-native";
 import RNPickerSelect from 'react-native-picker-select'
@@ -73,18 +91,40 @@ const ReportFilter = ({onChange}) => {
                 </View>
                 <View style={{flexDirection: 'row', justifyContent:'space-between', gap: 10}}>
                     <View style={{flexDirection: 'row', gap: 10}}>
-                        <Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowStart(true)}>
+                        <Button borderRadius="$md" size={"sm"} action="primary" onPress={() => setShowStart(true)}>
                             <ButtonText>Từ: {getDateStr(dateStart)}</ButtonText>
                         </Button>
-                        <Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowEnd(true)}>
+                        <Button borderRadius="$md" size={"sm"} action="primary" onPress={() => setShowEnd(true)}>
                             <ButtonText>Đến: {getDateStr(dateEnd)}</ButtonText>
                         </Button>
                     </View>
-                    <Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowStatus(true)}>
-                        <ButtonText>Trạng thái</ButtonText>
-                    </Button>
+                    {/*<Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowStatus(true)}>*/}
+                    {/*    <ButtonText>Trạng thái</ButtonText>*/}
+                    {/*</Button>*/}
+                    <Select style={{flex: 1, flexShink: 1}}>
+                        <SelectTrigger variant="outline" size="sm">
+                            <SelectInput placeholder="Tất cả" />
+                            <SelectIcon mr="$3">
+                                <Icon as={ChevronDownIcon} />
+                            </SelectIcon>
+                        </SelectTrigger>
+                        <SelectPortal>
+                            <SelectBackdrop />
+                            <SelectContent>
+                                <SelectDragIndicatorWrapper>
+                                    <SelectDragIndicator />
+                                </SelectDragIndicatorWrapper>
+                                <SelectItem label="Tất cả" value="all" />
+                                <SelectItem label="Đã gửi" value="sent" />
+                                <SelectItem label="Thực hiện" value="process" />
+                                <SelectItem label="Hoàn thành" value="done" />
+                                <SelectItem label="Bỏ qua" value="ignore" />
+                            </SelectContent>
+                        </SelectPortal>
+                    </Select>
                 </View>
             </View>
+
             <Modal
                 isOpen={showStatus}
                 onClose={() => {

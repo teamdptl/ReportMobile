@@ -7,10 +7,15 @@ import ManagerAction from "../../components/ReportDetail/ManagerAction";
 import SendDetail from "../../components/ReportDetail/SendDetail";
 import ReportStatusSection from "../../components/ReportDetail/ReportStatusSection";
 import WorkerAction from "../../components/ReportDetail/WorkerAction";
+import {useAuthContext} from "../../context/AuthContext";
+import {MANAGER_ROLE, STATUS} from "../../contains/config";
+import AdminFeedback from "../../components/ReportDetail/FeedbackIgnore";
+import FeedbackIgnore from "../../components/ReportDetail/FeedbackIgnore";
 
 const ReportDetail = ({navigation, route})=>{
     const data = route.params;
     const {report, errorMsg, loading, callback} = useReportFetch({data});
+    const { isManager, isWorker, isUser, role } = useAuthContext();
 
     useEffect(() => {
         callback(data.id);
@@ -19,15 +24,6 @@ const ReportDetail = ({navigation, route})=>{
     useEffect(() => {
         console.log(report)
     }, [report]);
-
-    const images = [
-        'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' ,
-        'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' ,
-        'https://st4.depositphotos.com/1015390/38880/i/450/depositphotos_388808316-stock-photo-wavy-abstract-smooth-colors-background.jpg' ,
-        'https://sgu.dy.id.vn/photos/2023/11/img1_187_e801e92cfbb7849c1ae2dc64c15bdb0fb5e9c9e8.png'
-    ];
-
-    const role ="admin"
 
     return(
         <View style={styles.container}>
@@ -41,22 +37,22 @@ const ReportDetail = ({navigation, route})=>{
                     <SendDetail report={report}/>
                     {/*Chia phần này ra 1 component nhỏ */}
                     <ReportStatusSection report={report}/>
-                    <ManagerAction openSelectWorker={() => navigation.navigate('SelectWorker', {report: report})}/>
-                    <WorkerAction/>
-                    {/*{*/}
-                    {/*    role=="admin" ?*/}
-                    {/*        <Button*/}
-                    {/*            size="xs"*/}
-                    {/*            variant="solid"*/}
-                    {/*            action="primary"*/}
-                    {/*            isDisabled={false}*/}
-                    {/*            isFocusVisible={false}*/}
-                    {/*        >*/}
-                    {/*            <ButtonText>Add </ButtonText>*/}
+                    { isManager() && report.status === STATUS.SENT &&
+                        <ManagerAction openSelectWorker={() => navigation.navigate('SelectWorker', {report: report})}/>
+                    }
 
-                    {/*        </Button>*/}
-                    {/*    :null*/}
-                    {/*}*/}
+                    { (isManager() || isWorker()) && report.status === STATUS.PROCESS && report.done_by?.manager_note.length > 0 &&
+                        (<Text style={{marginHorizontal: 20, color:"#979797", marginBottom: 20, textAlign: 'center'}}>
+                            Ghi chú từ quản lý ({report.done_by?.manager_name}): { report.done_by?.manager_note }
+                        </Text>)
+                    }
+
+                    { isWorker() && report.status === STATUS.PROCESS &&
+                        <WorkerAction/>
+                    }
+
+                    { report.status === STATUS.IGNORE && (<FeedbackIgnore reason={report.done_by}/>) }
+
                 </ScrollView>
             </GestureHandlerRootView>
         </View>

@@ -45,22 +45,4 @@ const createFetch = async (url, method, body = null, headers = {}) => {
 	return body === null ? fetch(url, { ...options }) : fetch(url, { ...options, body: body });
 };
 
-// const testLoginAPI = async () => {
-// 	const userData = {
-// 		mssv: "312",
-// 		password: "312",
-// 		device_name: "Duy",
-// 	};
-//
-// 	const response = createJsonFetch(URL_USER_LOGIN, method.POST, JSON.stringify(userData));
-// 	response
-// 		.then((res) => res.json())
-// 		.then((data) => {
-// 			console.log(data);
-// 			save(USER_TOKEN_KEY, data.token);
-// 		})
-// 		.catch((err) => console.error(err))
-// 		.finally(() => console.log("Done!"));
-// };
-
 export { method, createFetch, createJsonFetch };
