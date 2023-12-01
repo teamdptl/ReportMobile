@@ -47,7 +47,7 @@ useEffect(() => {
 
       {/* <Button title="hu"  onPress={() => navigation.navigate('CreateReport')}/> */}
 
-      <ReportList reports={reports} animatedValue={animatedValue} navigation={navigation}></ReportList>
+      {/* <ReportList reports={reports} animatedValue={animatedValue} navigation={navigation}></ReportList> */}
     </View>
   );
 };

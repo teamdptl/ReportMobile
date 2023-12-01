@@ -1,8 +1,6 @@
 import {
   Text,
   View,
-  Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
   ScrollView,
@@ -29,9 +27,7 @@ import formReducer, {
 import { USER_IS_INTERNET, DRAFT_DATA } from "../../contains/config";
 import { save, getValue, deleteValue } from "../../contains/AsyncStore";
 
-import * as FileSystem from "expo-file-system";
 import * as Location from "expo-location";
-import * as ImagePicker from "expo-image-picker";
 
 import useCreateReport from "../../hooks/useCreateReport";
 
@@ -100,8 +96,6 @@ const CreateReport = ({ navigation }) => {
         const latitude = location.coords.latitude;
         const longitude = location.coords.longitude;
         setLocation(`${latitude},${longitude}`);
-
-        console.log("Coordinates: " + location);
       } else {
         console.log("Location information not available.");
       }
@@ -112,36 +106,15 @@ const CreateReport = ({ navigation }) => {
     console.log(location);
   }, [location])
 
-  useEffect(() => {
-    if (!isGalleryVisible) {
-      return;
-    }
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
 
-    return () => {
-      backHandler.remove();
+    const openImageModal = (index) => {
+      setSelectedIndex(index);
+      setIsGalleryVisible(true);
     };
-  }, [isGalleryVisible]);
 
-  const backAction = () => {
-    console.log("out side modal " + isGalleryVisible);
-    if (isGalleryVisible) {
-      closeImageModal();
-      return true;
-    }
-  };
-
-  const openImageModal = (index) => {
-    setSelectedIndex(index);
-    setIsGalleryVisible(true);
-  };
-
-  const closeImageModal = () => {
-    setIsGalleryVisible(false);
-  };
+    const closeImageModal = () => {
+      setIsGalleryVisible(false);
+    };
 
   const handleButtonClick = async () => {
     const isInvalidImage = capturedImages.length > 0 ? false : true;
@@ -194,7 +167,6 @@ const CreateReport = ({ navigation }) => {
 
   const saveDraftData = async () => {
     try {
-
       deleteValue(DRAFT_DATA);
 
       const draftData = await getValue(DRAFT_DATA);
@@ -285,7 +257,7 @@ const CreateReport = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <CameraComponent   setCapturedImages={setCapturedImages} />
+              <CameraComponent setCapturedImages={setCapturedImages} />
               <ListImageHorizontal
                 listImageData={capturedImages}
                 openImageModal={(index) => openImageModal(index)}
