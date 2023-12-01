@@ -106,7 +106,6 @@ const CreateReport = ({ navigation }) => {
     console.log(location);
   }, [location])
 
-
     const openImageModal = (index) => {
       setSelectedIndex(index);
       setIsGalleryVisible(true);
@@ -217,12 +216,6 @@ const CreateReport = ({ navigation }) => {
     saveDraftData();
   }, [error]);
 
-
-  const removeImage = (imageUri) => {
-    const updatedImages = capturedImages.filter((uri) => uri !== imageUri);
-    setCapturedImages(updatedImages);
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -262,6 +255,7 @@ const CreateReport = ({ navigation }) => {
                 listImageData={capturedImages}
                 openImageModal={(index) => openImageModal(index)}
                 removeImage={(imageUri) => removeImage(imageUri)}
+                setCapturedImages={setCapturedImages} 
               />
             </View>
 

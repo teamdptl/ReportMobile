@@ -8,6 +8,12 @@ import {
 } from "react-native";
 
 const ListImageHorizontal = (props) => {
+
+  const removeImage = (imageUri) => {
+    const updatedImages = props.listImageData.filter((uri) => uri !== imageUri);
+    props.setCapturedImages(updatedImages);
+  };
+
   return (
     <ScrollView horizontal style={{ marginLeft: 10 }}>
       {props.listImageData.map((imageUri, index) => (
@@ -21,7 +27,7 @@ const ListImageHorizontal = (props) => {
               style={{ width: 70, height: 70, borderRadius: 10 }}
             />
             <TouchableOpacity
-              onPress={() => props.removeImage(imageUri)}
+              onPress={() => removeImage(imageUri)}
               style={{
                 position: "absolute",
                 top: -5,
