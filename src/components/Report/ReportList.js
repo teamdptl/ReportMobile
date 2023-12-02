@@ -8,26 +8,60 @@ import {
 } from "react-native";
 import SmallButton from "../SmallButtons";
 import color from "../../contains/color";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import ReportListItem from "./ReportListItem";
 import CustomLoader from "./CustomLoader";
 import ReportFilter from "./ReportFilter";
+import useReportsFetch from "../../hooks/useReportsFetch";
 
 
 
-const ReportList = ({reports, loadNext, animatedValue, navigation, loading }) => {
-  const [longPress, setLongPress] = useState(false);
-  const [addComponentAsLongPress, setAddComponentAsLongPress] = useState(false);
+const ReportList = ({animatedValue, navigation}) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const handleLongPress = () => {
-    // Thiết lập một hẹn giờ để kiểm tra liệu người dùng có giữ trong ít nhất 2 giây không
-    setTimeout(() => {
-      setLongPress(true);
-      setAddComponentAsLongPress(true);
-    }, 1000);
-  };
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 1);
+  const previousMonth = new Date();
+  previousMonth.setMonth(previousMonth.getMonth()-1);
 
-  // const contentHeight = reports.length >= 7 ? {} : { height: WINDOW_HEIGHT };
+  const [filterData, setFilterData] = useState({
+    text: '',
+    from: previousMonth,
+    to: currentDate,
+    status: 'all'
+  })
+
+  const {reports, err, loadNext, loading, callback} = useReportsFetch();
+
+  function formatDate(date) {
+    let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  useEffect(() => {
+    callback({
+      ...filterData,
+      from: formatDate(filterData.from),
+      to: formatDate(filterData.to)})
+  }, [filterData]);
+
+  // useEffect(() => {
+  //   if (reports){
+  //     console.log(reports);
+  //   }
+  //
+  //   if (err){
+  //     console.log(err);
+  //   }
+  // }, [reports, err]);
 
   return (
     <>
@@ -45,7 +79,7 @@ const ReportList = ({reports, loadNext, animatedValue, navigation, loading }) =>
 
           <View style={styles.titleFilterContainer}>
             <Text style={{ fontWeight: "bold" }}>Danh sách phản hồi</Text>
-            <ReportFilter/>
+            <ReportFilter onChange={(filterData) => setFilterData(filterData)}/>
           </View>
 
           <View style={{ marginTop: 10, marginBottom: 80}}>
@@ -54,16 +88,20 @@ const ReportList = ({reports, loadNext, animatedValue, navigation, loading }) =>
                   <CustomLoader/>
                 </View>
             }
-            <FlatList
-                scrollEnabled={false}
-                data={reports}
-                renderItem={({ item }) => (
-                    <ReportListItem
-                        item={item} handleNavigate={() => navigation.navigate('ReportDetail', {...item})}
-                    />
-                )}
-                keyExtractor={(item) => item.id}
-            />
+            {!loading &&
+                <FlatList
+                    scrollEnabled={false}
+                    data={reports}
+                    renderItem={({ item }) => (
+                        <ReportListItem
+                            item={item} handleNavigate={() => navigation.navigate('ReportDetail', {...item})}
+                        />
+                    )}
+                    keyExtractor={(item) => item.id}
+                    onEndReached={() => console.log("End reached")}
+                    onEndReachedThreshold={0.5}
+                />
+            }
           </View>
         </View>
       </Animated.ScrollView>

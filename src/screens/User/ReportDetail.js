@@ -11,6 +11,7 @@ import {useAuthContext} from "../../context/AuthContext";
 import {STATUS} from "../../contains/config";
 import WorkerFeedback from "../../components/ReportDetail/WorkerFeedback";
 import FakeGallery from "../../components/FakeGallery";
+import UserAction from "../../components/ReportDetail/UserAction";
 
 const ReportDetail = ({navigation, route})=>{
     const data = route.params;
@@ -19,12 +20,16 @@ const ReportDetail = ({navigation, route})=>{
     const [openGallery, setOpenGallery] = useState(false);
     const [galleryIndex, setGalleryIndex] = useState(0);
 
+    const [openFeedbackGallery, setOpenFeedbackGallery] = useState(false);
+    const [galleryFeedbackIndex, setGalleryFeedbackIndex] = useState(0);
+
     useEffect(() => {
         callback(data.id);
     }, [])
 
     useEffect(() => {
-        console.log(report)
+        if (report)
+            console.log(report);
     }, [report]);
 
     return(
@@ -41,6 +46,11 @@ const ReportDetail = ({navigation, route})=>{
                     <ReportStatusSection report={report}/>
                     { !loading &&
                         <>
+
+                            { isUser() && report.status === STATUS.SENT &&
+                                <UserAction report={report} navigation={navigation}/>
+                            }
+
                             { isManager() && report.status === STATUS.SENT &&
                                 <ManagerAction reportId={report.id}
                                                openSelectWorker={() => navigation.navigate('SelectWorker', {report: report})}
@@ -58,8 +68,11 @@ const ReportDetail = ({navigation, route})=>{
                                 <WorkerAction openCreateFeedback={() => navigation.navigate('CreateFeedback', {report})}/>
                             }
 
-                            { report.status === STATUS.COMPLETE &&
-                                <WorkerFeedback/>
+                            { report.status === STATUS.COMPLETE && report.done_by &&
+                                <WorkerFeedback data={report.done_by} setImageIndex={(index) => {
+                                    setGalleryFeedbackIndex(index);
+                                    setOpenFeedbackGallery(true);
+                                }}/>
                             }
                         </>
                     }
@@ -71,6 +84,14 @@ const ReportDetail = ({navigation, route})=>{
                              isShow={openGallery}
                              closeImageModal={() => setOpenGallery(false)}
                              listImage={report.images.map(item => item.src)}
+                />
+            }
+
+            { openFeedbackGallery && report.status === STATUS.COMPLETE && report.done_by.images &&
+                <FakeGallery indexImage={galleryFeedbackIndex}
+                             isShow={openFeedbackGallery}
+                             closeImageModal={() => setOpenFeedbackGallery(false)}
+                             listImage={report.done_by.images.map(item => item.src)}
                 />
             }
         </View>

@@ -1,5 +1,5 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     Button,
     ButtonText,
@@ -29,28 +29,34 @@ import {
     SelectDragIndicator, SelectItem, Select
 } from "@gluestack-ui/themed";
 import {Text, View} from "react-native";
-import RNPickerSelect from 'react-native-picker-select'
 
 const ReportFilter = ({onChange}) => {
     const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
     const previousMonth = new Date();
     previousMonth.setMonth(previousMonth.getMonth()-1);
 
     const [dateStart, setDateStart] = useState(previousMonth);
     const [dateEnd, setDateEnd] = useState(currentDate);
+    const [status, setStatus] = useState("all");
+    const [text, setText] = useState('');
     const [showStart, setShowStart] = useState(false);
     const [showEnd, setShowEnd] = useState(false);
     const [showStatus, setShowStatus] = useState(false);
-
-    useEffect(() =>{
-        console.log(showEnd)
-    }, [showEnd])
+    const isMountingRef = useRef(false);
 
     useEffect(() => {
-        console.log('useEffect')
-        console.log(dateStart);
-        console.log(dateEnd);
-    }, [dateStart, dateEnd]);
+        if (!isMountingRef.current){
+            isMountingRef.current = true;
+            return;
+        }
+
+        onChange({
+            from: dateStart,
+            to: dateEnd,
+            status: status
+        })
+    }, [dateStart, dateEnd, status]);
 
     const onChangeStart = (event, value) => {
         setShowStart(false);
@@ -80,12 +86,18 @@ const ReportFilter = ({onChange}) => {
                         <InputSlot pl="$3">
                             <InputIcon as={SearchIcon} />
                         </InputSlot>
-                        <InputField placeholder="Search..." />
+                        <InputField placeholder="Tên, mô tả, ..." value={text} onChangeText={(text) => setText(text)} />
                     </Input>
                     <Button
                         size="sm"
                         variant="solid"
-                        action="primary">
+                        action="primary"
+                        onPress={() => onChange({
+                            text: text,
+                            from: dateStart,
+                            to: dateEnd,
+                            status: status
+                        })}>
                         <ButtonText>Tìm kiếm</ButtonText>
                     </Button>
                 </View>
@@ -101,7 +113,7 @@ const ReportFilter = ({onChange}) => {
                     {/*<Button borderRadius="$md" size={"xs"} action="primary" onPress={() => setShowStatus(true)}>*/}
                     {/*    <ButtonText>Trạng thái</ButtonText>*/}
                     {/*</Button>*/}
-                    <Select style={{flex: 1, flexShink: 1}}>
+                    <Select style={{flex: 1, flexShink: 1}} value={status} onValueChange={(value) => setStatus(value)}>
                         <SelectTrigger variant="outline" size="sm">
                             <SelectInput placeholder="Tất cả" />
                             <SelectIcon mr="$3">
@@ -117,7 +129,7 @@ const ReportFilter = ({onChange}) => {
                                 <SelectItem label="Tất cả" value="all" />
                                 <SelectItem label="Đã gửi" value="sent" />
                                 <SelectItem label="Thực hiện" value="process" />
-                                <SelectItem label="Hoàn thành" value="done" />
+                                <SelectItem label="Hoàn thành" value="complete" />
                                 <SelectItem label="Bỏ qua" value="ignore" />
                             </SelectContent>
                         </SelectPortal>

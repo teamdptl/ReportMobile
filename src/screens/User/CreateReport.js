@@ -252,7 +252,7 @@ const CreateReport = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <CameraComponent setCapturedImages={setCapturedImages} />
+              <CameraComponent setCapturedImages={setCapturedImages} shouldSave={true}/>
               <ListImageHorizontal
                 listImageData={capturedImages}
                 openImageModal={(index) => openImageModal(index)}
@@ -264,7 +264,7 @@ const CreateReport = ({ navigation }) => {
               <Text style={styles.textBody}>Vấn đề</Text>
               <CustomInput
                 isInvalid={state.title.isInvalid}
-                placeholder={"VD: Cơ sở, phòng học"}
+                placeholder={"Mô tả ngắn gọn vấn đề"}
                 value={state.title.value}
                 onChangeText={(text) => handleInputChange("title", text)}
               />

@@ -12,8 +12,13 @@ const CameraComponent = (props) => {
       .then((image) => {
         if (image.assets) {
           const photoUri = image.assets[0].uri;
-          const savedFile = saveFromTemp(photoUri);
-          props.setCapturedImages((prevImages) => [...prevImages, savedFile]);
+          if (props.shouldSave ? props.shouldSave : false){
+              const savedFile = saveFromTemp(photoUri);
+              props.setCapturedImages((prevImages) => [...prevImages, savedFile]);
+          }
+          else {
+              props.setCapturedImages((prevImages) => [...prevImages, photoUri]);
+          }
         }
       })
       .catch((err) => console.log("exit"));

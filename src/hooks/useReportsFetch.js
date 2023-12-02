@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import { getListReport, getReportAtPage } from "../apis/ReportAPI"
 import {createFetch, method} from "../apis/CustomFetch";
 import {URL_REPORT_ALL} from "../contains/config";
-export default function useReportsFetch(params, dependencies = []) {
+export default function useReportsFetch(dependencies = []) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [reports, setReports] = useState([])
@@ -27,9 +27,9 @@ export default function useReportsFetch(params, dependencies = []) {
         }
     }, dependencies)
 
-    const callback = useCallback(async () => {
+    const callback = useCallback((filterData) => {
         setLoading(true)
-        await getListReport()
+        getListReport(filterData)
             .then(res => res.json())
             .then(json => {
                 if (json.data){
@@ -42,7 +42,6 @@ export default function useReportsFetch(params, dependencies = []) {
             .catch(setError)
             .finally(() => setLoading(false))
     }, dependencies)
-
 
     return { reports, error, loadNext, loading, callback }
 }
