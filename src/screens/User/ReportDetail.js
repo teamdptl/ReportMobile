@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {StyleSheet, Image, Text, View, ScrollView} from "react-native";
 import { Appbar } from 'react-native-paper';
 import {GestureHandlerRootView} from "react-native-gesture-handler";
@@ -8,13 +8,16 @@ import SendDetail from "../../components/ReportDetail/SendDetail";
 import ReportStatusSection from "../../components/ReportDetail/ReportStatusSection";
 import WorkerAction from "../../components/ReportDetail/WorkerAction";
 import {useAuthContext} from "../../context/AuthContext";
-import {MANAGER_ROLE, STATUS} from "../../contains/config";
-import FeedbackIgnore from "../../components/ReportDetail/FeedbackIgnore";
+import {STATUS} from "../../contains/config";
+import WorkerFeedback from "../../components/ReportDetail/WorkerFeedback";
+import FakeGallery from "../../components/FakeGallery";
 
 const ReportDetail = ({navigation, route})=>{
     const data = route.params;
     const {report, errorMsg, loading, callback} = useReportFetch({...data});
     const { isManager, isWorker, isUser, role } = useAuthContext();
+    const [openGallery, setOpenGallery] = useState(false);
+    const [galleryIndex, setGalleryIndex] = useState(0);
 
     useEffect(() => {
         callback(data.id);
@@ -33,7 +36,8 @@ const ReportDetail = ({navigation, route})=>{
             </Appbar.Header>
             <GestureHandlerRootView style={styles.container}>
                 <ScrollView style={styles.contentContainer}>
-                    <SendDetail report={report}/>
+                    <SendDetail report={report} setGalleryIndex={setGalleryIndex}
+                                openGallery={()=> setOpenGallery(true)}/>
                     <ReportStatusSection report={report}/>
                     { !loading &&
                         <>
@@ -44,29 +48,39 @@ const ReportDetail = ({navigation, route})=>{
                                 />
                             }
 
-                            { (isManager() || isWorker()) && report.status === STATUS.PROCESS && report.done_by?.manager_note.length > 0 &&
+                            { (isManager() || isWorker()) && report.status === STATUS.PROCESS && report.done_by?.manager_note &&
                                 (<Text style={{marginHorizontal: 20, color:"#979797", marginBottom: 20, textAlign: 'center'}}>
                                     Ghi chú từ quản lý ({report.done_by?.manager_name}): { report.done_by?.manager_note }
                                 </Text>)
                             }
 
                             { isWorker() && report.status === STATUS.PROCESS &&
-                                <WorkerAction/>
+                                <WorkerAction openCreateFeedback={() => navigation.navigate('CreateFeedback', {report})}/>
                             }
 
-                            { report.status === STATUS.IGNORE && (<FeedbackIgnore reason={report.done_by}/>) }
+                            { report.status === STATUS.COMPLETE &&
+                                <WorkerFeedback/>
+                            }
                         </>
                     }
 
                 </ScrollView>
             </GestureHandlerRootView>
+            { openGallery && report.images && report.images.length > 0 &&
+                <FakeGallery indexImage={galleryIndex}
+                             isShow={openGallery}
+                             closeImageModal={() => setOpenGallery(false)}
+                             listImage={report.images.map(item => item.src)}
+                />
+            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        flex:1
+        flex:1,
+        position: 'relative'
     },
 
     contentContainer:{

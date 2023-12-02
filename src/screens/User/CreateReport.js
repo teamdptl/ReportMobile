@@ -4,7 +4,7 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   ScrollView,
-  BackHandler,
+  BackHandler, Platform,
 } from "react-native"; // Import SafeAreaView
 import React, { useState, useEffect, useRef, useReducer } from "react";
 import color from "../../contains/color";
@@ -30,6 +30,7 @@ import { save, getValue, deleteValue } from "../../contains/AsyncStore";
 import * as Location from "expo-location";
 
 import useCreateReport from "../../hooks/useCreateReport";
+import {Appbar} from "react-native-paper";
 
 const CreateReport = ({ navigation }) => {
   // Mảng chứa hình
@@ -226,28 +227,22 @@ const CreateReport = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1, marginTop: 5, backgroundColor: "white" }}
+      style={{ flex: 1, backgroundColor: "white" }}
     >
-      <View style={styles.container}>
+      <View>
         {isGalleryVisible && capturedImages && capturedImages.length > 0 && (
           <FakeGallery
             listImage={capturedImages}
             indexImage={selectedIndex}
             closeImageModal={closeImageModal}
+            isShow={isGalleryVisible}
           />
         )}
-        <ScrollView>
-          <View>
-            <BackPage
-              onPress={() => {
-                navigation.goBack();
-              }}
-            />
-
-            <View style={styles.centeredTextContainer}>
-              <Text style={styles.centeredText}>Tạo phản hồi</Text>
-            </View>
-          </View>
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => {navigation.goBack()}} />
+          <Appbar.Content title="Tạo báo cáo" titleStyle={{fontSize: 16}} />
+        </Appbar.Header>
+        <ScrollView style={styles.container}>
           <View style={styles.bodyReport}>
             <View
               style={{

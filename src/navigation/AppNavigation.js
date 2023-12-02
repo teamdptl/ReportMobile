@@ -11,6 +11,7 @@ import ManagerSelectWorker from "../screens/Manager/ManagerSelectWorker";
 import ManagerTabScreen from "./tab/ManagerTabScreen";
 import WorkerTabScreen from "./tab/WorkerTabScreen";
 import ManagerWorkerDetails from "../screens/Manager/ManagerWorkerDetails";
+import CreateFeedback from "../screens/Worker/CreateFeedback";
 
 const AppStack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ const AppNavigation = () => {
           <AppStack.Screen name="Manager" component={ManagerTabScreen} />
           <AppStack.Screen name="Worker" component={WorkerTabScreen} />
           <AppStack.Screen name="CreateReport" component={CreateReport} />
+          <AppStack.Screen name="CreateFeedback" component={CreateFeedback} />
           <AppStack.Screen name="ReportDetail" component={ReportDetail}/>
           <AppStack.Screen name="SelectWorker" component={ManagerSelectWorker}/>
           <AppStack.Screen name="WorkerDetail" component={ManagerWorkerDetails}/>

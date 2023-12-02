@@ -1,10 +1,27 @@
-import { StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import {StyleSheet, Dimensions, BackHandler} from "react-native";
+import React, {useEffect} from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Icon, ArrowLeftIcon } from "@gluestack-ui/themed";
 import Gallery from "react-native-awesome-gallery";
 
 const FakeGallery = (props) => {
+  const backAction = () => {
+    props.closeImageModal();
+    return true;
+  };
+
+  useEffect(() => {
+    if (!props.isShow) return;
+    const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [props.isShow]);
+
   return (
     <GestureHandlerRootView
       style={styles.gallery}
@@ -31,7 +48,7 @@ export default FakeGallery;
 const styles = StyleSheet.create({
   gallery: {
     position: "absolute",
-    top: -10,
+    top: 0,
     right: 0,
     left: 0,
     bottom: 0,

@@ -9,7 +9,7 @@ const getCurrentPosition = (status) => {
         return 0;
     if (status === STATUS.PROCESS)
         return 1;
-    if (status === STATUS.IGNORE)
+    if (status === STATUS.COMPLETE)
         return 2;
     return 0;
 }

@@ -1,15 +1,16 @@
 // Thông tin gửi đi của report
 import Carousel from "react-native-reanimated-carousel/src/Carousel";
-import {Dimensions, Image, StyleSheet, Text, View} from "react-native";
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {timeToText} from "../Report/ReportListItem";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView, {Marker} from "react-native-maps";
 import React, {useEffect, useState} from "react";
 import {Divider} from "@gluestack-ui/themed";
 
-const SendDetail = ({report}) => {
+const SendDetail = ({report, setGalleryIndex, openGallery}) => {
     const [windowSize, setWindowSize] = useState(Dimensions.get('window'));
     const [reportCoords, setReportCoords] = useState({});
+
     useEffect(() => {
         if (!report.coordinate)
             return;
@@ -27,15 +28,15 @@ const SendDetail = ({report}) => {
                 height={windowSize.width / 2}
                 data={report.images}
                 scrollAnimationDuration={1000}
-                onSnapToItem={(index) => console.log('current index:', index)}
+                onSnapToItem={(index) => setGalleryIndex(index)}
                 renderItem={({ item }) => (
-                    <View
+                    <TouchableWithoutFeedback onPress={() => openGallery()}
                         style={{
                             flex: 1,
                             justifyContent: 'center',
                         }}>
                         <Image source={{uri: item.src}} width={windowSize.width} height={windowSize.width/2}></Image>
-                    </View>
+                    </TouchableWithoutFeedback>
                 )}
             />
         </View>
@@ -92,14 +93,6 @@ const SendDetail = ({report}) => {
                 variant="horizontal"
                 color="black"
             />
-
-            {/*{*/}
-            {/*    role == "admin"  ?  <View style={styles.itemContainer}>*/}
-            {/*        <Text style={styles.title}>Ghi chú</Text>*/}
-            {/*        <TextInput numberOfLines={5} style={ {borderStyle:"solid",borderWidth:1,borderRadius:5,marginTop:10 }}>*/}
-            {/*        </TextInput>*/}
-            {/*    </View>:null*/}
-            {/*}*/}
         </View>
     </>
 }
