@@ -18,17 +18,20 @@ import ReportList from "../../components/Report/ReportList";
 import { getValue } from "../../contains/SecureStore";
 import { DRAFT_DATA } from "../../contains/config";
 import {Facebook} from "react-content-loader/native";
+import {useIsFocused} from "@react-navigation/native";
 
 const UserHome = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const {reports, err, loadNext, loading, callback} = useReportsFetch({});
   const linkImg = require("../../assets/images/feedback.png");
+ const isFocus = useIsFocused();
 
-  // const reports = getValue(DRAFT_DATA);
 
   useEffect(() => {
-    callback();
-  }, []);
+      if(isFocus){
+          callback();
+      }
+  }, [isFocus]);
 
   useEffect(() => {
     if (reports){
