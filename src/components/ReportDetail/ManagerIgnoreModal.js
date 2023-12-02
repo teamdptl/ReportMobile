@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {
     CloseIcon,
     Heading,
@@ -10,17 +10,42 @@ import {
     Modal, ButtonText, Button, Input, InputField
 } from "@gluestack-ui/themed";
 
-import { Text } from "react-native";
+import {ActivityIndicator, Text} from "react-native";
+import {createJsonFetch, method} from "../../apis/CustomFetch";
+import {URL_REPORT_IGNORE} from "../../contains/config";
+import {Overlay} from "@rneui/themed";
+import AlertDialog from "../AlertDialog";
 
-const ManagerIgnoreModal = ({show, closeModal, submitCallback}) => {
+const ManagerIgnoreModal = ({show, closeModal, submitCallback, reportId}) => {
     const [reason, setReason] = useState('');
     const [isInValidInput, setIsInValidInput] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+
+    const ignoreReport = () => {
+        setLoading(true);
+        createJsonFetch(URL_REPORT_IGNORE, method.PUT, JSON.stringify({
+            reports_id: reportId,
+            note: reason
+        })).then(res => res.json())
+            .then(json => {
+                if (json.status === 'success' || json.status === 'sussess')
+                    submitCallback();
+                else {
+                    setErrorMsg(json.message)
+                }
+            })
+            .catch(err => {
+                setErrorMsg(err);
+            })
+            .finally(() => setLoading(false))
+    }
 
     const confirmModal = () => {
         if (reason.length){
             setIsInValidInput(false);
-            submitCallback();
             closeModal();
+            ignoreReport();
         }
         else {
             setIsInValidInput(true);
@@ -88,6 +113,11 @@ const ManagerIgnoreModal = ({show, closeModal, submitCallback}) => {
                 </ModalFooter>
             </ModalContent>
         </Modal>
+        <Overlay isVisible={loading} onBackdropPress={() => {}}>
+            <ActivityIndicator size="large"/>
+            <Text>Đang xử lý</Text>
+        </Overlay>
+        <AlertDialog showAlertDialog={errorMsg !== ''} onClose={() => setErrorMsg("")} headerAlert={"Xảy ra lỗi"} bodyAlert={errorMsg} />
     </>
 }
 

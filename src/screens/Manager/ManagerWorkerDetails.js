@@ -20,15 +20,15 @@ import {
 import ReportListItem from "../../components/Report/ReportListItem";
 import CustomLoader from "../../components/Report/ReportListItem";
 
-const ManagerWorkerDetails = ({ navigation }) => {
-//   const reports = [];
+const ManagerWorkerDetails = ({ navigation, route }) => {
+  const { username, email, student_code, name, id } = route.params;
 
   return (
     <View style={{ flex: 1 }}>
       <Appbar.Header>
-        <Appbar.BackAction onPress={() => {}} />
-        <Appbar.Content title="Trở về" titleStyle={{ fontSize: 17 }} />
-        <Appbar.Action icon="dots-vertical" onPress={() => {}} />
+        <Appbar.BackAction onPress={() => {navigation.goBack()}} />
+        <Appbar.Content title="Thông tin nhân viên" titleStyle={{ fontSize: 17 }}/>
+        <Appbar.Action icon="dots-vertical" />
       </Appbar.Header>
       <ScrollView>
         <View style={{ flex: 1, position: "relative" }}>
@@ -73,10 +73,10 @@ const ManagerWorkerDetails = ({ navigation }) => {
               </View>
               <View style={{ marginLeft: 30, marginVertical: 10 }}>
                 <Text style={styles.textInfoPersonal}>
-                  trangthanhphuc@gmail.com
+                  {email}
                 </Text>
-                <Text style={styles.textInfoPersonal}>2831</Text>
-                <Text style={styles.textInfoPersonal}>Không phải là Phúc</Text>
+                <Text style={styles.textInfoPersonal}>{student_code}</Text>
+                <Text style={styles.textInfoPersonal}>{username}</Text>
               </View>
             </View>
             <Text style={{ fontWeight: "bold", fontSize: 15, marginTop: 10 }}>
@@ -178,10 +178,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   textInfoCareer: {
-    fontWeight: "bold",
     color: "white",
-    marginTop: 10,
-    fontSize: 12,
+    marginTop: 5,
+    fontSize: 14,
   },
   textInfoPersonal: {
     marginTop: 2,

@@ -44,7 +44,7 @@ const ManagerTabScreen = ({navigation}) => {
             options={{
                 tabBarIcon: ({focused}) => (<TabIcons
                     focused={focused}
-                    icon={require('../../assets/images/book.png')}
+                    icon={require('../../assets/images/employee.png')}
                     label="Nhân viên"
                 />),
             }}

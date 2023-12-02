@@ -38,7 +38,10 @@ const ManagerSelectWorker = ({navigation, route}) => {
                 console.log(json);
                 navigation.navigate('UserHome');
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                console.error(err);
+                navigation.navigate('SelectWorker', { report })
+            })
             .finally(() => {
                 setSendLoading(false);
             })

@@ -9,12 +9,11 @@ import ReportStatusSection from "../../components/ReportDetail/ReportStatusSecti
 import WorkerAction from "../../components/ReportDetail/WorkerAction";
 import {useAuthContext} from "../../context/AuthContext";
 import {MANAGER_ROLE, STATUS} from "../../contains/config";
-import AdminFeedback from "../../components/ReportDetail/FeedbackIgnore";
 import FeedbackIgnore from "../../components/ReportDetail/FeedbackIgnore";
 
 const ReportDetail = ({navigation, route})=>{
     const data = route.params;
-    const {report, errorMsg, loading, callback} = useReportFetch({data});
+    const {report, errorMsg, loading, callback} = useReportFetch({...data});
     const { isManager, isWorker, isUser, role } = useAuthContext();
 
     useEffect(() => {
@@ -35,23 +34,29 @@ const ReportDetail = ({navigation, route})=>{
             <GestureHandlerRootView style={styles.container}>
                 <ScrollView style={styles.contentContainer}>
                     <SendDetail report={report}/>
-                    {/*Chia phần này ra 1 component nhỏ */}
                     <ReportStatusSection report={report}/>
-                    { isManager() && report.status === STATUS.SENT &&
-                        <ManagerAction openSelectWorker={() => navigation.navigate('SelectWorker', {report: report})}/>
-                    }
+                    { !loading &&
+                        <>
+                            { isManager() && report.status === STATUS.SENT &&
+                                <ManagerAction reportId={report.id}
+                                               openSelectWorker={() => navigation.navigate('SelectWorker', {report: report})}
+                                               reloadPage={() => navigation.navigate("ReportDetail", {...report})}
+                                />
+                            }
 
-                    { (isManager() || isWorker()) && report.status === STATUS.PROCESS && report.done_by?.manager_note.length > 0 &&
-                        (<Text style={{marginHorizontal: 20, color:"#979797", marginBottom: 20, textAlign: 'center'}}>
-                            Ghi chú từ quản lý ({report.done_by?.manager_name}): { report.done_by?.manager_note }
-                        </Text>)
-                    }
+                            { (isManager() || isWorker()) && report.status === STATUS.PROCESS && report.done_by?.manager_note.length > 0 &&
+                                (<Text style={{marginHorizontal: 20, color:"#979797", marginBottom: 20, textAlign: 'center'}}>
+                                    Ghi chú từ quản lý ({report.done_by?.manager_name}): { report.done_by?.manager_note }
+                                </Text>)
+                            }
 
-                    { isWorker() && report.status === STATUS.PROCESS &&
-                        <WorkerAction/>
-                    }
+                            { isWorker() && report.status === STATUS.PROCESS &&
+                                <WorkerAction/>
+                            }
 
-                    { report.status === STATUS.IGNORE && (<FeedbackIgnore reason={report.done_by}/>) }
+                            { report.status === STATUS.IGNORE && (<FeedbackIgnore reason={report.done_by}/>) }
+                        </>
+                    }
 
                 </ScrollView>
             </GestureHandlerRootView>

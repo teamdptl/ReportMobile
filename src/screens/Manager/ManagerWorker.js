@@ -56,7 +56,7 @@ const ManagerWorker = ({navigation}) => {
                     {!loading && (
                         <View style={{gap: 15}}>
                             { workers && workers.map((worker) => (
-                                <ManagerWorkerItem key={worker.id} worker={worker} onClick={() => navigation.navigate('WorkerDetail', {})}/>
+                                <ManagerWorkerItem key={worker.id} worker={worker} onClick={() => navigation.navigate('WorkerDetail', {worker})}/>
                             ))}
                         </View>
                     )}

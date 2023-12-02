@@ -80,6 +80,7 @@ const SendDetail = ({report}) => {
                     <Text style={{width: 20}}><Icon name="user" size={15} color="black"/></Text>
                     <Text style={styles.title}>Người gửi</Text>
                 </View>
+
                 <Text style={styles.text}>
                     {report.user?.name} - {report.user?.mssv}
                 </Text>

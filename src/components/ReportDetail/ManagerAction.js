@@ -4,7 +4,7 @@ import {View, StyleSheet, Modal} from "react-native";
 import {Button, ButtonText} from "@gluestack-ui/themed";
 import ManagerIgnoreModal from "./ManagerIgnoreModal";
 
-const ManagerAction = ({openSelectWorker}) => {
+const ManagerAction = ({openSelectWorker, reportId, reloadPage}) => {
     // Sẽ bị lỗi nếu click vào cái này quá sớm
 
     const [showIgnore, setShowIgnore] = useState(false);
@@ -17,7 +17,10 @@ const ManagerAction = ({openSelectWorker}) => {
                 <ButtonText color="$red500">Bỏ qua</ButtonText>
             </Button>
         </View>
-        <ManagerIgnoreModal show={showIgnore} closeModal={() => setShowIgnore(false)}/>
+        <ManagerIgnoreModal reportId={reportId} show={showIgnore}
+                            closeModal={() => setShowIgnore(false)}
+                            submitCallback={reloadPage}
+        />
     </>
 }
 
