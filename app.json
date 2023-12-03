@@ -49,7 +49,12 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.huykhaduy.ReportMobile"
+      "package": "com.huykhaduy.ReportMobile",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDWNHfKfuiLft21Pw42RuSw3AE9LqnX90k"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

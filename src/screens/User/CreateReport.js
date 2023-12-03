@@ -91,15 +91,17 @@ const CreateReport = ({ navigation }) => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
-
-      if (location && location.coords) {
-        const latitude = location.coords.latitude;
-        const longitude = location.coords.longitude;
-        setLocation(`${latitude},${longitude}`);
-      } else {
-        console.log("Location information not available.");
-      }
+      console.log("Start get location");
+      Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High, maximumAge: 10000}).then(location => {
+        if (location && location.coords) {
+          const latitude = location.coords.latitude;
+          const longitude = location.coords.longitude;
+          setLocation(`${latitude},${longitude}`);
+          console.log("End get location");
+        } else {
+          console.log("Location information not available.");
+        }
+      });
     })();
   }, []);
 
@@ -292,6 +294,7 @@ const CreateReport = ({ navigation }) => {
                 mt="$10"
                 size="md"
                 bg="#0693F1"
+                isDisabled={location === null || location === ""}
                 onPress={handleButtonClick}
               >
                 <ButtonText fontSize="$sm" fontWeight="$bold" color="white">
