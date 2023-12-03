@@ -6,13 +6,15 @@ export default function useCreateReport(dependencies = []) {
   const [data, setData] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const call = useCallback(async (data) => {
+  const call = useCallback(async (data, callWhenDone = null) => {
     setLoading(true);
     createReport(data)
       .then((res) => res.json())
       .then((json) => {
         if (!json.error) {
           setData(json);
+          if (callWhenDone)
+            callWhenDone();
         } else {
           console.error(json.message);
           setErrorMsg(json.message);

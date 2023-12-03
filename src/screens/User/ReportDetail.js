@@ -12,6 +12,7 @@ import {STATUS} from "../../contains/config";
 import WorkerFeedback from "../../components/ReportDetail/WorkerFeedback";
 import FakeGallery from "../../components/FakeGallery";
 import UserAction from "../../components/ReportDetail/UserAction";
+import {useIsFocused} from "@react-navigation/native";
 
 const ReportDetail = ({navigation, route})=>{
     const data = route.params;
@@ -22,15 +23,21 @@ const ReportDetail = ({navigation, route})=>{
 
     const [openFeedbackGallery, setOpenFeedbackGallery] = useState(false);
     const [galleryFeedbackIndex, setGalleryFeedbackIndex] = useState(0);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         callback(data.id);
-    }, [])
+    }, [isFocused])
 
     useEffect(() => {
         if (report)
             console.log(report);
     }, [report]);
+
+    useEffect(() => {
+        if (errorMsg)
+            navigation.goBack();
+    }, [errorMsg]);
 
     return(
         <View style={styles.container}>
@@ -54,7 +61,7 @@ const ReportDetail = ({navigation, route})=>{
                             { isManager() && report.status === STATUS.SENT &&
                                 <ManagerAction reportId={report.id}
                                                openSelectWorker={() => navigation.navigate('SelectWorker', {report: report})}
-                                               reloadPage={() => navigation.navigate("ReportDetail", {...report})}
+                                               reloadPage={() => callback(data.id)}
                                 />
                             }
 

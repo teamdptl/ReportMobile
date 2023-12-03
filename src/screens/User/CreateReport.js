@@ -109,6 +109,11 @@ const CreateReport = ({ navigation }) => {
     console.log(location);
   }, [location])
 
+  useEffect(() => {
+    if (errorMsg)
+      alert(errorMsg)
+  }, [errorMsg]);
+
 
     const openImageModal = (index) => {
       setSelectedIndex(index);
@@ -140,7 +145,15 @@ const CreateReport = ({ navigation }) => {
         const formData = new FormData();
         formData.append("title", state.title.value);
         formData.append("description", state.description.value);
-        formData.append("location_api", location);
+        if (location)
+          formData.append("location_api", location);
+        else {
+          const location = await Location.getLastKnownPositionAsync();
+          const latitude = location.coords.latitude;
+          const longitude = location.coords.longitude;
+          formData.append("location_api", `${latitude},${longitude}`)
+        }
+
         formData.append("location_text", state.address.value);
         // console.log("location_api", location);
 
@@ -157,7 +170,9 @@ const CreateReport = ({ navigation }) => {
           });
         }
 
-        await call(formData);
+        await call(formData, () => {
+          navigation.goBack();
+        });
       } else if(checkInternet == "offline"){
         console.log("dang o create draft");
         saveDraftData();
@@ -294,7 +309,7 @@ const CreateReport = ({ navigation }) => {
                 mt="$10"
                 size="md"
                 bg="#0693F1"
-                isDisabled={location === null || location === ""}
+                isDisabled={loading}
                 onPress={handleButtonClick}
               >
                 <ButtonText fontSize="$sm" fontWeight="$bold" color="white">

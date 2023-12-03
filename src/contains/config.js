@@ -1,4 +1,4 @@
-const url = "https://sgu.dy.id.vn/api/v1";
+const url = "https://sgu2.dy.id.vn/api/v1";
 
 export const USER_TOKEN_KEY = "userToken";
 export const USER_ROLE_KEY = "userRole";
