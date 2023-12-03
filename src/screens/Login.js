@@ -105,7 +105,7 @@ const Login = ({navigation}) => {
 
                 <Buttons onPress={onLogin} btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
                 <View style={styles.container_QuenMatKhau}>
-                    <Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
+                    <Text onPress={()=>{navigation.navigate("Register")}} style={styles.text_QuenMatKhau}>Đăng kí tài khoản</Text>
                 </View>
             </View>
             <Overlay isVisible={loading} onBackdropPress={() => {

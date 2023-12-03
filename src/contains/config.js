@@ -20,6 +20,7 @@ export const STATUS = {
 export const URL_USER_INFO = `${url}/user-info`;
 export const URL_USER_SEARCH = `${url}/users`;
 export const URL_USER_LOGIN = `${url}/login`;
+export const URL_USER_REGISTER = `${url}/register`
 export const URL_USER_LOGOUT = `${url}/logout`;
 export const URL_REPORT_ALL = `${url}/reports`
 export const URL_REPORT_MAIN = `${url}/report`;
