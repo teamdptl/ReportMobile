@@ -136,10 +136,10 @@ const CreateReport = ({ navigation }) => {
       setShowAlertDialog(false);
 
   
-      const checkInternet =  await getValue(USER_IS_INTERNET);
-      console.log(checkInternet);
+      // const checkInternet =  await getValue(USER_IS_INTERNET);
+      // console.log(checkInternet);
 
-      if (checkInternet == "online") {
+      // if (checkInternet == "online") {
         console.log("dang o create usehome");
 
         const formData = new FormData();
@@ -173,12 +173,12 @@ const CreateReport = ({ navigation }) => {
         await call(formData, () => {
           navigation.goBack();
         });
-      } else if(checkInternet == "offline"){
-        console.log("dang o create draft");
-        saveDraftData();
-      } else{
-        console.log("Khong vo duoc");
-      }
+      // } else if(checkInternet == "offline"){
+      //   console.log("dang o create draft");
+      //   saveDraftData();
+      // } else{
+      //   console.log("Khong vo duoc");
+      // }
     }
   };
   

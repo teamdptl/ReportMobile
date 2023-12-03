@@ -33,7 +33,8 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-        "usesNonExemptEncryption": false
+        "usesNonExemptEncryption": false,
+        "googleMapsApiKey": "AIzaSyDWNHfKfuiLft21Pw42RuSw3AE9LqnX90k"
       },
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"]

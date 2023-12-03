@@ -43,18 +43,17 @@ const Main = ({ navigation }) => {
           .then((data) => {
             console.log("Data: " + data);
             setRole(data);
-            if (state.isConnected) {
-              
-              switchScreen(data);
-              setRole(data);
-            } else {
-              if(data == "user"){
-                console.log("vo k");
-                navigation.replace("DraftUser");
-              }
-              
-
-            }
+            switchScreen(data);
+          //   if (state.isConnected) {
+          //
+          //     switchScreen(data);
+          //     setRole(data);
+          //   } else {
+          //     if(data === "user"){
+          //       console.log("vo k");
+          //       navigation.replace("DraftUser");
+          //     }
+          //   }
           })
           .catch((err) => {
             navigation.replace("Login");
