@@ -108,11 +108,11 @@ const Login = ({navigation}) => {
                     <Text onPress={()=>{navigation.navigate("Register")}} style={styles.text_QuenMatKhau}>Đăng kí tài khoản</Text>
                 </View>
             </View>
-            <Overlay isVisible={loading} onBackdropPress={() => {
-            }}>
-                <ActivityIndicator size="large"/>
-                <Text>Đang xử lý</Text>
-            </Overlay>
+            {/*<Overlay isVisible={loading} onBackdropPress={() => {*/}
+            {/*}}>*/}
+            {/*    <ActivityIndicator size="large"/>*/}
+            {/*    <Text>Đang xử lý</Text>*/}
+            {/*</Overlay>*/}
         </View>
     );
 };
