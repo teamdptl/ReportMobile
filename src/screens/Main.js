@@ -27,8 +27,7 @@ const Main = ({ navigation }) => {
   }, []);
 
   return <>
-    <View>
-      <Text>Loading...</Text>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
     </View>
   </>;
 }
