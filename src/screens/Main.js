@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Text } from "react-native";
+import { Text,View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import { deleteValue, getValue } from "../contains/SecureStore";
 import { USER_ROLE_KEY } from "../contains/config";
@@ -16,33 +16,21 @@ const Main = ({ navigation }) => {
       console.log("Is connected?", state.isConnected);
 
       console.log("Context: " + role);
-      if (role) {
-        switchScreen(role, navigation);
-      } else {
-        getValue(USER_ROLE_KEY)
+      getValue(USER_ROLE_KEY)
           .then((data) => {
             console.log("Data: " + data);
             setRole(data);
-            switchScreen(data);
-          //   if (state.isConnected) {
-          //
-          //     switchScreen(data);
-          //     setRole(data);
-          //   } else {
-          //     if(data === "user"){
-          //       console.log("vo k");
-          //       navigation.replace("DraftUser");
-          //     }
-          //   }
+            switchScreen(data, navigation);
           })
-          .catch((err) => {
-            navigation.replace("Login");
-          });
-      }
+          .catch((err) => navigation.navigate("Login"))
     });
   }, []);
 
-  return <></>;
-};
+  return <>
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  </>;
+}
 
 export default Main;

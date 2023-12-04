@@ -48,7 +48,7 @@ const Login = ({navigation}) => {
                 // save(USER_ROLE_KEY, "1");
                 setRole(value.role);
                 setTimeout(() => {
-                    switchScreen(role, navigation);
+                    switchScreen(value.role, navigation);
                 }, 500)
 
             }
