@@ -1,11 +1,18 @@
 import { Text, View,  TouchableOpacity} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
+import {requestCameraPermissionsAsync} from "expo-image-picker";
 
 
 const CameraComponent = (props) => {
+    useEffect(() => {
+        requestCameraPermissionsAsync().then(status => {
+            if (!status.granted)
+                alert("Vui lòng cho phép sử dụng camera!");
+        })
+    }, []);
 
   const takePicture = () => {
     ImagePicker.launchCameraAsync()
