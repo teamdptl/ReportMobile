@@ -19,6 +19,7 @@ import {USER_ROLE_KEY, USER_TOKEN_KEY} from "../contains/config";
 import color from "../contains/color";
 import {AuthContext} from "../context/AuthContext";
 import useFetchOnCall from "../hooks/useFetchOnCall";
+import {switchScreen} from "../utils/LoginUtils";
 
 const Login = ({navigation}) => {
     const [mssv, setMssv] = useState("");
@@ -46,7 +47,10 @@ const Login = ({navigation}) => {
                 // save(USER_TOKEN_KEY, "value.token");
                 // save(USER_ROLE_KEY, "1");
                 setRole(value.role);
-                navigation.replace("Main");
+                setTimeout(() => {
+                    switchScreen(role, navigation);
+                }, 500)
+
             }
             else {
                 alert("Đăng nhập không thành công. Vui lòng thử lại.");
