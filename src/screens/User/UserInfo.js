@@ -30,30 +30,37 @@ const UserInfo = ({ navigation }) => {
 			return "Nhân viên sửa chữa";
 	}
 
+	const removeData = () => {
+		deleteValue(USER_TOKEN_KEY);
+		deleteValue(USER_ROLE_KEY);
+		setRole(null);
+		navigation.replace("Login");
+	}
+
 	const onLogout = async () => {
 		await handleLogout()
 			.then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        if (data && data.error === 0) {
-          deleteValue(USER_TOKEN_KEY);
-		  deleteValue(USER_ROLE_KEY);
-		  setRole(null);
-          navigation.replace("Login");
-        }
-        else {
-          alert("Xảy ra lỗi trong quá trình đăng xuất");
-        }
+		  if (data && data.error === 0) {
+			console.log("Logout success")
+		  }
+		  else {
+			  alert("Không thể gọi api đăng xuất");
+		  }
 			})
 			.catch((err) => {
 				console.error(err);
-			});
+			}).finally(() => {
+				removeData();
+			})
 	};
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const result = await getUserData(); // Gọi hàm getUserData từ UserApi.js
-
+			const result = await getUserData() // Gọi hàm getUserData từ UserApi.js
+			if (result.error === 1){
+				removeData();
+			}
 			if (result) {
 				setUserData({
 					name: result.name,

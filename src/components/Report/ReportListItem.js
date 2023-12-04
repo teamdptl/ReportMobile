@@ -48,8 +48,11 @@ const ReportListItem = ({item, handleNavigate, deleteIds, setDeleteIds}) => {
         <TouchableOpacity onPress={handleNavigate}>
             <View style={styles.container}>
                 <View>
-                    <Image style={styles.image}
-                           source={{ uri: item.images[0].src }} width={100} height={100}/>
+                    {item.images[0]?.src &&
+                        <Image style={styles.image}
+                               source={{ uri: item.images[0].src }} width={100} height={100}/>
+                    }
+
                 </View>
                 <View style={styles.textWrapper}>
                     <View style={styles.headerTitle}>

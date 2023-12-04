@@ -28,16 +28,16 @@ const UserTabScreen = ({ navigation }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (isConnected) {
-      const checkInternet = "online";
-       save(USER_IS_INTERNET, checkInternet);
-    }else{
-      const checkInternet2 = "offline";
-       save(USER_IS_INTERNET, checkInternet2);
-
-    }
-  }, [isConnected]);
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     const checkInternet = "online";
+  //      save(USER_IS_INTERNET, checkInternet);
+  //   }else{
+  //     const checkInternet2 = "offline";
+  //      save(USER_IS_INTERNET, checkInternet2);
+  //
+  //   }
+  // }, [isConnected]);
   //
   return (
     <Tab.Navigator
@@ -57,36 +57,19 @@ const UserTabScreen = ({ navigation }) => {
         tabBarShowLabel: false, // Hide labels in tabs
       })}
     >
-      {isConnected ? (
-        <Tab.Screen
+      <Tab.Screen
           name="UserHome"
           component={UserHome}
           options={{
             tabBarIcon: ({ focused }) => (
-              <TabIcons
-                focused={focused}
-                icon={require("../../assets/images/book.png")}
-                label="Phản hồi"
-              />
+                <TabIcons
+                    focused={focused}
+                    icon={require("../../assets/images/book.png")}
+                    label="Phản hồi"
+                />
             ),
           }}
-        />
-      ) : (
-        <Tab.Screen
-          name="DraftHome"
-          component={DraftHome}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <TabIcons
-                focused={focused}
-                icon={require("../../assets/images/book.png")}
-                label="Phản hồi"
-              />
-            ),
-          }}
-        />
-      )}
-
+      />
       <Tab.Screen
         name="CreateReport"
         component={CreateReport}

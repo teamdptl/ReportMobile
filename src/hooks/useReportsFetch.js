@@ -32,16 +32,17 @@ export default function useReportsFetch(dependencies = []) {
         getListReport(filterData)
             .then(res => res.json())
             .then(json => {
-                if (json.data){
-                    setReports(json.data);
-                    setPage(json.meta.current_page);
-                    setTotalPage(json.meta.last_page);
-                    setNextPage(json.links.next);
-                }
+                // if (json.data){
+                //     setReports(json.data);
+                //     setPage(json.meta.current_page);
+                //     setTotalPage(json.meta.last_page);
+                //     setNextPage(json.links.next);
+                // }
+                setReports(json);
             })
             .catch(setError)
             .finally(() => setLoading(false))
     }, dependencies)
 
-    return { reports, error, loadNext, loading, callback }
+    return { reports, error, loading, callback }
 }

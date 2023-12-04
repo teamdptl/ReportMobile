@@ -13,19 +13,21 @@ import ReportListItem from "./ReportListItem";
 import CustomLoader from "./CustomLoader";
 import ReportFilter from "./ReportFilter";
 import useReportsFetch from "../../hooks/useReportsFetch";
+import {useIsFocused} from "@react-navigation/native";
 
 
 
 const ReportList = ({animatedValue, navigation}) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const isFocused = useIsFocused();
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 1);
-  const previousMonth = new Date();
-  previousMonth.setMonth(previousMonth.getMonth()-1);
+  const previousWeek = new Date();
+  previousWeek.setDate(previousWeek.getDate()-7);
 
   const [filterData, setFilterData] = useState({
     text: '',
-    from: previousMonth,
+    from: previousWeek,
     to: currentDate,
     status: 'all'
   })
@@ -51,17 +53,18 @@ const ReportList = ({animatedValue, navigation}) => {
       ...filterData,
       from: formatDate(filterData.from),
       to: formatDate(filterData.to)})
-  }, [filterData]);
+    console.log("Call list report");
+  }, [filterData, isFocused]);
 
-  // useEffect(() => {
-  //   if (reports){
-  //     console.log(reports);
-  //   }
-  //
-  //   if (err){
-  //     console.log(err);
-  //   }
-  // }, [reports, err]);
+  useEffect(() => {
+    if (reports){
+      console.log(reports);
+    }
+
+    if (err){
+      console.log(err);
+    }
+  }, [reports, err]);
 
   return (
     <>
@@ -83,12 +86,12 @@ const ReportList = ({animatedValue, navigation}) => {
           </View>
 
           <View style={{ marginTop: 10, marginBottom: 80}}>
-            {loading &&
+            { (loading && reports.length === 0) &&
                 <View style={{marginHorizontal: 20}}>
                   <CustomLoader/>
                 </View>
             }
-            {!loading &&
+            { (!loading || reports.length > 0 ) &&
                 <FlatList
                     scrollEnabled={false}
                     data={reports}
@@ -98,8 +101,6 @@ const ReportList = ({animatedValue, navigation}) => {
                         />
                     )}
                     keyExtractor={(item) => item.id}
-                    onEndReached={() => console.log("End reached")}
-                    onEndReachedThreshold={0.5}
                 />
             }
           </View>

@@ -33,10 +33,10 @@ import {Text, View} from "react-native";
 const ReportFilter = ({onChange}) => {
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
-    const previousMonth = new Date();
-    previousMonth.setMonth(previousMonth.getMonth()-1);
+    const previousWeek = new Date();
+    previousWeek.setDate(previousWeek.getDate()-7);
 
-    const [dateStart, setDateStart] = useState(previousMonth);
+    const [dateStart, setDateStart] = useState(previousWeek);
     const [dateEnd, setDateEnd] = useState(currentDate);
     const [status, setStatus] = useState("all");
     const [text, setText] = useState('');
