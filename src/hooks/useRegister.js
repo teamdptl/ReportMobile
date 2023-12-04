@@ -1,17 +1,20 @@
 import {useCallback, useEffect, useState} from "react";
 import {getReportDetail} from "../apis/ReportAPI";
+import {handleRegister} from "../apis/AuthAPI";
 
-const useReportFetch = (data) => {
-    const [report, setReport] = useState({...data});
+const useRegister = () => {
     const [errorMsg, setErrorMsg] = useState('');
     const [loading, setLoading] = useState(false);
-
-    const callback = useCallback((reportId) => {
+    const [data , setData] = useState(null);
+    const callback = useCallback((data) => {
         setLoading(true);
-        getReportDetail(reportId).then(res => {
+        handleRegister(data).then(res => {
             return res.json()
         })
-            .then(setReport)
+            .then((json)=>{
+                setData(json)
+                console.log("useRegister")
+            })
             .catch(err => {
                 console.error(err);
                 setErrorMsg(err);
@@ -19,7 +22,7 @@ const useReportFetch = (data) => {
             .finally(() => setLoading(false));
     }, [])
 
-    return {report, errorMsg, loading, callback};
+    return {data, errorMsg, loading, callback};
 }
 
-export default useReportFetch;
+export default useRegister;

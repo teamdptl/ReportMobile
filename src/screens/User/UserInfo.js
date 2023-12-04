@@ -5,8 +5,11 @@ import { getUserData } from '../../apis/UserAPI';
 import color from '../../contains/color';
 import { handleLogout } from '../../apis/AuthAPI';
 import { deleteValue } from '../../contains/SecureStore';
-import {USER_ROLE_KEY, USER_TOKEN_KEY} from '../../contains/config';
-import {AuthContext} from "../../context/AuthContext";
+import {MANAGER_ROLE, USER_ROLE, USER_ROLE_KEY, USER_TOKEN_KEY, WORKER_ROLE} from '../../contains/config';
+import {AuthContext, useAuthContext} from "../../context/AuthContext";
+import {AddIcon, ArrowRightIcon, Button, ButtonIcon, ButtonText} from "@gluestack-ui/themed";
+import CustomInput from "../../components/CustomInput";
+
 
 const UserInfo = ({ navigation }) => {
 	const [userData, setUserData] = useState({
@@ -16,32 +19,48 @@ const UserInfo = ({ navigation }) => {
 		email: "",
 	});
 
-	const {role, setRole} = useContext(AuthContext);
+	const {role, setRole} = useAuthContext();
+
+	const convertRole = (role) => {
+		if (role === MANAGER_ROLE)
+			return "Quản lý";
+		if (role === USER_ROLE)
+			return "Người dùng";
+		if (role === WORKER_ROLE)
+			return "Nhân viên sửa chữa";
+	}
+
+	const removeData = () => {
+		deleteValue(USER_TOKEN_KEY);
+		deleteValue(USER_ROLE_KEY);
+		setRole(null);
+		navigation.replace("Login");
+	}
 
 	const onLogout = async () => {
 		await handleLogout()
 			.then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        if (data && data.error === 0) {
-          deleteValue(USER_TOKEN_KEY);
-		  deleteValue(USER_ROLE_KEY);
-		  setRole(null);
-          navigation.replace("Login");
-        }
-        else {
-          alert("Xảy ra lỗi trong quá trình đăng xuất");
-        }
+		  if (data && data.error === 0) {
+			console.log("Logout success")
+		  }
+		  else {
+			  alert("Không thể gọi api đăng xuất");
+		  }
 			})
 			.catch((err) => {
 				console.error(err);
-			});
+			}).finally(() => {
+				removeData();
+			})
 	};
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const result = await getUserData(); // Gọi hàm getUserData từ UserApi.js
-
+			const result = await getUserData() // Gọi hàm getUserData từ UserApi.js
+			if (result.error === 1){
+				removeData();
+			}
 			if (result) {
 				setUserData({
 					name: result.name,
@@ -63,15 +82,26 @@ const UserInfo = ({ navigation }) => {
 					<Image source={require("../../assets/images/SguLogo.png")} style={styles.userImage} />
 				</View>
 				<Text style={styles.userName}>{userData.name}</Text>
+				<Text style={styles.textRole}>{convertRole(role)}</Text>
 			</View>
 			<View style={styles.bottomSection}>
 				<Text style={styles.textDetails}>Mã số sinh viên:</Text>
-				<TextInput style={styles.input} value={userData.username} placeholder="Username" editable={false} />
+				<CustomInput style={styles.input} value={userData.student_code} isDisabled={true}/>
 				<Text style={styles.textDetails}>Email</Text>
-				<TextInput style={styles.input} value={userData.email} placeholder="Email" editable={false} />
+				<CustomInput style={styles.input} value={userData.email} isDisabled={true}/>
 
 				<View style={styles.buttonCustom}>
-					<Buttons btnText={"Đăng xuất"} backgroundColor={color.red} onPress={onLogout} />
+					<Button
+						size="md"
+						variant="solid"
+						action="negative"
+						isDisabled={false}
+						isFocusVisible={false}
+						onPress={onLogout}
+					>
+						<ButtonText>Đăng xuất </ButtonText>
+						<ButtonIcon as={ArrowRightIcon} />
+					</Button>
 				</View>
 			</View>
 		</View>
@@ -103,23 +133,26 @@ const styles = StyleSheet.create({
 		borderRadius: 50, // Để làm tròn hình ảnh thành hình tròn
 	},
 	userName: {
-		fontSize: 20,
+		fontSize: 18,
 		fontWeight: 'bold',
 		color: color.white,
+		marginTop: 10
+	},
+	textRole: {
+		fontSize: 14,
+		color: color.white,
+		marginTop: 5,
 	},
 	input: {
-		height: 40,
-		borderColor: 'gray',
-		borderWidth: 1,
-		marginBottom: 5,
 		paddingHorizontal: 10,
 		borderRadius: 10,
+		marginBottom: 5
 	},
 	textDetails: {
 		marginBottom: 10,
 	},
 	buttonCustom: {
-		marginTop: 190,
+		marginTop: 30,
 		color: 'red',
 	}
 });

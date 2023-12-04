@@ -4,7 +4,7 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   ScrollView,
-  BackHandler,
+  BackHandler, Platform,
 } from "react-native"; // Import SafeAreaView
 import React, { useState, useEffect, useRef, useReducer } from "react";
 import color from "../../contains/color";
@@ -30,6 +30,7 @@ import { save, getValue, deleteValue } from "../../contains/AsyncStore";
 import * as Location from "expo-location";
 
 import useCreateReport from "../../hooks/useCreateReport";
+import {Appbar} from "react-native-paper";
 
 const CreateReport = ({ navigation }) => {
   // Mảng chứa hình
@@ -88,17 +89,20 @@ const CreateReport = ({ navigation }) => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
+        alert("Không có quyền lấy địa điểm!")
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
-
-      if (location && location.coords) {
-        const latitude = location.coords.latitude;
-        const longitude = location.coords.longitude;
-        setLocation(`${latitude},${longitude}`);
-      } else {
-        console.log("Location information not available.");
-      }
+      console.log("Start get location");
+      Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High, maximumAge: 10000}).then(location => {
+        if (location && location.coords) {
+          const latitude = location.coords.latitude;
+          const longitude = location.coords.longitude;
+          setLocation(`${latitude},${longitude}`);
+          console.log("End get location");
+        } else {
+          console.log("Location information not available.");
+        }
+      });
     })();
   }, []);
 
@@ -127,16 +131,24 @@ const CreateReport = ({ navigation }) => {
       setShowAlertDialog(false);
 
   
-      const checkInternet =  await getValue(USER_IS_INTERNET);
-      console.log(checkInternet);
+      // const checkInternet =  await getValue(USER_IS_INTERNET);
+      // console.log(checkInternet);
 
-      if (checkInternet == "online") {
+      // if (checkInternet == "online") {
         console.log("dang o create usehome");
 
         const formData = new FormData();
         formData.append("title", state.title.value);
         formData.append("description", state.description.value);
-        formData.append("location_api", location);
+        if (location)
+          formData.append("location_api", location);
+        else {
+          const location = await Location.getLastKnownPositionAsync();
+          const latitude = location.coords.latitude;
+          const longitude = location.coords.longitude;
+          formData.append("location_api", `${latitude},${longitude}`)
+        }
+
         formData.append("location_text", state.address.value);
         // console.log("location_api", location);
 
@@ -153,13 +165,15 @@ const CreateReport = ({ navigation }) => {
           });
         }
 
-        await call(formData);
-      } else if(checkInternet == "offline"){
-        console.log("dang o create draft");
-        saveDraftData();
-      } else{
-        console.log("Khong vo duoc");
-      }
+        await call(formData, () => {
+          navigation.goBack();
+        });
+      // } else if(checkInternet == "offline"){
+      //   console.log("dang o create draft");
+      //   saveDraftData();
+      // } else{
+      //   console.log("Khong vo duoc");
+      // }
     }
   };
   
@@ -219,28 +233,22 @@ const CreateReport = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1, marginTop: 5, backgroundColor: "white" }}
+      style={{ flex: 1, backgroundColor: "white" }}
     >
-      <View style={styles.container}>
+      <View>
         {isGalleryVisible && capturedImages && capturedImages.length > 0 && (
           <FakeGallery
             listImage={capturedImages}
             indexImage={selectedIndex}
             closeImageModal={closeImageModal}
+            isShow={isGalleryVisible}
           />
         )}
-        <ScrollView>
-          <View>
-            <BackPage
-              onPress={() => {
-                navigation.replace("Tab");
-              }}
-            />
-
-            <View style={styles.centeredTextContainer}>
-              <Text style={styles.centeredText}>Tạo phản hồi</Text>
-            </View>
-          </View>
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => {navigation.goBack()}} />
+          <Appbar.Content title="Tạo báo cáo" titleStyle={{fontSize: 16}} />
+        </Appbar.Header>
+        <ScrollView style={styles.container}>
           <View style={styles.bodyReport}>
             <View
               style={{
@@ -250,7 +258,7 @@ const CreateReport = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <CameraComponent setCapturedImages={setCapturedImages} />
+              <CameraComponent setCapturedImages={setCapturedImages} shouldSave={true}/>
               <ListImageHorizontal
                 listImageData={capturedImages}
                 openImageModal={(index) => openImageModal(index)}
@@ -263,7 +271,7 @@ const CreateReport = ({ navigation }) => {
               <Text style={styles.textBody}>Vấn đề</Text>
               <CustomInput
                 isInvalid={state.title.isInvalid}
-                placeholder={"VD: Cơ sở, phòng học"}
+                placeholder={"Mô tả ngắn gọn vấn đề"}
                 value={state.title.value}
                 onChangeText={(text) => handleInputChange("title", text)}
               />
@@ -291,6 +299,7 @@ const CreateReport = ({ navigation }) => {
                 mt="$10"
                 size="md"
                 bg="#0693F1"
+                isDisabled={loading}
                 onPress={handleButtonClick}
               >
                 <ButtonText fontSize="$sm" fontWeight="$bold" color="white">

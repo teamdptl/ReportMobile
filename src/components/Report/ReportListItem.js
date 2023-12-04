@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {Text, View, Image, StyleSheet, TouchableOpacity} from "react-native"
 import Icon from 'react-native-vector-icons/Ionicons';
+import {STATUS} from "../../contains/config";
 
 export const timeToText = (time) => {
     const dateObject = new Date(time);
@@ -19,12 +20,25 @@ export const timeToText = (time) => {
 export const convertStatus = (status) => {
     let output = {text: '', color: 'black'};
     switch (status){
-        case 'sent':
+        case STATUS.SENT:
             output.text = 'Đã gửi';
             output.color = '#F5E024'
             break;
+        case STATUS.PROCESS:
+            output.text = 'Thực hiện';
+            output.color = '#0693F1';
+            break;
+        case STATUS.COMPLETE:
+            output.text = 'Hoàn thành';
+            output.color = '#61ab73';
+            break;
+        case STATUS.IGNORE:
+            output.text = 'Bị hủy'
+            output.color = 'black'
+            break;
         default:
             output.text = 'Không xác định';
+            output.color = 'black'
     }
     return output;
 }
@@ -34,8 +48,11 @@ const ReportListItem = ({item, handleNavigate, deleteIds, setDeleteIds}) => {
         <TouchableOpacity onPress={handleNavigate}>
             <View style={styles.container}>
                 <View>
-                    <Image style={styles.image}
-                           source={{ uri: item.images[0].src }} width={100} height={100}/>
+                    {item.images[0]?.src &&
+                        <Image style={styles.image}
+                               source={{ uri: item.images[0].src }} width={100} height={100}/>
+                    }
+
                 </View>
                 <View style={styles.textWrapper}>
                     <View style={styles.headerTitle}>

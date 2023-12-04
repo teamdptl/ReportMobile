@@ -4,73 +4,35 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Login from "../screens/Login";
 import UserTabScreen from "./tab/UserTabScreen";
-import PostReport from "../screens/User/CreateReport";
-import ManagerHome from "../screens/Manager/ManagerHome";
-import WorkerHome from "../screens/Worker/WorkerHome";
-import UserHome from "../screens/User/UserHome";
 import Main from "../screens/Main";
 import CreateReport from "../screens/User/CreateReport";
-import DraftHome from "../screens/draft/DraftHome";
 import ReportDetail from "../screens/User/ReportDetail";
+import ManagerSelectWorker from "../screens/Manager/ManagerSelectWorker";
+import ManagerTabScreen from "./tab/ManagerTabScreen";
+import WorkerTabScreen from "./tab/WorkerTabScreen";
+import ManagerWorkerDetails from "../screens/Manager/ManagerWorkerDetails";
+import CreateFeedback from "../screens/Worker/CreateFeedback";
+import Register from "../screens/Register";
 
 const AppStack = createNativeStackNavigator();
-const UserStack = createNativeStackNavigator();
-const ManagerStack = createNativeStackNavigator();
-const WorkerStack = createNativeStackNavigator();
-const DraftUserStack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
     <NavigationContainer>
       <AppStack.Navigator screenOptions={{ headerShown: false }}>
-        <AppStack.Screen name="Main" component={Main} />
-        <AppStack.Screen name="Login" component={Login} />
-        <AppStack.Screen name="DraftUser" component={DraftUser} />
-        <AppStack.Screen name="UserNavigation" component={UserNavigation} />
-        <AppStack.Screen
-          name="ManagerNavigation"
-          component={ManagerNavigation}
-        />
-        <AppStack.Screen name="WorkerNavigation" component={WorkerNavigation} />
+          <AppStack.Screen name="Main" component={Main} />
+          <AppStack.Screen name="Login" component={Login} />
+          <AppStack.Screen name="Register" component={Register} />
+          <AppStack.Screen name="User" component={UserTabScreen} />
+          <AppStack.Screen name="Manager" component={ManagerTabScreen} />
+          <AppStack.Screen name="Worker" component={WorkerTabScreen} />
+          <AppStack.Screen name="CreateReport" component={CreateReport} />
+          <AppStack.Screen name="CreateFeedback" component={CreateFeedback} />
+          <AppStack.Screen name="ReportDetail" component={ReportDetail}/>
+          <AppStack.Screen name="SelectWorker" component={ManagerSelectWorker}/>
+          <AppStack.Screen name="WorkerDetail" component={ManagerWorkerDetails}/>
       </AppStack.Navigator>
     </NavigationContainer>
-  );
-};
-
-const DraftUser = () => {
-  return (
-    <DraftUserStack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <DraftUserStack.Screen name="TabDraft" component={CreateDraft}/> */}
-      {/* <DraftUserStack.Screen name="DraftHome" component={DraftHome} /> */}
-      <UserStack.Screen name="Tab" component={UserTabScreen} />
-      <UserStack.Screen name="CreateReport" component={CreateReport} />
-    </DraftUserStack.Navigator>
-  );
-};
-
-const UserNavigation = () => {
-  return (
-    <UserStack.Navigator screenOptions={{ headerShown: false }}>
-        <UserStack.Screen name="Tab" component={UserTabScreen} />
-        <UserStack.Screen name="CreateReport" component={CreateReport} />
-        <UserStack.Screen name="ReportDetail" component={ReportDetail}/>
-    </UserStack.Navigator>
-  );
-};
-
-const ManagerNavigation = () => {
-  return (
-    <ManagerStack.Navigator screenOptions={{ headerShown: false }}>
-      <ManagerStack.Screen name="Home" component={ManagerHome} />
-    </ManagerStack.Navigator>
-  );
-};
-
-const WorkerNavigation = () => {
-  return (
-    <WorkerStack.Navigator screenOptions={{ headerShown: false }}>
-      <WorkerStack.Screen name="Home" component={WorkerHome} />
-    </WorkerStack.Navigator>
   );
 };
 

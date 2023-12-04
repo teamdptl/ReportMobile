@@ -8,7 +8,7 @@ const CustomInput = (props) => {
     <Input
       variant="outline"
       size="sm"
-      isDisabled={false}
+      isDisabled={props.isDisabled ?? false}
       isInvalid={props.isInvalid}
       isReadOnly={false}
     >

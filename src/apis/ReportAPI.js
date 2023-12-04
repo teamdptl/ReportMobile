@@ -1,8 +1,9 @@
-import { URL_REPORT_ALL, URL_REPORT_MAIN } from "../contains/config";
+import {URL_REPORT_ALL, URL_REPORT_FEEDBACK, URL_REPORT_MAIN} from "../contains/config";
 import { createFetch, createJsonFetch, method } from "./CustomFetch";
 
-export const getListReport = () => {
-  return createFetch(URL_REPORT_ALL, method.GET);
+export const getListReport = (filterData) => {
+  // console.log(new URLSearchParams({...filterData}).toString());
+  return createFetch(URL_REPORT_ALL + "?" + new URLSearchParams({...filterData}).toString(), method.GET);
 };
 
 export const getReportAtPage = (data) => {
@@ -26,9 +27,15 @@ export const createReport = (data) => {
   });
 };
 
-export const deleteReport = (data) => {
-  return createFetch(`${URL_REPORT_MAIN}/${data.id}`, method.DELETE);
+export const deleteReport = (id) => {
+  return createFetch(`${URL_REPORT_MAIN}/${id}`, method.DELETE);
 };
+
+export const createFeedback = (data) => {
+  return createFetch(URL_REPORT_FEEDBACK, method.POST, data, {
+    "Content-Type": "multipart/form-data",
+  });
+}
 
 const ignoreReport = (data) => {
   // const data = {

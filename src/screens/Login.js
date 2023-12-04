@@ -19,6 +19,7 @@ import {USER_ROLE_KEY, USER_TOKEN_KEY} from "../contains/config";
 import color from "../contains/color";
 import {AuthContext} from "../context/AuthContext";
 import useFetchOnCall from "../hooks/useFetchOnCall";
+import {switchScreen} from "../utils/LoginUtils";
 
 const Login = ({navigation}) => {
     const [mssv, setMssv] = useState("");
@@ -38,19 +39,21 @@ const Login = ({navigation}) => {
     };
 
     useEffect(() => {
-
         if (value){
-            // if (value.error === 0 && value.token){
-            if(true){
-                console.log('Change value');
+            console.log(value);
+            if (value.error === 0 && value.token){
                 save(USER_TOKEN_KEY, value.token);
                 save(USER_ROLE_KEY, value.role);
+                // save(USER_TOKEN_KEY, "value.token");
+                // save(USER_ROLE_KEY, "1");
                 setRole(value.role);
-                navigation.replace("Main");
+                setTimeout(() => {
+                    switchScreen(value.role, navigation);
+                }, 300)
+
             }
             else {
-                alert(err)
-                // alert("Đăng nhập không thành công. Vui lòng thử lại.");
+                alert("Đăng nhập không thành công. Vui lòng thử lại.");
             }
         }
     }, [value]);
@@ -106,7 +109,7 @@ const Login = ({navigation}) => {
 
                 <Buttons onPress={onLogin} btnText={"Đăng nhập ngay"} backgroundColor="#0693F1"/>
                 <View style={styles.container_QuenMatKhau}>
-                    <Text style={styles.text_QuenMatKhau}>Quên mật khẩu ?</Text>
+                    <Text onPress={()=>{navigation.navigate("Register")}} style={styles.text_QuenMatKhau}>Đăng kí tài khoản</Text>
                 </View>
             </View>
             <Overlay isVisible={loading} onBackdropPress={() => {

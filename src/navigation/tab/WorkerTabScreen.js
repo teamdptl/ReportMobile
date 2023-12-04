@@ -44,19 +44,6 @@ const WorkerTabScreen = ({navigation}) => {
                 }}
             />
             <Tab.Screen
-                name="ManagerWorker"
-                component={ManagerWorker}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <TabIcons
-                            focused={focused}
-                            icon={require('../../assets/images/book.png')} // TODO: đổi hình khác
-                            label="Nhân viên"
-                        />
-                    ),
-                }}
-            />
-            <Tab.Screen
                 name="DetailUser"
                 component={DetailUser}
                 options={{
