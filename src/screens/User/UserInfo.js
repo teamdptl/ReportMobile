@@ -86,7 +86,7 @@ const UserInfo = ({ navigation }) => {
 			</View>
 			<View style={styles.bottomSection}>
 				<Text style={styles.textDetails}>Mã số sinh viên:</Text>
-				<CustomInput style={styles.input} value={userData.username} isDisabled={true}/>
+				<CustomInput style={styles.input} value={userData.student_code} isDisabled={true}/>
 				<Text style={styles.textDetails}>Email</Text>
 				<CustomInput style={styles.input} value={userData.email} isDisabled={true}/>
 
