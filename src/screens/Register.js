@@ -6,7 +6,7 @@ import {
     Keyboard,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
+    StyleSheet, TouchableWithoutFeedback,
     View
 } from "react-native";
 import {
@@ -153,7 +153,9 @@ const Register =({navigation})=>{
         <View flex ={1} backgroundColor={"#FFFFFF"} >
             <View flex={0.25} backgroundColor={"#018DFF"}  >
                 <View marginHorizontal ={35}  marginVertical ={40}>
-                    <Ionicons name="arrow-back" size={28} color="white" />
+                    <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+                        <Ionicons name="arrow-back" size={28} color="white" />
+                    </TouchableWithoutFeedback>
                     <View  >
                         <Heading  color="white" size={"2xl"} mb={15} >Đăng ký</Heading>
                         <Animated.Text style={{opacity:fadeAnim,color:"white"}}  size={"sm"} >Nhập các thông tin cần thiết để tiếp tục đăng ký tài khoản</Animated.Text>
@@ -277,7 +279,7 @@ const Register =({navigation})=>{
                             action="primary"
                             isDisabled={false}
                             isFocusVisible={false}>
-                            <ButtonText onPress={()=>{navigation.replace("Login")}}>Bạn đã có tài khoản ? </ButtonText>
+                            <ButtonText onPress={()=>{navigation.goBack()}}>Bạn đã có tài khoản ? </ButtonText>
                         </Button>
                     </Center>
                 </ScrollView>

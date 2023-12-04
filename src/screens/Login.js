@@ -49,7 +49,7 @@ const Login = ({navigation}) => {
                 setRole(value.role);
                 setTimeout(() => {
                     switchScreen(value.role, navigation);
-                }, 500)
+                }, 300)
 
             }
             else {
