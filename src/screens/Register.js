@@ -252,8 +252,7 @@ const Register =({navigation})=>{
                             isReadOnly={false}
                             value={password}>
                             <InputField type={showPassword ? "text" : "password"} placeholder="Mật khẩu"  onChangeText={(text) => {setPassword(text)}}/>
-                            <InputSlot pr="$3" onPress={handleState}>
-                                {/* EyeIcon, EyeOffIcon are both imported from 'lucide-react-native' */}
+                            <InputSlot pr="$6" onPress={handleState}>
                                 <InputIcon
                                     as={showPassword ? EyeIcon : EyeOffIcon}
                                     color="$darkBlue500"
@@ -278,7 +277,7 @@ const Register =({navigation})=>{
                             action="primary"
                             isDisabled={false}
                             isFocusVisible={false}>
-                            <ButtonText onPress={navigation.replace("Login")}>Bạn đã có tài khoản ? </ButtonText>
+                            <ButtonText onPress={()=>{navigation.replace("Login")}}>Bạn đã có tài khoản ? </ButtonText>
                         </Button>
                     </Center>
                 </ScrollView>
