@@ -89,6 +89,7 @@ const CreateReport = ({ navigation }) => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
+        alert("Không có quyền lấy địa điểm!")
         return;
       }
       console.log("Start get location");
